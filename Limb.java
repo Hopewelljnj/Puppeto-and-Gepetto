@@ -8,9 +8,20 @@ public class Limb implements ILimb {
 	float rotation;
 	Joint topJoint = null;
 	Joint bottomJoint = null;
-	public Limb(Graphics2D graphics, float rotation) {
+	int centralX = 0;
+	int centralY = 0;
+	
+	public Limb(Graphics2D graphics, float rotation, Joint topJoint, Joint bottomJoint) {
 		this.graphics = graphics;
 		this.rotation = rotation;
+		this.topJoint = topJoint;
+		this.bottomJoint = bottomJoint;
+	}
+	public Limb(Graphics2D graphics, float rotation, Joint topJoint) {
+		this(graphics,rotation,topJoint,null);
+	}
+	public Limb(Graphics2D graphics, float rotation) {
+		this(graphics,rotation,null,null);
 	}
 	
 	public Limb(Graphics2D graphics) {

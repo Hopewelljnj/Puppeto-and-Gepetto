@@ -13,7 +13,7 @@ public interface ILimb {
 	public void setGraphics(Graphics2D graphics);
 	
 	public float getRotation();
-	public float setRotation(float rotation);
+	public void setRotation(float rotation);
 	
 	public void rotateUpper(float rotation);
 	public void rotateLower(float rotation);
