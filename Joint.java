@@ -42,13 +42,6 @@ public class Joint {
 	public void setLowerLimb(ILimb limb) {
 		lowerLimb = limb;
 	}
-	/*
-	 * update() {
-	 *  joint1.rotate(10);
-	 *  joint2.moveTo(10,10)
-	 * 
-	 * refreshGraphics();
-	 */
 	
 	public void moveTo(int x, int y) {
 		this.x = x;
