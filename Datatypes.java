@@ -28,4 +28,10 @@ public class Datatypes {
 		RIGHT_ANKLE,
 		HIP
 	}
+	
+	public enum Action {
+		ROTATE,
+		MOVE,
+		MOVE_TO
+	}
 }
