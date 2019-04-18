@@ -119,41 +119,16 @@ public class Geppetto {
 		jf.setVisible(true);
 		
 	}
-	private void puppIt(byte[] msg, int tick) throws Exception {
-		MetaMessage message = new MetaMessage();
-		message.setMessage(0x7f, msg, msg.length);
-		track.add(new MidiEvent(message, tick));
-	}
 	private class MyWindowListener extends WindowAdapter {
 		public void windowClosing(WindowEvent we) {
-			sequencer.close();
-			synth.close();
 			System.exit(-1);
 		}
 	}
 	public Geppetto() {
-		try {
-			synth = MidiSystem.getSynthesizer();
-			synth.open();
-			Soundbank defsb = synth.getDefaultSoundbank();
-			synth.unloadAllInstruments(defsb);
-			Soundbank sb = MidiSystem.getSoundbank(new File("data/FluidR3_GM.sf2"));
-			synth.loadAllInstruments(sb);
-			sequencer = MidiSystem.getSequencer(true);
-			sequencer.open();
-		} catch (Exception ex) {
-			System.err.println(ex.getMessage());
-			System.exit(-1);
-		}
 		initSwing();
 	}
 	public static void main(String... args) {
 		EventQueue.invokeLater(Geppetto::new);
-	}
-	private void createEvent(int type, int channel, int number, long tick) throws Exception {
-		ShortMessage message = new ShortMessage();
-		message.setMessage(type, channel, number, DEFAULT_VELOCITY);
-		track.add(new MidiEvent(message, tick));
 	}
 	private void setChannel() throws Exception {
 		/*createEvent(
