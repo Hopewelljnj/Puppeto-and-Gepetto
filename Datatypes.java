@@ -3,22 +3,27 @@ package edu.mccc.cos210.fp.pupp;
 public class Datatypes {
 	
 	public enum Part {
-		LEFT_ARM,
-		RIGHT_ARM,
+		LEFT_UPPER_ARM,
+		LEFT_LOWER_ARM,
+		RIGHT_UPPER_ARM,
+		RIGHT_LOWER_ARM,
 		HEAD,
-		LEFT_LEG,
-		RIGHT_LEG,
+		LEFT_UPPER_LEG,
+		LEFT_LOWER_LEG,
+		RIGHT_UPPER_LEG,
+		RIGHT_LOWER_LEG,
 		LEFT_HAND,
 		RIGHT_HAND,
 		LEFT_FOOT,
-		RIGHT_FOOT;
+		RIGHT_FOOT,
+		TORSO
 	}
 	
 	public enum Joint {
 		LEFT_SHOULDER,
 		RIGHT_SHOULDER,
 		NECK,
-		LEFT,ELBOW,
+		LEFT_ELBOW,
 		RIGHT_ELBOW,
 		LEFT_KNEE,
 		RIGHT_KNEE,

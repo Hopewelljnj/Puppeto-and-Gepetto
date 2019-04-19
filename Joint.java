@@ -10,7 +10,9 @@ public class Joint {
 		this.x = x;
 		this.y = y;
 		this.upperLimb = upperLimb;
+		if(upperLimb != null) upperLimb.setBottomJoint(this);
 		this.lowerLimb = lowerLimb;
+		if(lowerLimb != null) lowerLimb.setTopJoint(this);
 	}
 	
 	public Joint(int x, int y, ILimb upperLimb) {
