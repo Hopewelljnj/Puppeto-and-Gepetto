@@ -7,6 +7,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
+import javax.sound.midi.ControllerEventListener;
+import javax.sound.midi.MetaEventListener;
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiSystem;
@@ -29,23 +31,17 @@ public class Geppetto {
 	};
 	private final int DEFAULT_VELOCITY = 100;
 	private final int PPQ = 8;
-	private final int BPMinute = 120;
+	private final int BPMinute = 120;//actual bpm of song
 	private Synthesizer synth;
 	private Sequencer sequencer;
 	private Sequence sequence;
 	private Track track;
-	private int[][] song = {
-		{ 00, 1,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0 },
-		{ 35, 1,0,0,0,0,0,0,0, 1,0,0,0,0,0,0,0, 1,0,0,0,0,0,0,0, 1,0,0,0,0,0,0,0 },
-		{ 36, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0 },
-		{ 37, 1,0,0,0,0,0,1,0, 1,0,0,0,1,0,0,0, 1,0,0,0,1,0,0,0, 0,0,0,0,1,0,0,0 },
-		{ 38, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0 },
-		{ 39, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0 }
-	};		
+	private static final String SONG = "data/cos210.mid";
+	private static final File song = new File(SONG);
+	private static final int META_EndofTrack = 47;
 	private AddMenu am = new AddMenu(ActionList, song);
 	private ImageIcon icon = new ImageIcon("data/Gort-Gorts-Icons-Vol4-Peppy-The-Puppet.ico");
 	private JFrame jf;
-	private JToggleButton jtb = new JToggleButton("Play");
 	private FileDialog fd = new FileDialog(jf, "Save As", FileDialog.SAVE);
 	private void initSwing() {
 		jf = new JFrame("Geppetto");
@@ -125,10 +121,30 @@ public class Geppetto {
 		}
 	}
 	public Geppetto() {
+		try {
+			synth = MidiSystem.getSynthesizer();
+			synth.open();
+			Soundbank defsb = synth.getDefaultSoundbank();
+			synth.unloadAllInstruments(defsb);
+			Soundbank sb = MidiSystem.getSoundbank(new File("data/FluidR3_GM.sf2"));
+			synth.loadAllInstruments(sb);
+			sequencer = MidiSystem.getSequencer(true);
+			sequencer.open();
+			sequence = MidiSystem.getSequence(new File(SONG));
+			sequencer.setSequence(sequence);
+		}catch (Exception ex) {
+			System.err.println(ex.getMessage());
+			System.exit(-1);
+		}
 		initSwing();
 	}
 	public static void main(String... args) {
 		EventQueue.invokeLater(Geppetto::new);
+	}
+	private void puppIt(byte[] msg, int tick) throws Exception {
+		MetaMessage message = new MetaMessage();
+		message.setMessage(0x7f, msg, msg.length);
+		track.add(new MidiEvent(message, tick));
 	}
 	private void setChannel() throws Exception {
 		/*createEvent(
@@ -170,14 +186,14 @@ public class Geppetto {
 	public class AddMenu extends JPanel {
 		private static final long serialVersionUID = 1L;
 		private Action[] al;
-		private int[][] song;
+		private File song;
 		private int textX = 8;
 		private int gridX = 128;
-		private int topY = 16;
-		private int xSize = 16;
-		private int ySize = 11;
+		private int topY = 128;
+		private int xSize = 64;
+		private int ySize = 44;
 		//not actually int array but whatever song ends up being
-		public AddMenu(Action[] al, int[][] song) {
+		public AddMenu(Action[] al, File song) {
 			this.al = al;
 			this.song = song;
 			addMouseListener(new MyMouseListener());
@@ -185,27 +201,29 @@ public class Geppetto {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g.create();
+			Font font = new Font("Verdana", Font.BOLD, 32);
+			g2d.setFont(font);
 			for (int i = 0; i< al.length; i++) {
 				g2d.drawString(al[i].getName(), textX, topY + i * ySize);
 			}
-			for (int i = 1; i < song.length; i++) {
-				for (int j = 1; j < song[0].length; j++) {
+			for (int i = 1; i < al.length + 1; i++) {
+				for (int j = 1; j < 9; j++) {
 					Rectangle r = new Rectangle(xSize, ySize);
 					r.translate(gridX + j *xSize, topY + (i - 2) * ySize);
 					g2d.draw(r);
-					if (song[i][j] != 0) {
+					/*if (song[i][j] != 0) {
 						g2d.fill(r);
-					}
+					}animations present check*/
 				}
 			}
 			g2d.setStroke(new BasicStroke(2.0f));
-			g2d.setPaint(Color.red);
+			g2d.setPaint(Color.blue);
 			for (int i = 0; i < 5; i++) {
 				g2d.drawLine(
-					gridX + xSize + i * xSize * 8,
+					gridX + xSize + i * xSize * 2,
 					topY - ySize + 1,
-					gridX + xSize + i * xSize * 8,
-					topY + 46 * ySize
+					gridX + xSize + i * xSize * 2,
+					topY + al.length * ySize
 				);
 			}
 			g2d.dispose();
@@ -222,7 +240,8 @@ public class Geppetto {
 					r = 1;
 				}
 				if (c > 0 && c <= 32 && r > 0 && r < 48) {
-					song[r][c] = song[r][c] == 1 ? 0 : 1;
+					//song[r][c] = song[r][c] == 1 ? 0 : 1;
+					//toggle value
 				}
 				repaint();
 			}
