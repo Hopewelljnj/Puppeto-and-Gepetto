@@ -29,18 +29,15 @@ public class Geppetto {
 		new Action("Hand", 38),
 		new Action("Foot", 39)	
 	};
-	private final int DEFAULT_VELOCITY = 100;
-	private final int PPQ = 8;
-	private final int BPMinute = 120;//actual bpm of song
 	private Synthesizer synth;
 	private Sequencer sequencer;
 	private Sequence sequence;
 	private Track track;
-	private static final String SONG = "data/cos210.mid";
-	private static final File song = new File(SONG);
+	private float BPMinute = 0;
+	private final int DEFAULT_VELOCITY = 100;
+	private final int PPQ = 2;
 	private static final int META_EndofTrack = 47;
-	private AddMenu am = new AddMenu(ActionList, song);
-	private ImageIcon icon = new ImageIcon("data/Gort-Gorts-Icons-Vol4-Peppy-The-Puppet.ico");
+	private static final File song = new File("data/cos210.mid");
 	private JFrame jf;
 	private FileDialog fd = new FileDialog(jf, "Save As", FileDialog.SAVE);
 	private void initSwing() {
@@ -48,6 +45,7 @@ public class Geppetto {
 		jf.addWindowListener(new MyWindowListener());
 		fd.setVisible(false);
 		JPanel jp = new JPanel();
+		AddMenu am = new AddMenu(ActionList, sequence);
 		jp.setLayout(new GridLayout(1, 2));
 		JButton jb = new JButton("Clear!");
 		jb.addActionListener(
@@ -109,7 +107,6 @@ public class Geppetto {
 		jf.add(jp, BorderLayout.NORTH);
 		jf.add(am, BorderLayout.CENTER);
 		jf.setSize(new Dimension(800, 600));
-		jf.setIconImage(icon.getImage());
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setVisible(true);
@@ -124,14 +121,11 @@ public class Geppetto {
 		try {
 			synth = MidiSystem.getSynthesizer();
 			synth.open();
-			Soundbank defsb = synth.getDefaultSoundbank();
-			synth.unloadAllInstruments(defsb);
-			Soundbank sb = MidiSystem.getSoundbank(new File("data/FluidR3_GM.sf2"));
-			synth.loadAllInstruments(sb);
 			sequencer = MidiSystem.getSequencer(true);
 			sequencer.open();
-			sequence = MidiSystem.getSequence(new File(SONG));
+			sequence = MidiSystem.getSequence(song);
 			sequencer.setSequence(sequence);
+			BPMinute = sequencer.getTempoInBPM();
 		}catch (Exception ex) {
 			System.err.println(ex.getMessage());
 			System.exit(-1);
@@ -186,16 +180,16 @@ public class Geppetto {
 	public class AddMenu extends JPanel {
 		private static final long serialVersionUID = 1L;
 		private Action[] al;
-		private File song;
+		private Sequence sq;
 		private int textX = 8;
 		private int gridX = 128;
 		private int topY = 128;
 		private int xSize = 64;
 		private int ySize = 44;
 		//not actually int array but whatever song ends up being
-		public AddMenu(Action[] al, File song) {
+		public AddMenu(Action[] al, Sequence sequence) {
 			this.al = al;
-			this.song = song;
+			this.sq = sequence;
 			addMouseListener(new MyMouseListener());
 		}
 		public void paintComponent(Graphics g) {
