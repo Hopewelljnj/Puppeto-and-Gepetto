@@ -23,11 +23,45 @@ import javax.swing.*;
 
 public class Geppetto {
 	private final Action ActionList[] = {
-		new Action("Leg", 35),
-		new Action("Arm", 36),
-		new Action("Head", 37),
-		new Action("Hand", 38),
-		new Action("Foot", 39)	
+		new Action("Right-Leg Rotate Right"),
+		new Action("Right-Leg Rotate Left"),
+		new Action("Left-Leg Rotate Right"),
+		new Action("Left-Leg Rotate Left"),
+		new Action("Right-Arm Rotate Right"),
+		new Action("Right-Arm Rotate Left"),
+		new Action("Left-Arm Rotate Right"),
+		new Action("Left-Arm Rotate Left"),
+		new Action("Right-Hand Rotate Right"),
+		new Action("Right-Hand Rotate Left"),
+		new Action("Left-Hand Rotate Right"),
+		new Action("Left-Hand Rotate Left"),
+		new Action("Right-Foot Rotate Right"),
+		new Action("Right-Foot Rotate Left"),
+		new Action("Left-Foot Rotate Right"),
+		new Action("Left-Foot Rotate Left"),
+		new Action("Head Rotate Right"),
+		new Action("Head Rotate Left"),
+	};
+	private int[][] Grid = {
+			{ 00, 1,0,0,0,0,0,0,0,},
+			{ 35, 1,0,0,0,0,0,0,0,},
+			{ 36, 0,0,0,0,0,0,0,0,},
+			{ 37, 1,0,0,0,0,0,1,0,},
+			{ 38, 0,0,0,0,0,0,0,0,},
+			{ 39, 0,0,0,0,0,0,0,0,},
+			{ 40, 0,0,0,0,0,0,0,0,},
+			{ 41, 0,0,0,0,0,0,0,0,},
+			{ 42, 1,0,1,0,1,0,1,0,},
+			{ 43, 0,0,0,0,0,0,0,0,},
+			{ 44, 0,0,0,0,0,0,0,0,},
+			{ 45, 0,0,0,0,0,0,0,0,},
+			{ 46, 0,0,0,0,0,0,0,0,},
+			{ 47, 0,0,0,0,0,0,0,0,},
+			{ 48, 0,0,0,0,0,0,0,0,},
+			{ 49, 0,0,0,0,0,0,0,0,},
+			{ 50, 0,0,0,0,0,0,0,0,},
+			{ 51, 0,0,0,0,0,0,0,0,},
+			{ 52, 0,0,0,0,0,0,0,0,},
 	};
 	private Synthesizer synth;
 	private Sequencer sequencer;
@@ -35,7 +69,8 @@ public class Geppetto {
 	private Track track;
 	private float BPMinute = 0;
 	private final int DEFAULT_VELOCITY = 100;
-	private final int PPQ = 2;
+	private final int PPQ = 4;
+	private final int ACTION_CHANNEL = 3;
 	private static final int META_EndofTrack = 47;
 	private static final File song = new File("data/cos210.mid");
 	private JFrame jf;
@@ -45,13 +80,17 @@ public class Geppetto {
 		jf.addWindowListener(new MyWindowListener());
 		fd.setVisible(false);
 		JPanel jp = new JPanel();
-		AddMenu am = new AddMenu(ActionList, sequence);
+		AddMenu am = new AddMenu(ActionList, sequence, Grid);
 		jp.setLayout(new GridLayout(1, 2));
 		JButton jb = new JButton("Clear!");
 		jb.addActionListener(
 			ae -> {
-				//clear all the bits of this section in the actual file
-				//AddMenu.repaint();
+				for (int i = 1; i < Grid.length; i++) {
+					for (int j = 1; j < Grid[0].length; j++) {
+						Grid[i][j] = 0;
+					}
+				}
+				am.repaint();
 			}		
 		);
 		jp.add(jb);
@@ -61,9 +100,14 @@ public class Geppetto {
 				try {
 					sequence = new Sequence(Sequence.PPQ, PPQ);
 					track = sequence.createTrack();
-					//setchannel
-					//play 0-31 for some reason
-					//puppIt what we made
+					setChannel();
+					for (int i = 0; i < Grid.length; i++) {
+						for (int j = 1; j < Grid[0].length; j++) {
+							if (Grid[i][j] != 0) {
+								encodeIt(Grid[i][0], j - 1);
+							}
+						}
+					}
 					fd.setVisible(true);
 					if (fd.getFile() != null) {
 						MidiSystem.write(
@@ -83,13 +127,12 @@ public class Geppetto {
 		);
 		jp.add(jb);
 		JPanel np = new JPanel();
-		//declare a type of doubly linked list of 4 beat sections of the submitted song
 		np.setLayout(new GridLayout(1, 2));
 		JButton npb = new JButton("Previous");
 		npb.addActionListener(
 				ae -> {
 					//temp save?
-					//cycle through the DLL to get the previous chunk
+					//move sequencer pointers with set and get tick
 					//repaint
 				}
 				);
@@ -98,7 +141,7 @@ public class Geppetto {
 		npb.addActionListener(
 				ae -> {
 					//temp save?
-					//cycle and send the next chunk
+					//set/get tick
 					//repaint
 				}
 				);
@@ -114,6 +157,8 @@ public class Geppetto {
 	}
 	private class MyWindowListener extends WindowAdapter {
 		public void windowClosing(WindowEvent we) {
+			sequencer.close();
+			synth.close();
 			System.exit(-1);
 		}
 	}
@@ -140,74 +185,64 @@ public class Geppetto {
 		message.setMessage(0x7f, msg, msg.length);
 		track.add(new MidiEvent(message, tick));
 	}
-	private void setChannel() throws Exception {
-		/*createEvent(
-			ShortMessage.PROGRAM_CHANGE,
-			CHANNEL,
-			PRESET,
-			0
-		);*/
+	private void encodeIt(int position, long tick) {
+		//case statement block for each possible place that it could be
+		//each case puppIts with a different byte[] message depending on which part it was
 	}
-	private void playIt(int number, long tick) throws Exception {
-		/*createEvent(
-			ShortMessage.NOTE_ON,
-			CHANNEL,
-			number,
-			tick
-		);
+	private void createEvent(int type, int channel, int number, long tick) throws Exception {
+		ShortMessage message = new ShortMessage();
+		message.setMessage(type, channel, number, DEFAULT_VELOCITY);
+		track.add(new MidiEvent(message, tick));
+	}
+	private void setChannel() throws Exception {
 		createEvent(
-			ShortMessage.NOTE_OFF,
-			//CHANNEL,
-			number,
-			tick + 1
-		);*/
+			ShortMessage.PROGRAM_CHANGE,
+			ACTION_CHANNEL,
+			0,
+			0
+		);
 	}
 	class Action {
-		//might need to talk to action list
 		private String name;
-		private int number;
-		public Action(String s, int n) {
+		public Action(String s) {
 			name = s;
-			number = n;
 		}
 		public String getName() {
 			return name;
-		}
-		public int getNumber() {
-			return number;
 		}
 	}
 	public class AddMenu extends JPanel {
 		private static final long serialVersionUID = 1L;
 		private Action[] al;
 		private Sequence sq;
+		private int[][] Grid;
 		private int textX = 8;
 		private int gridX = 128;
-		private int topY = 128;
+		private int topY = 32;
 		private int xSize = 64;
-		private int ySize = 44;
-		//not actually int array but whatever song ends up being
-		public AddMenu(Action[] al, Sequence sequence) {
+		private int ySize = 22;
+		public AddMenu(Action[] al, Sequence sequence, int[][] grid) {
 			this.al = al;
 			this.sq = sequence;
+			this.Grid = grid;
 			addMouseListener(new MyMouseListener());
 		}
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g.create();
-			Font font = new Font("Verdana", Font.BOLD, 32);
+			Font font = new Font("Verdana", Font.BOLD, 12);
 			g2d.setFont(font);
 			for (int i = 0; i< al.length; i++) {
 				g2d.drawString(al[i].getName(), textX, topY + i * ySize);
 			}
-			for (int i = 1; i < al.length + 1; i++) {
-				for (int j = 1; j < 9; j++) {
+			for (int i = 1; i < Grid.length; i++) {
+				for (int j = 1; j < Grid[0].length; j++) {
 					Rectangle r = new Rectangle(xSize, ySize);
 					r.translate(gridX + j *xSize, topY + (i - 2) * ySize);
 					g2d.draw(r);
-					/*if (song[i][j] != 0) {
+					if (Grid[i][j] != 0) {
 						g2d.fill(r);
-					}animations present check*/
+					}
 				}
 			}
 			g2d.setStroke(new BasicStroke(2.0f));
@@ -217,7 +252,7 @@ public class Geppetto {
 					gridX + xSize + i * xSize * 2,
 					topY - ySize + 1,
 					gridX + xSize + i * xSize * 2,
-					topY + al.length * ySize
+					11 + al.length * ySize
 				);
 			}
 			g2d.dispose();
@@ -233,9 +268,8 @@ public class Geppetto {
 				} else {
 					r = 1;
 				}
-				if (c > 0 && c <= 32 && r > 0 && r < 48) {
-					//song[r][c] = song[r][c] == 1 ? 0 : 1;
-					//toggle value
+				if (c > 0 && c <= 8 && r > 0 && r < 19) {
+					Grid[r][c] = Grid[r][c] == 1 ? 0 : 1;
 				}
 				repaint();
 			}
