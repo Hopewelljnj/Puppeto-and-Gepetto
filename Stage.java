@@ -35,8 +35,11 @@ public class Stage {
 			Joint rKnee = new Joint(150, 450, rUpperLeg);
 			Limb lLowerLeg = new Limb(null, 0, lKnee);
 			Limb rLowerLeg = new Limb(null, 0, rKnee);
+			//feet?
+			
 			IMap<Datatypes.Joint, Joint> joints = new edu.mccc.cos210.ds.Map<>();
 			IMap<Datatypes.Part, ILimb> limbs = new edu.mccc.cos210.ds.Map<>();
+			
 			joints.put(Datatypes.Joint.NECK, neck);
 			joints.put(Datatypes.Joint.LEFT_SHOULDER, lShoulder);
 			joints.put(Datatypes.Joint.RIGHT_SHOULDER, rShoulder);
