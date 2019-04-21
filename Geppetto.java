@@ -95,11 +95,10 @@ public class Geppetto {
 			ae -> {
 				try {
 					track = sequence.createTrack();
-					setChannel();
 					for (int i = 0; i < Grid.length; i++) {
 						for (int j = 1; j < Grid[0].length; j++) {
 							if (Grid[i][j] != 0) {
-								encodeIt(Grid[i][0], j - 1);
+								encodeIt(Grid[i][0], j -1);
 							}
 						}
 					}
@@ -180,8 +179,82 @@ public class Geppetto {
 		message.setMessage(0x7f, msg, msg.length);
 		track.add(new MidiEvent(message, tick));
 	}
-	private void encodeIt(int position, long tick) {
+	private void encodeIt(int position, int tick) throws Exception {
 		//case statement block for each possible place that it could be
+		switch(position) {
+		case 0:
+			byte[] RLRR = {0, 0, 0, 0};
+			puppIt(RLRR , tick);
+			break;
+		case 1:
+			byte[] RLRL = {0, 0, 0, 1};
+			puppIt(RLRL, tick);
+			break;
+		case 2:
+			byte[] LLRR = {0, 0, 0, 2};
+			puppIt(LLRR, tick);
+			break;
+		case 3:
+			byte[] LLRL = {0, 0, 0, 3};
+			puppIt(LLRL, tick);
+			break;
+		case 4:
+			byte[] RARR = {0, 0, 0, 4};
+			puppIt(RARR, tick);
+			break;
+		case 5:
+			byte[] RARL = {0, 0, 0, 5};
+			puppIt(RARL, tick);
+			break;
+		case 6:
+			byte[] LARR = {0, 0, 0, 6};
+			puppIt(LARR, tick);
+			break;
+		case 7:
+			byte[] LARL = {0, 0, 0, 7};
+			puppIt(LARL, tick);
+			break;
+		case 8:
+			byte[] RHRR = {0, 0, 0, 8};
+			puppIt(RHRR, tick);
+			break;
+		case 9:
+			byte[] RHRL = {0, 0, 0, 9};
+			puppIt(RHRL, tick);
+			break;
+		case 10:
+			byte[] LHRR = {0, 0, 1, 0};
+			puppIt(LHRR, tick);
+			break;
+		case 11:
+			byte[] LHRL = {0, 0, 1, 1};
+			puppIt(LHRL, tick);
+			break;
+		case 12:
+			byte[] RFRR = {0, 0, 1, 2};
+			puppIt(RFRR, tick);
+			break;
+		case 13:
+			byte[] RFRL = {0, 0, 1, 3};
+			puppIt(RFRL, tick);
+			break;
+		case 14:
+			byte[] LFRR = {0, 0, 1, 4};
+			puppIt(LFRR, tick);
+			break;
+		case 15:
+			byte[] LFRL = {0, 0, 1, 5};
+			puppIt(LFRL, tick);
+			break;
+		case 16:
+			byte[] HRR = {0, 0, 1, 6};
+			puppIt(HRR, tick);
+			break;
+		case 17:
+			byte[] HRL = {0, 0, 1, 7};
+			puppIt(HRL, tick);
+			break;
+		}
 		//each case puppIts with a different byte[] message depending on which part it was
 	}
 	private void createEvent(int type, int channel, int number, long tick) throws Exception {
@@ -189,14 +262,14 @@ public class Geppetto {
 		message.setMessage(type, channel, number, DEFAULT_VELOCITY);
 		track.add(new MidiEvent(message, tick));
 	}
-	private void setChannel() throws Exception {
+	/*private void setChannel() throws Exception {
 		createEvent(
 			ShortMessage.PROGRAM_CHANGE,
 			ACTION_CHANNEL,
 			0,
 			0
 		);
-	}
+	}*/
 	class Action {
 		private String name;
 		public Action(String s) {
