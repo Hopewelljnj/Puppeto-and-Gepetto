@@ -1,6 +1,16 @@
 package edu.mccc.cos210.fp.pupp;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FileDialog;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -11,10 +21,13 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
-import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 
 
 public class Geppetto {
@@ -68,7 +81,7 @@ public class Geppetto {
 	private final int PPQ = 4;
 	private final int ACTION_CHANNEL = 3;
 	private static final int META_EndofTrack = 47;
-	private static final File song = new File("data/cos210.mid");
+	private static final File song = new File("data/2testy.mid");
 	private JFrame jf;
 	private FileDialog fd = new FileDialog(jf, "Save As", FileDialog.SAVE);
 	private void initSwing() {
@@ -95,6 +108,7 @@ public class Geppetto {
 			ae -> {
 				try {
 					track = sequence.createTrack();
+					encodeIt(0, 31);
 					for (int i = 0; i < Grid.length; i++) {
 						for (int j = 1; j < Grid[0].length; j++) {
 							if (Grid[i][j] != 0) {
@@ -104,13 +118,16 @@ public class Geppetto {
 					}
 					fd.setVisible(true);
 					if (fd.getFile() != null) {
+						if(MidiSystem.isFileTypeSupported(1, sequence)) {
+							System.out.println("yerp!");
+						}
 						MidiSystem.write(
 							sequence,
-							0,
+							1,
 							new File(
-								fd.getDirectory(),
-								fd.getFile()
-							)
+									fd.getDirectory(),
+									fd.getFile()
+								)
 						);
 					}
 				} catch (Exception ex) {
@@ -160,6 +177,10 @@ public class Geppetto {
 		try {
 			synth = MidiSystem.getSynthesizer();
 			synth.open();
+			Soundbank defsb = synth.getDefaultSoundbank();
+			synth.unloadAllInstruments(defsb);
+			Soundbank sb = MidiSystem.getSoundbank(new File("data/FluidR3_GM.sf2"));
+			synth.loadAllInstruments(sb);
 			sequencer = MidiSystem.getSequencer(true);
 			sequencer.open();
 			sequence = MidiSystem.getSequence(song);
@@ -182,86 +203,90 @@ public class Geppetto {
 	private void encodeIt(int position, int tick) throws Exception {
 		//case statement block for each possible place that it could be
 		switch(position) {
-		case 0:
-			byte[] RLRR = {0, 0, 0, 0};
+		case 00:
+			byte[] init = {1, 1, 1, 1};
+			puppIt(init, tick);
+			break;
+		case 35:
+			byte[] RLRR = "RLRR".getBytes();
 			puppIt(RLRR , tick);
 			break;
-		case 1:
-			byte[] RLRL = {0, 0, 0, 1};
+		case 36:
+			byte[] RLRL = "RLRL".getBytes();
 			puppIt(RLRL, tick);
 			break;
-		case 2:
-			byte[] LLRR = {0, 0, 0, 2};
+		case 37:
+			byte[] LLRR = "LLRR".getBytes();
 			puppIt(LLRR, tick);
 			break;
-		case 3:
-			byte[] LLRL = {0, 0, 0, 3};
+		case 38:
+			byte[] LLRL = "LLRL".getBytes();
 			puppIt(LLRL, tick);
 			break;
-		case 4:
-			byte[] RARR = {0, 0, 0, 4};
+		case 39:
+			byte[] RARR = "RARR".getBytes();
 			puppIt(RARR, tick);
 			break;
-		case 5:
-			byte[] RARL = {0, 0, 0, 5};
+		case 40:
+			byte[] RARL = "RARL".getBytes();
 			puppIt(RARL, tick);
 			break;
-		case 6:
-			byte[] LARR = {0, 0, 0, 6};
+		case 41:
+			byte[] LARR = "LARR".getBytes();
 			puppIt(LARR, tick);
 			break;
-		case 7:
-			byte[] LARL = {0, 0, 0, 7};
+		case 42:
+			byte[] LARL = "LARL".getBytes();
 			puppIt(LARL, tick);
 			break;
-		case 8:
-			byte[] RHRR = {0, 0, 0, 8};
+		case 43:
+			byte[] RHRR = "RHRR".getBytes();
 			puppIt(RHRR, tick);
 			break;
-		case 9:
-			byte[] RHRL = {0, 0, 0, 9};
+		case 44:
+			byte[] RHRL = "RHRL".getBytes();
 			puppIt(RHRL, tick);
 			break;
-		case 10:
-			byte[] LHRR = {0, 0, 1, 0};
+		case 45:
+			byte[] LHRR = "LHRR".getBytes();
 			puppIt(LHRR, tick);
 			break;
-		case 11:
-			byte[] LHRL = {0, 0, 1, 1};
+		case 46:
+			byte[] LHRL = "LHRL".getBytes();
 			puppIt(LHRL, tick);
 			break;
-		case 12:
-			byte[] RFRR = {0, 0, 1, 2};
+		case 47:
+			byte[] RFRR = "RFRR".getBytes();
 			puppIt(RFRR, tick);
 			break;
-		case 13:
-			byte[] RFRL = {0, 0, 1, 3};
+		case 48:
+			byte[] RFRL = "RFRL".getBytes();
 			puppIt(RFRL, tick);
 			break;
-		case 14:
-			byte[] LFRR = {0, 0, 1, 4};
+		case 49:
+			byte[] LFRR = "LFRR".getBytes();
 			puppIt(LFRR, tick);
 			break;
-		case 15:
-			byte[] LFRL = {0, 0, 1, 5};
+		case 50:
+			byte[] LFRL = "LFRL".getBytes();
 			puppIt(LFRL, tick);
 			break;
-		case 16:
-			byte[] HRR = {0, 0, 1, 6};
-			puppIt(HRR, tick);
+		case 51:
+			byte[] HERR = "HERR".getBytes();
+			puppIt(HERR, tick);
 			break;
-		case 17:
-			byte[] HRL = {0, 0, 1, 7};
-			puppIt(HRL, tick);
+		case 52:
+			byte[] HERL = "HERL".getBytes();
+			puppIt(HERL, tick);
 			break;
 		}
 		//each case puppIts with a different byte[] message depending on which part it was
 	}
-	private void createEvent(int type, int channel, int number, long tick) throws Exception {
+	/*private void createEvent(int type, int channel, int number, long tick) throws Exception {
 		ShortMessage message = new ShortMessage();
 		message.setMessage(type, channel, number, DEFAULT_VELOCITY);
 		track.add(new MidiEvent(message, tick));
-	}
+	}*/
 	/*private void setChannel() throws Exception {
 		createEvent(
 			ShortMessage.PROGRAM_CHANGE,
