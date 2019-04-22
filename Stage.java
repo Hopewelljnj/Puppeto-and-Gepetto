@@ -3,6 +3,7 @@ package edu.mccc.cos210.fp.pupp;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
+import javax.swing.JFrame;
 
 import edu.mccc.cos210.ds.Array;
 import edu.mccc.cos210.ds.IArray;
@@ -21,7 +22,9 @@ public class Stage {
 		initswing();
 	}
 	//Insert real numbers in here once we have an idea of sizes
+	private JFrame jf;
 	private void initswing() {
+		jf = new JFrame("Dance Dance Baby!");
 		
 	}
 	private void createPuppets() {
