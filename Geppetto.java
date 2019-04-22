@@ -83,11 +83,10 @@ public class Geppetto {
 	private static final int META_EndofTrack = 47;
 	private static final File song = new File("data/2testy.mid");
 	private JFrame jf;
-	private ImageIcon ico = new ImageIcon("images/Gort-Gorts-Icons-Vol4-Peppy-The-Puppet.ico");
+	private ImageIcon ico = new ImageIcon("images/icon.png");
 	private FileDialog fd = new FileDialog(jf, "Save As", FileDialog.SAVE);
 	private void initSwing() {
 		jf = new JFrame("Geppetto");
-		//jf.addIcon(ico);
 		jf.addWindowListener(new MyWindowListener());
 		fd.setVisible(false);
 		JPanel jp = new JPanel();
@@ -163,6 +162,7 @@ public class Geppetto {
 		jf.add(jp, BorderLayout.NORTH);
 		jf.add(am, BorderLayout.CENTER);
 		jf.setSize(new Dimension(800, 600));
+		jf.setIconImage(ico.getImage());
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setVisible(true);
