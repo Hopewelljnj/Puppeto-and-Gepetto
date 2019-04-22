@@ -24,6 +24,7 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -32,22 +33,22 @@ import javax.swing.JToggleButton;
 
 public class Geppetto {
 	private final Action ActionList[] = {
-		new Action("Right-Leg Rotate Right"),
-		new Action("Right-Leg Rotate Left"),
-		new Action("Left-Leg Rotate Right"),
-		new Action("Left-Leg Rotate Left"),
+		new Action("Right-Thigh Rotate Right"),
+		new Action("Right-Thigh Rotate Left"),
+		new Action("Left-Thigh Rotate Right"),
+		new Action("Left-Thigh Rotate Left"),
 		new Action("Right-Arm Rotate Right"),
 		new Action("Right-Arm Rotate Left"),
 		new Action("Left-Arm Rotate Right"),
 		new Action("Left-Arm Rotate Left"),
-		new Action("Right-Hand Rotate Right"),
-		new Action("Right-Hand Rotate Left"),
-		new Action("Left-Hand Rotate Right"),
-		new Action("Left-Hand Rotate Left"),
-		new Action("Right-Foot Rotate Right"),
-		new Action("Right-Foot Rotate Left"),
-		new Action("Left-Foot Rotate Right"),
-		new Action("Left-Foot Rotate Left"),
+		new Action("Right-Bicep Rotate Right"),
+		new Action("Right-Bicep Rotate Left"),
+		new Action("Left-Bicep Rotate Right"),
+		new Action("Left-Bicep Rotate Left"),
+		new Action("Right-Shin Rotate Right"),
+		new Action("Right-Shin Rotate Left"),
+		new Action("Left-Shin Rotate Right"),
+		new Action("Left-Shin Rotate Left"),
 		new Action("Head Rotate Right"),
 		new Action("Head Rotate Left"),
 	};
@@ -79,13 +80,14 @@ public class Geppetto {
 	private float BPMinute = 0;
 	private final int DEFAULT_VELOCITY = 100;
 	private final int PPQ = 4;
-	private final int ACTION_CHANNEL = 3;
 	private static final int META_EndofTrack = 47;
 	private static final File song = new File("data/2testy.mid");
 	private JFrame jf;
+	private ImageIcon ico = new ImageIcon("images/Gort-Gorts-Icons-Vol4-Peppy-The-Puppet.ico");
 	private FileDialog fd = new FileDialog(jf, "Save As", FileDialog.SAVE);
 	private void initSwing() {
 		jf = new JFrame("Geppetto");
+		//jf.addIcon(ico);
 		jf.addWindowListener(new MyWindowListener());
 		fd.setVisible(false);
 		JPanel jp = new JPanel();
@@ -201,26 +203,25 @@ public class Geppetto {
 		track.add(new MidiEvent(message, tick));
 	}
 	private void encodeIt(int position, int tick) throws Exception {
-		//case statement block for each possible place that it could be
 		switch(position) {
 		case 00:
-			byte[] init = {1, 1, 1, 1};
+			byte[] init = "init".getBytes();
 			puppIt(init, tick);
 			break;
 		case 35:
-			byte[] RLRR = "RLRR".getBytes();
+			byte[] RLRR = "RTRR".getBytes();
 			puppIt(RLRR , tick);
 			break;
 		case 36:
-			byte[] RLRL = "RLRL".getBytes();
+			byte[] RLRL = "RTRL".getBytes();
 			puppIt(RLRL, tick);
 			break;
 		case 37:
-			byte[] LLRR = "LLRR".getBytes();
+			byte[] LLRR = "LTRR".getBytes();
 			puppIt(LLRR, tick);
 			break;
 		case 38:
-			byte[] LLRL = "LLRL".getBytes();
+			byte[] LLRL = "LTRL".getBytes();
 			puppIt(LLRL, tick);
 			break;
 		case 39:
@@ -240,35 +241,35 @@ public class Geppetto {
 			puppIt(LARL, tick);
 			break;
 		case 43:
-			byte[] RHRR = "RHRR".getBytes();
+			byte[] RHRR = "RBRR".getBytes();
 			puppIt(RHRR, tick);
 			break;
 		case 44:
-			byte[] RHRL = "RHRL".getBytes();
+			byte[] RHRL = "RBRL".getBytes();
 			puppIt(RHRL, tick);
 			break;
 		case 45:
-			byte[] LHRR = "LHRR".getBytes();
+			byte[] LHRR = "LBRR".getBytes();
 			puppIt(LHRR, tick);
 			break;
 		case 46:
-			byte[] LHRL = "LHRL".getBytes();
+			byte[] LHRL = "LBRL".getBytes();
 			puppIt(LHRL, tick);
 			break;
 		case 47:
-			byte[] RFRR = "RFRR".getBytes();
+			byte[] RFRR = "RSRR".getBytes();
 			puppIt(RFRR, tick);
 			break;
 		case 48:
-			byte[] RFRL = "RFRL".getBytes();
+			byte[] RFRL = "RSRL".getBytes();
 			puppIt(RFRL, tick);
 			break;
 		case 49:
-			byte[] LFRR = "LFRR".getBytes();
+			byte[] LFRR = "LSRR".getBytes();
 			puppIt(LFRR, tick);
 			break;
 		case 50:
-			byte[] LFRL = "LFRL".getBytes();
+			byte[] LFRL = "LSRL".getBytes();
 			puppIt(LFRL, tick);
 			break;
 		case 51:
@@ -280,21 +281,7 @@ public class Geppetto {
 			puppIt(HERL, tick);
 			break;
 		}
-		//each case puppIts with a different byte[] message depending on which part it was
 	}
-	/*private void createEvent(int type, int channel, int number, long tick) throws Exception {
-		ShortMessage message = new ShortMessage();
-		message.setMessage(type, channel, number, DEFAULT_VELOCITY);
-		track.add(new MidiEvent(message, tick));
-	}*/
-	/*private void setChannel() throws Exception {
-		createEvent(
-			ShortMessage.PROGRAM_CHANGE,
-			ACTION_CHANNEL,
-			0,
-			0
-		);
-	}*/
 	class Action {
 		private String name;
 		public Action(String s) {

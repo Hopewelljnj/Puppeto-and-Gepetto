@@ -1,40 +1,52 @@
 package edu.mccc.cos210.fp.pupp;
 
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.Synthesizer;
+
 import edu.mccc.cos210.ds.Array;
 import edu.mccc.cos210.ds.IArray;
 import edu.mccc.cos210.ds.IMap;
 
 public class Stage {
-
+	private static final String SONG = "data/yup.mid";
+	private static final int META_EndofTrack = 47;
+	private static final int META_Data = 127;
+	private Synthesizer synth;
+	private Sequencer sequencer;
+	private Sequence sequence;
 	private IArray<Puppet> puppets = new Array<Puppet>(4);
-	
 	public Stage() {
 		createPuppets();
+		initswing();
 	}
 	//Insert real numbers in here once we have an idea of sizes
+	private void initswing() {
+		
+	}
 	private void createPuppets() {
 		for(int i = 0;i < 4; i ++) {
-			Limb head = new Limb(null, 0);
+			Limb head = new Limb(0);
 			Joint neck = new Joint(100, 100, head);
-			Limb torso = new Limb(null, 0, neck);
+			Limb torso = new Limb(0, neck);
 			Joint lShoulder = new Joint(50,110,torso);
 			Joint rShoulder = new Joint(150,110,torso);
-			Limb rUpperArm = new Limb(null, 0, rShoulder);
-			Limb lUpperArm = new Limb(null, 0, lShoulder);
+			Limb rUpperArm = new Limb(0, rShoulder);
+			Limb lUpperArm = new Limb(0, lShoulder);
 			Joint rElbow = new Joint(25, 150, rUpperArm);
 			Joint lElbow = new Joint(175 , 150, lUpperArm);
-			Limb lLowerArm = new Limb(null, 0 , lElbow);
-			Limb rLowerArm = new Limb(null, 0, rElbow);
+			Limb lLowerArm = new Limb(0 , lElbow);
+			Limb rLowerArm = new Limb(0, rElbow);
 			//hands?
 			Hip hip = new Hip(100, 400, torso);
-			Limb lUpperLeg = new Limb(null, 0, hip);
-			Limb rUpperLeg = new Limb(null, 0, hip);
+			Limb lUpperLeg = new Limb(0, hip);
+			Limb rUpperLeg = new Limb(0, hip);
 			hip.setLeftLowerLimb(lUpperLeg);
 			hip.setrLowerLimb(rUpperLeg);
 			Joint lKnee = new Joint(50, 450, lUpperLeg);
 			Joint rKnee = new Joint(150, 450, rUpperLeg);
-			Limb lLowerLeg = new Limb(null, 0, lKnee);
-			Limb rLowerLeg = new Limb(null, 0, rKnee);
+			Limb lLowerLeg = new Limb(0, lKnee);
+			Limb rLowerLeg = new Limb(0, rKnee);
 			//feet?
 			
 			IMap<Datatypes.Joint, Joint> joints = new edu.mccc.cos210.ds.Map<>();
@@ -64,5 +76,9 @@ public class Stage {
 			
 			
 		}
+	}
+	public static void main(String... args) {
+		new MidiReader();
+		new Stage();
 	}
 }

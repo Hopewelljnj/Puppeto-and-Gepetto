@@ -17,6 +17,7 @@ import edu.mccc.cos210.demo.midi19.MidiControl19;
 public class MidiReader implements MetaEventListener, ControllerEventListener {
 	private static final String SONG = "data/yup.mid";
 	private static final int META_EndofTrack = 47;
+	private static final int META_Data = 127;
 	private Synthesizer synth;
 	private Sequencer sequencer;
 	private Sequence sequence;
@@ -45,8 +46,11 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 	}
 	public void meta(MetaMessage message) {
 		byte[] ba = message.getData();
-		if (message.getType() == 127) {
+		long tick = 0;
+		if (message.getType() == META_Data) {
 			String s = new String(ba);
+			//tick = message.getTick();
+			//to get timing and maybe save it
 			decode(s);
 		}
 		if (message.getType() == META_EndofTrack) {
@@ -82,5 +86,6 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 	}
 	private void decode(String s) {
 		System.out.println(s);
+		//send 4 letter somewhere to be processed
 	}
 }
