@@ -9,13 +9,10 @@ public interface ILimb {
 	public void setTopJoint(Joint joint);
 	public void setBottomJoint(Joint joint);
 	
-	public Graphics2D getGraphics();
-	public void setGraphics(Graphics2D graphics);
-	
 	public float getRotation();
 	public void setRotation(float rotation);
 	
-	public void rotateUpper(float rotation);
-	public void rotateLower(float rotation);
+	public void rotateUpper(double rotation);
+	public void rotateLower(double rotation);
 	public void move(int x, int y , Joint joint);	
 }
