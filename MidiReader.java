@@ -21,7 +21,9 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 	private Synthesizer synth;
 	private Sequencer sequencer;
 	private Sequence sequence;
-	public MidiReader() {
+	private Stage stage;
+	public MidiReader(Stage stage, File midiFile) {
+		this.stage = stage;
 		try {
 			synth = MidiSystem.getSynthesizer();
 			synth.open();
@@ -31,7 +33,7 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 			synth.loadAllInstruments(sb);
 			sequencer = MidiSystem.getSequencer(true);
 			sequencer.open();
-			sequence = MidiSystem.getSequence(new File(SONG));
+			sequence = MidiSystem.getSequence(midiFile);
 			sequencer.setSequence(sequence);
 			sequencer.addMetaEventListener(this);
 			sequencer.addControllerEventListener(this, new int[] { 7, 16, 17, 18, 19 });
@@ -40,9 +42,6 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 		} catch (Exception ex) {
 			System.err.println(ex);
 		}
-	}
-	public static void main(String... args) {
-		new MidiReader();
 	}
 	public void meta(MetaMessage message) {
 		byte[] ba = message.getData();

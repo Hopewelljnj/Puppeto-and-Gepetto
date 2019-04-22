@@ -1,8 +1,13 @@
 package edu.mccc.cos210.fp.pupp;
 
+import java.awt.FileDialog;
+import java.io.File;
+
+import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import edu.mccc.cos210.ds.Array;
@@ -16,16 +21,27 @@ public class Stage {
 	private Synthesizer synth;
 	private Sequencer sequencer;
 	private Sequence sequence;
-	private IArray<Puppet> puppets = new Array<Puppet>(4);
+	private JFrame jf;
+	private ImageIcon ico = new ImageIcon("images/icon.png");
+	private FileDialog fd = new FileDialog(jf, "Load File", FileDialog.LOAD);
+	public Array<Puppet> puppets = new Array<>(4);
+	
 	public Stage() {
 		createPuppets();
 		initswing();
 	}
 	//Insert real numbers in here once we have an idea of sizes
-	private JFrame jf;
 	private void initswing() {
 		jf = new JFrame("Dance Dance Baby!");
-		
+		fd.setVisible(true);
+		if (fd.getFile() != null) {
+			String file = fd.getFile();
+			
+			if(file.contains(".mid") || file.contains(".midi")) {
+				System.out.println("yerp!");
+				new MidiReader(this, new File(fd.getDirectory(),fd.getFile()));
+			}
+		}
 	}
 	private void createPuppets() {
 		for(int i = 0;i < 4; i ++) {
@@ -80,8 +96,8 @@ public class Stage {
 			
 		}
 	}
-	public static void main(String... args) {
+	/*public static void main(String... args) {
 		new MidiReader();
 		new Stage();
-	}
+	} */
 }
