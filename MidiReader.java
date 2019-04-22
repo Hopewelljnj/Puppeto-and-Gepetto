@@ -41,17 +41,14 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 		}
 	}
 	public static void main(String... args) {
-		new MidiControl19();
+		new MidiReader();
 	}
 	public void meta(MetaMessage message) {
-		byte[] ba = message.getMessage();
-		String s = new String(ba);
-		decode(s);
-		for (int i = 0; i < ba.length; i++) {
-			//printHex(code[i]);
+		byte[] ba = message.getData();
+		if (message.getType() == 127) {
+			String s = new String(ba);
+			decode(s);
 		}
-		//if (message.getType() == 127) {
-		//}
 		if (message.getType() == META_EndofTrack) {
 			try {
 				Thread.sleep(1000);
@@ -68,7 +65,7 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 		System.out.print("CC:");
 		byte[] ba = event.getMessage();
 		for (int i = 0; i < ba.length; i++) {
-			//printHex(ba[i]);
+			printHex(ba[i]);
 		}
 		System.out.println();
 	}

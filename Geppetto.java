@@ -108,7 +108,7 @@ public class Geppetto {
 			ae -> {
 				try {
 					track = sequence.createTrack();
-					encodeIt(0, 31);
+					//encodeIt(0, 31);
 					for (int i = 0; i < Grid.length; i++) {
 						for (int j = 1; j < Grid[0].length; j++) {
 							if (Grid[i][j] != 0) {
