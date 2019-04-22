@@ -9,8 +9,8 @@ public interface ILimb {
 	public void setTopJoint(Joint joint);
 	public void setBottomJoint(Joint joint);
 	
-	public float getRotation();
-	public void setRotation(float rotation);
+	public double getRotation();
+	public void setRotation(double rotation);
 	
 	public void rotateUpper(double rotation);
 	public void rotateLower(double rotation);

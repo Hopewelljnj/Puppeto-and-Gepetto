@@ -43,12 +43,12 @@ public class Limb implements ILimb {
 	}
 
 	@Override
-	public float getRotation() {
+	public double getRotation() {
 		return rotation;
 	}
 
 	@Override
-	public void setRotation(float rotation) {
+	public void setRotation(double rotation) {
 		this.rotation = rotation;
 	}
 
