@@ -28,18 +28,14 @@ public class PuppPanel extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g.create();
 		for(int i = 0; i < 4; i++) {
-			try {
 			for(Datatypes.Part part : puppets.get(i).getLimbs().keySet()) {
 				if(part != null) {
 				Limb curLimb = (Limb) puppets.get(i).getLimbs().get(part);
-				if(curLimb != null) {
 				Joint upper = curLimb.getTopJoint();
 				Joint lower = curLimb.getBottomJoint();
 				if(upper != null && lower != null)
 				g2d.drawImage(curLimb.image, upper.getX(), upper.getY(), lower.getX(), lower.getY(), 0, 0, curLimb.image.getWidth(), curLimb.image.getHeight(), this);
-			}}}
-			}
-			catch(Exception e) {}
+			}}
 			
 		}
 	}
