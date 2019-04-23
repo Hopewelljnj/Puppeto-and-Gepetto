@@ -1,5 +1,8 @@
 package edu.mccc.cos210.fp.pupp;
 
+
+import java.awt.image.BufferedImage;
+
 import edu.mccc.cos210.ds.Array;
 
 public class Limb implements ILimb {
@@ -9,17 +12,22 @@ public class Limb implements ILimb {
 	Joint bottomJoint = null;
 	int centralX = 0;
 	int centralY = 0;
+	BufferedImage image;
 	
-	public Limb(float rotation, Joint topJoint, Joint bottomJoint) {
+	public Limb(float rotation, Joint topJoint, Joint bottomJoint, BufferedImage image) {
 		this.rotation = rotation;
 		this.topJoint = topJoint;
 		this.bottomJoint = bottomJoint;
+		this.image = image;
 	}
-	public Limb(float rotation, Joint topJoint) {
-		this(rotation,topJoint,null);
+	public Limb(float rotation, Joint topJoint, BufferedImage image) {
+		this(rotation,topJoint,null,image);
 	}
 	public Limb(float rotation) {
 		this(rotation,null,null);
+	}
+	public Limb(BufferedImage bi) {
+		this.image = bi;
 	}
 
 	@Override
