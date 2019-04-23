@@ -37,7 +37,7 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 			sequencer.setSequence(sequence);
 			sequencer.addMetaEventListener(this);
 			sequencer.addControllerEventListener(this, new int[] { 7, 16, 17, 18, 19 });
-			//sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
+			sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
 			sequencer.start();
 		} catch (Exception ex) {
 			System.err.println(ex);

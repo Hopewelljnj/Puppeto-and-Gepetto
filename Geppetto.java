@@ -53,45 +53,44 @@ public class Geppetto {
 		new Action("Head Rotate Left"),
 	};
 	private int[][] Grid = {
-			{ 00, 1,0,0,0,0,0,0,0,},
-			{ 35, 1,0,0,0,0,0,0,0,},
-			{ 36, 0,1,0,0,0,0,0,0,},
-			{ 37, 1,0,0,0,0,0,1,0,},
-			{ 38, 0,0,1,0,0,0,0,0,},
-			{ 39, 0,0,0,0,0,0,0,0,},
-			{ 40, 0,0,0,0,0,0,0,0,},
-			{ 41, 0,0,0,0,0,0,0,0,},
-			{ 42, 0,0,0,0,0,0,0,0,},
-			{ 43, 0,0,0,0,0,0,0,0,},
-			{ 44, 0,0,0,0,0,0,0,0,},
-			{ 45, 0,0,0,0,0,0,0,0,},
-			{ 46, 0,0,0,0,0,0,0,0,},
-			{ 47, 0,0,0,0,0,0,0,0,},
-			{ 48, 0,0,0,0,0,0,0,0,},
-			{ 49, 0,0,0,0,0,0,0,0,},
-			{ 50, 0,0,0,0,0,0,0,0,},
-			{ 51, 0,0,0,0,0,0,0,0,},
-			{ 52, 0,0,0,0,0,0,0,0,},
+			{ 00, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 35, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 36, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 37, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 38, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 39, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 40, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 41, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 42, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 43, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 44, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 45, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 46, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 47, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 48, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 49, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 50, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 51, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
+			{ 52, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 	};
 	private Synthesizer synth;
 	private Sequencer sequencer;
 	private Sequence sequence;
 	private Track track;
 	private float BPMinute = 0;
-	private final int DEFAULT_VELOCITY = 100;
-	private final int PPQ = 4;
 	private static final int META_EndofTrack = 47;
-	private static final File song = new File("data/2testy.mid");
+	private static File song;
 	private JFrame jf;
 	private ImageIcon ico = new ImageIcon("images/icon.png");
 	private FileDialog fd = new FileDialog(jf, "Save As", FileDialog.SAVE);
+	private FileDialog load = new FileDialog(jf, "Load File", FileDialog.LOAD);
 	private void initSwing() {
 		jf = new JFrame("Geppetto");
 		jf.addWindowListener(new MyWindowListener());
 		fd.setVisible(false);
 		JPanel jp = new JPanel();
 		AddMenu am = new AddMenu(ActionList, sequence, Grid);
-		jp.setLayout(new GridLayout(1, 2));
+		jp.setLayout(new GridLayout(1, 3));
 		JButton jb = new JButton("Clear!");
 		jb.addActionListener(
 			ae -> {
@@ -120,16 +119,16 @@ public class Geppetto {
 					fd.setVisible(true);
 					if (fd.getFile() != null) {
 						if(MidiSystem.isFileTypeSupported(1, sequence)) {
-							System.out.println("yerp!");
+							System.out.println("Consider that file...SAVED!");
+							MidiSystem.write(
+									sequence,
+									1,
+									new File(
+											fd.getDirectory(),
+											fd.getFile()
+										)
+								);
 						}
-						MidiSystem.write(
-							sequence,
-							1,
-							new File(
-									fd.getDirectory(),
-									fd.getFile()
-								)
-						);
 					}
 				} catch (Exception ex) {
 					System.err.println(ex.getMessage());
@@ -137,6 +136,28 @@ public class Geppetto {
 				}
 			}		
 		);
+		jp.add(jb);
+		jb = new JButton("Load!");
+		jb.addActionListener(
+				ae -> {
+					try {
+						load.setVisible(true);
+						if(load.getFile() != null) {
+							String file = load.getFile();
+							if(file.contains(".mid") || file.contains(".midi")) {
+								System.out.println("Locked and Loaded Boss!");
+								song = new File(load.getDirectory(), load.getFile());
+								sequence = MidiSystem.getSequence(song);
+								sequencer.setSequence(sequence);
+								BPMinute = sequencer.getTempoInBPM();
+							}
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						System.exit(-1);
+					}
+				}	
+				);
 		jp.add(jb);
 		JPanel np = new JPanel();
 		np.setLayout(new GridLayout(1, 2));
@@ -185,9 +206,6 @@ public class Geppetto {
 			synth.loadAllInstruments(sb);
 			sequencer = MidiSystem.getSequencer(true);
 			sequencer.open();
-			sequence = MidiSystem.getSequence(song);
-			sequencer.setSequence(sequence);
-			BPMinute = sequencer.getTempoInBPM();
 		}catch (Exception ex) {
 			System.err.println(ex.getMessage());
 			System.exit(-1);
@@ -297,9 +315,9 @@ public class Geppetto {
 		private Sequence sq;
 		private int[][] Grid;
 		private int textX = 8;
-		private int gridX = 128;
+		private int gridX = 170;
 		private int topY = 32;
-		private int xSize = 64;
+		private int xSize = 16;
 		private int ySize = 22;
 		public AddMenu(Action[] al, Sequence sequence, int[][] grid) {
 			this.al = al;
@@ -312,7 +330,7 @@ public class Geppetto {
 			Graphics2D g2d = (Graphics2D) g.create();
 			Font font = new Font("Verdana", Font.BOLD, 12);
 			g2d.setFont(font);
-			for (int i = 0; i< al.length; i++) {
+			for (int i = 0; i < al.length; i++) {
 				g2d.drawString(al[i].getName(), textX, topY + i * ySize);
 			}
 			for (int i = 1; i < Grid.length; i++) {
@@ -329,9 +347,9 @@ public class Geppetto {
 			g2d.setPaint(Color.blue);
 			for (int i = 0; i < 5; i++) {
 				g2d.drawLine(
-					gridX + xSize + i * xSize * 2,
+					gridX + xSize + i * xSize * 8,
 					topY - ySize + 1,
-					gridX + xSize + i * xSize * 2,
+					gridX + xSize + i * xSize * 8,
 					11 + al.length * ySize
 				);
 			}
@@ -348,7 +366,7 @@ public class Geppetto {
 				} else {
 					r = 1;
 				}
-				if (c > 0 && c <= 8 && r > 0 && r < 19) {
+				if (c > 0 && c <= 32 && r > 0 && r < 19) {
 					Grid[r][c] = Grid[r][c] == 1 ? 0 : 1;
 				}
 				repaint();
