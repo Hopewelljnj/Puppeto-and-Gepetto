@@ -1,6 +1,7 @@
 package edu.mccc.cos210.fp.pupp;
 
 
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import edu.mccc.cos210.ds.Array;
@@ -14,14 +15,14 @@ public class Limb implements ILimb {
 	int centralY = 0;
 	BufferedImage image;
 	
-	public Limb(float rotation, Joint topJoint, Joint bottomJoint, BufferedImage image) {
+	public Limb(double rotation, Joint topJoint, Joint bottomJoint, BufferedImage image) {
 		this.rotation = rotation;
 		this.topJoint = topJoint;
 		this.bottomJoint = bottomJoint;
 		this.image = image;
 	}
-	public Limb(float rotation, Joint topJoint, BufferedImage image) {
-		this(rotation,topJoint,null,image);
+	public Limb(double d, Joint topJoint, BufferedImage image) {
+		this(d,topJoint,null,image);
 	}
 	public Limb(float rotation) {
 		this(rotation,null,null);
@@ -106,5 +107,30 @@ public class Limb implements ILimb {
 		far.setX(x);
 		far.setY(y);
 		this.rotation = angle;
+	}
+	/*
+	double rotation;
+	Joint topJoint = null;
+	Joint bottomJoint = null;
+	int centralX = 0;
+	int centralY = 0;
+	BufferedImage image;	 */
+	@Override
+	public String toString() {
+		String string = "topJoint : " + (topJoint != null ? topJoint.toString() : "null") + "\n" +
+						"bottomJoint : " + (bottomJoint != null ? bottomJoint.toString() : "null") + "\n" +
+						"centralX : " + centralX + "\n" +
+						"centralY : " + centralY + "\n" +
+						"rotation : " + rotation;
+		return string;
+	}
+	@Override
+	public AffineTransform getAT() {
+		AffineTransform at = new AffineTransform();
+		if(topJoint == null) topJoint = new Joint(80,0,this);
+		at.translate((double) topJoint.getX(), (double) topJoint.getY());
+		at.rotate(rotation);
+		at.scale(2.0,1.5);
+		return at;
 	}
 }

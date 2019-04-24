@@ -1,9 +1,9 @@
 package edu.mccc.cos210.fp.pupp;
 
 import java.awt.FileDialog;
-import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -14,12 +14,15 @@ import javax.swing.JPanel;
 
 import edu.mccc.cos210.ds.Array;
 import edu.mccc.cos210.ds.IMap;
+import edu.mccc.cos210.ds.ISet;
 
 public class Stage {
 	private JFrame jf;
 	private ImageIcon ico = new ImageIcon("images/icon.png");
 	private FileDialog fd = new FileDialog(jf, "Load File", FileDialog.LOAD);
 	private BufferedImage bi;
+	private boolean debug = true;
+	private int offset = 0;
 	public Array<Puppet> puppets = new Array<>(4);
 	public Stage() {
 		createPuppets();
@@ -29,7 +32,7 @@ public class Stage {
 	private void initswing() {
 		jf = new JFrame("Puppetto");
 		jf.addWindowListener(new MyWindowListener());
-		JPanel jp = new PuppPanel(puppets);
+		JPanel jp = new PuppPanel(puppets, offset);
 		jp.setSize(800,600);
 		jf.setSize(800,600);
 		jf.setIconImage(ico.getImage());
@@ -60,13 +63,19 @@ public class Stage {
 
 	}
 	private class MyWindowListener extends WindowAdapter {
+		@Override
 		public void windowClosing(WindowEvent we) {
+			if(MidiReader.sequencer != null)
 			MidiReader.sequencer.close();
+			if(MidiReader.synth != null)
 			MidiReader.synth.close();
 			System.exit(-1);
 		}
 	}
 	private void createPuppets() {
+		IMap<Datatypes.Joint, Joint> joints = new edu.mccc.cos210.ds.Map<>();
+		IMap<Datatypes.Part, ILimb> limbs = new edu.mccc.cos210.ds.Map<>();
+		
 		try {
 			bi = ImageIO.read(new File("./data/cut2.png"));
 		} catch (Exception ex) {
@@ -74,32 +83,35 @@ public class Stage {
 			System.exit(-1);
 		}
 		for(int i = 0;i < 4; i ++) {
-			int puppetOffset = 200*i;
-			Limb head = new Limb(bi.getSubimage(4, 8, 44, 74));
-			Joint neck = new Joint(100 + puppetOffset, 100, head);
-			Limb torso = new Limb(0, neck, bi.getSubimage(66, 8, 70, 84));
-			Joint lShoulder = new Joint(100 + puppetOffset,120,torso);
-			Joint rShoulder = new Joint(165 + puppetOffset,120,torso);
-			Limb rUpperArm = new Limb(0, rShoulder, bi.getSubimage(246, 10, 28, 100));
-			Limb lUpperArm = new Limb(0, lShoulder, bi.getSubimage(246, 10, 28, 100));
-			Joint rElbow = new Joint(25 + puppetOffset, 150, rUpperArm);
-			Joint lElbow = new Joint(175 + puppetOffset, 150, lUpperArm);
+			limbs = null;
+			joints = null;
+			joints = new edu.mccc.cos210.ds.Map<>();
+			limbs = new edu.mccc.cos210.ds.Map<>();
+			int puppetOffset = 180*i;
+			offset = 150;
+			Joint topHead = new Joint(60 + puppetOffset, 0, null);
+			Limb head = new Limb(0, topHead, bi.getSubimage(4, 8, 44, 74));
+			Joint neck = new Joint(50 + puppetOffset, 100, head);
+			Limb torso = new Limb(0, neck, bi.getSubimage(66, 8, 70, 94));
+			Joint lShoulder = new Joint(50 + puppetOffset,130,torso);
+			Joint rShoulder = new Joint(125 + puppetOffset,140,torso);
+			Limb rUpperArm = new Limb(Math.toRadians(-15), rShoulder, bi.getSubimage(246, 10, 28, 100));
+			Limb lUpperArm = new Limb(Math.toRadians(15), lShoulder, bi.getSubimage(246, 10, 28, 100));
+			Joint rElbow = new Joint(155 + puppetOffset, 240, rUpperArm);
+			Joint lElbow = new Joint(25 + puppetOffset, 240, lUpperArm);
 			Limb lLowerArm = new Limb(0 , lElbow, bi.getSubimage(300, 8, 22, 148));
 			Limb rLowerArm = new Limb(0, rElbow, bi.getSubimage(300, 8, 22, 148));
 			//hands?
-			Hip hip = new Hip(100 + puppetOffset, neck.getY() + 135, torso, bi.getSubimage(146, 8, 70, 68));
-			Limb lUpperLeg = new Limb(0, hip, bi.getSubimage(344, 10, 36, 142));
-			Limb rUpperLeg = new Limb(0, hip, bi.getSubimage(344, 10, 36, 142));
+			Hip hip = new Hip(70 + puppetOffset, neck.getY() + 190, torso, bi.getSubimage(146, 8, 70, 68));
+			Limb lUpperLeg = new Limb(0, hip.getLeftHip(), bi.getSubimage(344, 10, 36, 142));
+			Limb rUpperLeg = new Limb(0, hip.getRightHip(), lUpperLeg.image);
 			hip.setLeftLowerLimb(lUpperLeg);
 			hip.setrLowerLimb(rUpperLeg);
-			Joint lKnee = new Joint(50 + puppetOffset, 450, lUpperLeg);
-			Joint rKnee = new Joint(150 + puppetOffset, 450, rUpperLeg);
-			Limb lLowerLeg = new Limb(0 + puppetOffset, lKnee, bi.getSubimage(398, 10, 34, 162));
-			Limb rLowerLeg = new Limb(0 + puppetOffset, rKnee, bi.getSubimage(398, 10, 34, 162));
-			//feet?
-			
-			IMap<Datatypes.Joint, Joint> joints = new edu.mccc.cos210.ds.Map<>();
-			IMap<Datatypes.Part, ILimb> limbs = new edu.mccc.cos210.ds.Map<>();
+			Joint lKnee = new Joint(80 + puppetOffset, hip.getY() + 120, lUpperLeg);
+			Joint rKnee = new Joint(110 + puppetOffset, hip.getY() + 120, rUpperLeg);
+			Limb lLowerLeg = new Limb(0, lKnee, bi.getSubimage(398, 10, 34, 162));
+			Limb rLowerLeg = new Limb(0, rKnee, bi.getSubimage(398, 10, 34, 162));
+			//feet
 			
 			joints.put(Datatypes.Joint.NECK, neck);
 			joints.put(Datatypes.Joint.LEFT_SHOULDER, lShoulder);
@@ -120,7 +132,14 @@ public class Stage {
 			limbs.put(Datatypes.Part.RIGHT_UPPER_LEG, rUpperLeg);
 			limbs.put(Datatypes.Part.LEFT_LOWER_LEG, lLowerLeg);
 			limbs.put(Datatypes.Part.RIGHT_LOWER_LEG, rLowerLeg);
-			
+			ISet<Datatypes.Joint> jointsSet = joints.keySet();
+			ISet<Datatypes.Part> partsSet = limbs.keySet();
+			if(debug) {
+			for(Datatypes.Part part : limbs.keySet()) {
+				System.out.print(part + "\n");
+				System.out.println(limbs.get(part));
+				System.out.println();
+			}}
 			puppets.set(i, new Puppet(("Puppet" + i), limbs, joints));
 			
 			

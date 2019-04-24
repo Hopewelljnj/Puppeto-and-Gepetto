@@ -1,6 +1,6 @@
 package edu.mccc.cos210.fp.pupp;
 
-import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 public interface ILimb {
 	public Joint getTopJoint();
@@ -11,6 +11,8 @@ public interface ILimb {
 	
 	public double getRotation();
 	public void setRotation(double rotation);
+	
+	public AffineTransform getAT();
 	
 	public void rotateUpper(double rotation);
 	public void rotateLower(double rotation);

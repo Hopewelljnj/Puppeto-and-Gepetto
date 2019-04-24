@@ -57,4 +57,9 @@ public class Joint {
 		upperLimb.move(x, y, this);
 		lowerLimb.move(x, y, this);
 	}
+	@Override
+	public String toString() {
+		String string = "X : " + x + "  y : " + y;
+		return string;
+	}
 }
