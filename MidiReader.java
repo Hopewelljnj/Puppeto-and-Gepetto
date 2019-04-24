@@ -12,15 +12,12 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 
-import edu.mccc.cos210.demo.midi19.MidiControl19;
-
 public class MidiReader implements MetaEventListener, ControllerEventListener {
-	private static final String SONG = "data/yup.mid";
 	private static final int META_EndofTrack = 47;
 	private static final int META_Data = 127;
-	private Synthesizer synth;
-	private Sequencer sequencer;
-	private Sequence sequence;
+	public static Synthesizer synth;
+	public static Sequencer sequencer;
+	public static Sequence sequence;
 	private Stage stage;
 	public MidiReader(Stage stage, File midiFile) {
 		this.stage = stage;
@@ -45,7 +42,6 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 	}
 	public void meta(MetaMessage message) {
 		byte[] ba = message.getData();
-		long tick = 0;
 		if (message.getType() == META_Data) {
 			String s = new String(ba);
 			//tick = message.getTick();

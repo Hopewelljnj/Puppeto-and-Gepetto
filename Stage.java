@@ -2,13 +2,12 @@ package edu.mccc.cos210.fp.pupp;
 
 import java.awt.FileDialog;
 import java.awt.Graphics2D;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
-import javax.sound.midi.Synthesizer;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,12 +16,6 @@ import edu.mccc.cos210.ds.Array;
 import edu.mccc.cos210.ds.IMap;
 
 public class Stage {
-	private static final String SONG = "data/yup.mid";
-	private static final int META_EndofTrack = 47;
-	private static final int META_Data = 127;
-	private Synthesizer synth;
-	private Sequencer sequencer;
-	private Sequence sequence;
 	private JFrame jf;
 	private ImageIcon ico = new ImageIcon("images/icon.png");
 	private FileDialog fd = new FileDialog(jf, "Load File", FileDialog.LOAD);
@@ -35,9 +28,11 @@ public class Stage {
 	//Insert real numbers in here once we have an idea of sizes
 	private void initswing() {
 		jf = new JFrame("Puppetto");
+		jf.addWindowListener(new MyWindowListener());
 		JPanel jp = new PuppPanel(puppets);
 		jp.setSize(800,600);
 		jf.setSize(800,600);
+		jf.setIconImage(ico.getImage());
 		jf.add(jp);
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
@@ -63,6 +58,13 @@ public class Stage {
 			}
 		}
 
+	}
+	private class MyWindowListener extends WindowAdapter {
+		public void windowClosing(WindowEvent we) {
+			MidiReader.sequencer.close();
+			MidiReader.synth.close();
+			System.exit(-1);
+		}
 	}
 	private void createPuppets() {
 		try {
