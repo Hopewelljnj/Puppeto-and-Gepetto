@@ -33,8 +33,8 @@ public class Stage {
 		jf = new JFrame("Puppetto");
 		jf.addWindowListener(new MyWindowListener());
 		JPanel jp = new PuppPanel(puppets, offset);
-		jp.setSize(800,600);
-		jf.setSize(800,600);
+		jp.setSize(1200,600);
+		jf.setSize(1200,600);
 		jf.setIconImage(ico.getImage());
 		jf.add(jp);
 		jf.setLocationRelativeTo(null);
@@ -87,8 +87,7 @@ public class Stage {
 			joints = null;
 			joints = new edu.mccc.cos210.ds.Map<>();
 			limbs = new edu.mccc.cos210.ds.Map<>();
-			int puppetOffset = 180*i;
-			offset = 150;
+			int puppetOffset = 280*i + 50;
 			Joint topHead = new Joint(60 + puppetOffset, 0, null);
 			Limb head = new Limb(0, topHead, bi.getSubimage(4, 8, 44, 74));
 			Joint neck = new Joint(50 + puppetOffset, 100, head);
