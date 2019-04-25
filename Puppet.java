@@ -36,7 +36,6 @@ public class Puppet {
 	}
 	public Puppet doRotate(Datatypes.Joint joint, double rotate) {
 		Joint curJoint = getJointByName(joint);
-<<<<<<< HEAD
 		Joint tempJoint = rotateJoint(curJoint, rotate);
 		this.joints.put(joint, tempJoint);
 		return this;
@@ -47,7 +46,7 @@ public class Puppet {
 		Joint lowerJ = lower.rotateUpper(rotation);
 		lower.setTopJoint(lowerJ);
 		upper.setBottomJoint(lowerJ);
-
+		return lowerJ;
 	}
 
 }

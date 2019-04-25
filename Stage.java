@@ -147,7 +147,6 @@ public class Stage {
 			
 		}
 	}
-<<<<<<< HEAD
 	public void rotatePuppetLimb(int puppetIndex, Datatypes.Joint joint, double rotation) {
 		Puppet curPup = puppets.get(puppetIndex);
 		Puppet newPup = curPup.doRotate(joint, rotation);
