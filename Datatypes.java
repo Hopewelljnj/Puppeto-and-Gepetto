@@ -31,6 +31,8 @@ public class Datatypes {
 		RIGHT_WRIST,
 		LEFT_ANKLE,
 		RIGHT_ANKLE,
+		LHIP,
+		RHIP,
 		HIP
 	}
 	

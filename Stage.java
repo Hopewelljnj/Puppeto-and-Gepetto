@@ -95,11 +95,14 @@ public class Stage {
 			Joint lShoulder = new Joint(50 + puppetOffset,130,torso);
 			Joint rShoulder = new Joint(125 + puppetOffset,140,torso);
 			Limb rUpperArm = new Limb(Math.toRadians(-15), rShoulder, bi.getSubimage(246, 10, 28, 100));
+			//rUpperArm.rotateUpper(-15.0);
 			Limb lUpperArm = new Limb(Math.toRadians(15), lShoulder, bi.getSubimage(246, 10, 28, 100));
+			//head.lUpperArm.rotateUpper(15.0);
 			Joint rElbow = new Joint(155 + puppetOffset, 240, rUpperArm);
 			Joint lElbow = new Joint(25 + puppetOffset, 240, lUpperArm);
 			Limb lLowerArm = new Limb(0 , lElbow, bi.getSubimage(300, 8, 22, 148));
 			Limb rLowerArm = new Limb(0, rElbow, bi.getSubimage(300, 8, 22, 148));
+			lUpperArm.setBottomJoint(lElbow);
 			//hands?
 			Hip hip = new Hip(70 + puppetOffset, neck.getY() + 190, torso, bi.getSubimage(146, 8, 70, 68));
 			Limb lUpperLeg = new Limb(0, hip.getLeftHip(), bi.getSubimage(344, 10, 36, 142));
@@ -143,6 +146,11 @@ public class Stage {
 			
 			
 		}
+	}
+	public void rotatePuppetLimb(int puppetIndex, Datatypes.Joint joint, double rotation) {
+		Puppet curPup = puppets.get(puppetIndex);
+		Puppet newPup = curPup.doRotate(joint, rotation);
+		puppets.set(puppetIndex, newPup);
 	}
 	/*public static void main(String... args) {
 		new MidiReader();

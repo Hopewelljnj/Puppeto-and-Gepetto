@@ -34,19 +34,20 @@ public class Puppet {
 	public Joint getJointByName(Datatypes.Joint jointName) {
 		return joints.get(jointName);
 	}
-	public void doAction(Datatypes.Action action, Datatypes.Joint joint, float...data) {
+	public Puppet doRotate(Datatypes.Joint joint, double rotate) {
 		Joint curJoint = getJointByName(joint);
-		switch(action) {
-		case MOVE : 
-			break;
-		case MOVE_TO :
-			break;
-		case ROTATE :
-			break;
-		default : break;
-		}
+		Joint tempJoint = rotateJoint(curJoint, rotate);
+		this.joints.put(joint, tempJoint);
+		return this;
 	}
-	public void doAction(Datatypes.Action action, Datatypes.Part limb) {
+	public Joint rotateJoint(Joint joint, double rotation) {
+		ILimb upper = joint.getUpperLimb();
+		ILimb lower = joint.getLowerLimb();
+		Joint lowerJ = lower.rotateUpper(rotation);
+		lower.setTopJoint(lowerJ);
+		upper.setBottomJoint(lowerJ);
 		
+		
+		return joint;
 	}
 }

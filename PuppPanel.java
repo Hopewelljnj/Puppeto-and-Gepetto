@@ -47,8 +47,8 @@ public class PuppPanel extends JPanel {
 				if(upper != null) {
 					AffineTransform at = new AffineTransform();
 					at.translate((double) upper.getX(), (double) upper.getY());
-					at.rotate(curLimb.getRotation());
 					at.scale(1.5,1.5);
+					at.rotate(curLimb.getRotation());
 					switch(part) {
 						case TORSO : at.scale(1.0, 1.5);
 							break;
@@ -79,7 +79,7 @@ public class PuppPanel extends JPanel {
 			}}
 			curPuppet++;
 			}
-			g2d.drawLine(100, 100, 100, 235);
+			//g2d.drawLine(100, 100, 100, 235);
 			g2d.dispose();
 		}
 	}

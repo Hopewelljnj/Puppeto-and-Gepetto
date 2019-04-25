@@ -16,10 +16,10 @@ public class Limb implements ILimb {
 	BufferedImage image;
 	
 	public Limb(double rotation, Joint topJoint, Joint bottomJoint, BufferedImage image) {
-		this.rotation = rotation;
 		this.topJoint = topJoint;
 		this.bottomJoint = bottomJoint;
 		this.image = image;
+		this.rotation = rotation;
 	}
 	public Limb(double d, Joint topJoint, BufferedImage image) {
 		this(d,topJoint,null,image);
@@ -62,10 +62,10 @@ public class Limb implements ILimb {
 	}
 
 	@Override
-	public void rotateUpper(double rotation) {
+	public Joint rotateUpper(double rotation) {
 		Joint close = this.getTopJoint();
 		Joint far = this.getBottomJoint();
-		forwardRotation(close, far, rotation);
+		return forwardRotation(close, far, rotation);
 
 	}
 	//rotation in degrees
@@ -73,6 +73,8 @@ public class Limb implements ILimb {
 	public void rotateLower(double rotation) {
 		Joint far = this.getBottomJoint();
 		Joint close = this.getTopJoint();
+		System.out.println(far);
+		System.out.println(close);
 		forwardRotation(close, far, rotation);		
 	}
 
@@ -97,7 +99,7 @@ public class Limb implements ILimb {
 		return coords;
 	}
 	
-	public void forwardRotation(Joint close, Joint far, double rotation) {
+	public Joint forwardRotation(Joint close, Joint far, double rotation) {
 		double distance = distance(close,far);
 		Array<Integer> oldCoords = reverseRotation(close,far); //old coords are new far
 		double angle = (double)this.rotation + rotation; // total angle from 0 angle
@@ -106,7 +108,9 @@ public class Limb implements ILimb {
 		int y = (int) ((int) oldCoords.get(1) + (int) distance*Math.cos(radAng));
 		far.setX(x);
 		far.setY(y);
+		far.getLowerLimb().setTopJoint(far);
 		this.rotation = angle;
+		return far;
 	}
 	/*
 	double rotation;
