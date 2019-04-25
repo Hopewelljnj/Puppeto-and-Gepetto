@@ -151,11 +151,6 @@ public class Stage {
 		Puppet curPup = puppets.get(puppetIndex);
 		Puppet newPup = curPup.doRotate(joint, rotation);
 		puppets.set(puppetIndex, newPup);
+	
 	}
-	/*public static void main(String... args) {
-		new MidiReader();
-		new Stage();
-	} */
-=======
->>>>>>> 9530fdf510e345b50376de3be4f659ebd961d87c
 }

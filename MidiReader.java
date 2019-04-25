@@ -86,43 +86,61 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 		case "init" :
 			break;
 		case "RTRR":
-			doAction(Datatypes.Action.ROTATE, RIGHT_UPPER_LEG);
+			stage.rotatePuppetLimb(0, Datatypes.Joint.RHIP, 10.0);
 			break;
 		case "RTRL":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.RHIP, -10.0);
 			break;
 		case "LTRR":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.LHIP, 10.0);
 			break;
 		case "LTRL":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.LHIP, -10.0);
 			break;
 		case "RARR":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_ELBOW, 10.0);
 			break;
 		case "RARL":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_ELBOW, -10.0);
 			break;
 		case "LARR":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_ELBOW, 10.0);
 			break;
 		case "LARL":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_ELBOW, -10.0);
 			break;
 		case "RBRR":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_SHOULDER, 10.0);
 			break;
 		case "RBRL":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_SHOULDER, -10.0);
 			break;
 		case "LBRR":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_SHOULDER, 10.0);
 			break;
 		case "LBRL":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_SHOULDER, -10.0);
 			break;
 		case "RSRR":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_KNEE, 10.0);
 			break;
 		case "RSRL":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_KNEE, -10.0);
 			break;
 		case "LSRR":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_KNEE, 10.0);
 			break;
 		case "LSRL":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_KNEE, -10.0);
 			break;
 		case "HERR":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.NECK, 10.0);
 			break;
 		case "HERL":
+			stage.rotatePuppetLimb(0, Datatypes.Joint.NECK, -10.0);
 			break;
 		}
+		
 	}
 }
 
