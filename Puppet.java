@@ -6,7 +6,7 @@ public class Puppet {
 	String puppetName = "";
 	IMap<Datatypes.Joint, Joint> joints = new edu.mccc.cos210.ds.Map<>();
 	IMap<Datatypes.Part, ILimb> limbs = new edu.mccc.cos210.ds.Map<>();
-	
+
 	public Puppet(String puppetName, IMap<Datatypes.Part, ILimb> limbs, IMap<Datatypes.Joint, Joint> joints) {
 		this.puppetName = puppetName;
 		this.joints = joints;
@@ -20,14 +20,14 @@ public class Puppet {
 	public Puppet(String puppetName) {
 		this.puppetName = puppetName;
 	}
-	
+
 	public IMap<Datatypes.Part, ILimb> getLimbs() {
 		return limbs;
 	}
 	public IMap<Datatypes.Joint, Joint> getJoints() {
 		return joints;
 	}
-	
+
 	public ILimb getLimbByName(Datatypes.Part partName) {
 		return limbs.get(partName);
 	}
@@ -36,6 +36,7 @@ public class Puppet {
 	}
 	public Puppet doRotate(Datatypes.Joint joint, double rotate) {
 		Joint curJoint = getJointByName(joint);
+<<<<<<< HEAD
 		Joint tempJoint = rotateJoint(curJoint, rotate);
 		this.joints.put(joint, tempJoint);
 		return this;
@@ -46,8 +47,7 @@ public class Puppet {
 		Joint lowerJ = lower.rotateUpper(rotation);
 		lower.setTopJoint(lowerJ);
 		upper.setBottomJoint(lowerJ);
-		
-		
-		return joint;
+
 	}
+
 }

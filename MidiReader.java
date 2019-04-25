@@ -81,6 +81,48 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 	}
 	private void decode(String s) {
 		System.out.println(s);
-		//send 4 letter somewhere to be processed
+		
+		switch(s) {
+		case "init" :
+			break;
+		case "RTRR":
+			doAction(Datatypes.Action.ROTATE, RIGHT_UPPER_LEG);
+			break;
+		case "RTRL":
+			break;
+		case "LTRR":
+			break;
+		case "LTRL":
+			break;
+		case "RARR":
+			break;
+		case "RARL":
+			break;
+		case "LARR":
+			break;
+		case "LARL":
+			break;
+		case "RBRR":
+			break;
+		case "RBRL":
+			break;
+		case "LBRR":
+			break;
+		case "LBRL":
+			break;
+		case "RSRR":
+			break;
+		case "RSRL":
+			break;
+		case "LSRR":
+			break;
+		case "LSRL":
+			break;
+		case "HERR":
+			break;
+		case "HERL":
+			break;
+		}
 	}
 }
+
