@@ -144,8 +144,4 @@ public class Stage {
 			
 		}
 	}
-	/*public static void main(String... args) {
-		new MidiReader();
-		new Stage();
-	} */
 }

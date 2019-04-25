@@ -36,15 +36,6 @@ public class Puppet {
 	}
 	public void doAction(Datatypes.Action action, Datatypes.Joint joint, float...data) {
 		Joint curJoint = getJointByName(joint);
-		switch(action) {
-		case MOVE : 
-			break;
-		case MOVE_TO :
-			break;
-		case ROTATE :
-			break;
-		default : break;
-		}
 	}
 	public void doAction(Datatypes.Action action, Datatypes.Part limb) {
 		
