@@ -28,7 +28,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
+
+import edu.mccc.cos210.ds.ISortedList;
+import edu.mccc.cos210.ds.Vector;
+import edu.mccc.cos210.fp.pupp.MidiRead.TickNode;
 
 
 public class Geppetto {
@@ -52,7 +55,7 @@ public class Geppetto {
 		new Action("Head Rotate Right"),
 		new Action("Head Rotate Left"),
 	};
-	private int[][] Grid = {
+	private static int[][] Grid = {
 			{ 00, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 			{ 35, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 			{ 36, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
@@ -84,25 +87,32 @@ public class Geppetto {
 	private ImageIcon ico = new ImageIcon("images/icon.png");
 	private FileDialog fd = new FileDialog(jf, "Save As", FileDialog.SAVE);
 	private FileDialog load = new FileDialog(jf, "Load File", FileDialog.LOAD);
+	private MidiRead reader; 
+
 	private void initSwing() {
 		jf = new JFrame("Geppetto");
 		jf.addWindowListener(new MyWindowListener());
 		fd.setVisible(false);
 		JPanel jp = new JPanel();
 		AddMenu am = new AddMenu(ActionList, sequence, Grid);
-		jp.setLayout(new GridLayout(1, 3));
-		JButton jb = new JButton("Clear!");
+		jp.setLayout(new GridLayout(1, 4));
+		JButton jb = new JButton("ClearMidi");
 		jb.addActionListener(
 			ae -> {
-				for (int i = 1; i < Grid.length; i++) {
-					for (int j = 1; j < Grid[0].length; j++) {
-						Grid[i][j] = 0;
-					}
-				}
+				this.resetGrid();
+				this.reader = null;
 				am.repaint();
 			}		
 		);
 		jp.add(jb);
+		JButton jb2 = new JButton("Clear!");
+		jb2.addActionListener(     //change midi action? >_<
+			ae -> {
+				this.resetGrid();
+				am.repaint();
+			}		
+		);
+		jp.add(jb2);
 		jb = new JButton("Save!");
 		jb.addActionListener(
 			ae -> {
@@ -145,11 +155,21 @@ public class Geppetto {
 						if(load.getFile() != null) {
 							String file = load.getFile();
 							if(file.contains(".mid") || file.contains(".midi")) {
-								System.out.println("Locked and Loaded Boss!");
+//								System.out.println("Locked and Loaded Boss!");
 								song = new File(load.getDirectory(), load.getFile());
-								sequence = MidiSystem.getSequence(song);
-								sequencer.setSequence(sequence);
-								BPMinute = sequencer.getTempoInBPM();
+								reader = new MidiRead(song);
+								calcGrid(reader.getCurrentList(),reader.getPointer(),reader.getResolution());
+								jf.repaint();
+								
+								
+								// do !!!!!!!!!!!!!            <==================================================
+//								sequence = MidiSystem.getSequence(song);
+//								sequencer.setSequence(sequence);
+//								BPMinute = sequencer.getTempoInBPM();
+//								Grid[1][2] = 1;
+//								jf.repaint();
+								// ===<====
+								
 							}
 						}
 					} catch (Exception ex) {
@@ -164,6 +184,11 @@ public class Geppetto {
 		JButton npb = new JButton("Previous");
 		npb.addActionListener(
 				ae -> {
+					if (reader != null) {
+						calcGrid(reader.getPreList(),reader.getPointer(),reader.getResolution());
+						jf.repaint();
+					}        
+														//<==================================================
 					//temp save?
 					//move sequencer pointers with set and get tick
 					//repaint
@@ -173,6 +198,10 @@ public class Geppetto {
 		npb = new JButton("Next");
 		npb.addActionListener(
 				ae -> {
+					if (reader != null) {
+						calcGrid(reader.getnextList(),reader.getPointer(),reader.getResolution());
+						jf.repaint();     
+					}													//<==================================================
 					//temp save?
 					//set/get tick
 					//repaint
@@ -188,6 +217,29 @@ public class Geppetto {
 		jf.setResizable(false);
 		jf.setVisible(true);
 		
+	}
+	private void calcGrid(ISortedList<TickNode> current, int pointer, int resolution) {
+		this.resetGrid();
+		for(TickNode a : current) {
+			Vector<Integer> actions = a.getAction();
+			double interval = 4 * resolution;
+			int column = (int)(((a.getTick() - (pointer * 4 * resolution)) / interval) * 32);   //  multi-track WILL BE FAILED HERE.
+			column += 1; 
+			for(int b : actions) {
+				if (b < 0) {
+					Grid[Math.abs(b)][column] = -1;
+				} else {
+					Grid[b][column] = 1;
+				}
+			}
+		}
+	}
+	public void resetGrid() {
+		for (int i = 1; i < Grid.length; i++) {
+			for (int j = 1; j < Grid[0].length; j++) {
+				Grid[i][j] = 0;
+			}
+		}	
 	}
 	private class MyWindowListener extends WindowAdapter {
 		public void windowClosing(WindowEvent we) {
@@ -313,7 +365,7 @@ public class Geppetto {
 		private static final long serialVersionUID = 1L;
 		private Action[] al;
 		private Sequence sq;
-		private int[][] Grid;
+//		private int[][] Grid;
 		private int textX = 8;
 		private int gridX = 170;
 		private int topY = 32;
@@ -322,7 +374,7 @@ public class Geppetto {
 		public AddMenu(Action[] al, Sequence sequence, int[][] grid) {
 			this.al = al;
 			this.sq = sequence;
-			this.Grid = grid;
+//			this.Grid = grid;
 			addMouseListener(new MyMouseListener());
 		}
 		public void paintComponent(Graphics g) {
@@ -338,9 +390,16 @@ public class Geppetto {
 					Rectangle r = new Rectangle(xSize, ySize);
 					r.translate(gridX + j *xSize, topY + (i - 2) * ySize);
 					g2d.draw(r);
-					if (Grid[i][j] != 0) {
+					 								//<==============================================================
+					if (Grid[i][j] == -1) {
+						g2d.setColor(Color.red);
 						g2d.fill(r);
-					}
+						g2d.setColor(Color.black);
+					} else {
+						if (Grid[i][j] != 0) {
+							g2d.fill(r);
+						}
+					} 								//<==================================================================
 				}
 			}
 			g2d.setStroke(new BasicStroke(2.0f));
@@ -369,7 +428,18 @@ public class Geppetto {
 				if (c > 0 && c <= 32 && r > 0 && r < 19) {
 					Grid[r][c] = Grid[r][c] == 1 ? 0 : 1;
 				}
+				if(reader != null) {
+					reader.updateAction(Grid[r][c],r,calcTick(c));
+				}
+				  // <======================================== 
 				repaint();
+			}
+			public long calcTick(int c) {
+				if(reader != null) {
+					return (long)((c / 32.0) * 4 * reader.getResolution() + (4 * reader.getPointer() * reader.getResolution()) - reader.getResolution() / 8);
+				} else {
+					return -1;
+				}
 			}
 		}
 	}
