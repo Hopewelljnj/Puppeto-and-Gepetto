@@ -15,20 +15,23 @@ import edu.mccc.cos210.ds.Vector;
 
 //====================================================================================================
 //optimize action
-//Multi-track file failed, if the first track have no event code.
-//Loss the last part information in the ending from MIDI file.
-//bug: click outside of box => error
+//Multi-track file failed, if the first track have no event code 
+//										===>!!! may use "4 * resolution" to separate instead of "%"
+//Loss the last part information in the ending of MIDI file.
+//bug: 1. click outside of box => error  fixed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!MyMouseListener->mouseReleased
 //====================================================================================================
 
 
-
-public class MidiRead {
+public class MidiEdit {
 	private int pointer = 0;
 	private long tickLength;
 	private long microsecondLength;
 	private int resolution;
+	private Sequence sequence;
+	private Track[] track; 
 	private IVector<ISortedList<TickNode>> infoArray =  new Vector<>();  
 	private ISortedList<TickNode> currentNode = new SortedList<>();
+
 //	public IVector<ISortedList<TickNode>> infoArray =  new Vector<>();  
 //	public ISortedList<TickNode> currentNode = new SortedList<>();
 //	public static void main(String... args) {
@@ -47,15 +50,15 @@ public class MidiRead {
 //			}
 //		}
 //	}
-	public MidiRead(File song) {
+	public MidiEdit(File song) {
 		try {
 			boolean oneScreen = false;
 			TickNode current = null;
-			Sequence sequence = MidiSystem.getSequence(song);
+			sequence = MidiSystem.getSequence(song);
 			resolution = sequence.getResolution();
 			microsecondLength = sequence.getMicrosecondLength();
 			tickLength = sequence.getTickLength();
-			Track[] track = sequence.getTracks();
+			track = sequence.getTracks();
 			for (int i = 0; i < track.length; i++) {
 				Long preTick = (long) -1;
 				for (int j = 0; j < track[i].size(); j++) {
@@ -111,6 +114,15 @@ public class MidiRead {
 		}	
 		TickNode nt = new TickNode(tick, row);
 		infoArray.get(pointer).add(nt);		
+	}
+	public Sequence getSeq() {
+		return this.sequence;
+	}
+	public Track[] getTrack() {
+		return this.track;
+	}
+	public IVector<ISortedList<TickNode>> getAllInfo(){
+		return this.infoArray;
 	}
 	public int getPointer() {
 		return this.pointer;
@@ -169,7 +181,7 @@ public class MidiRead {
 		}
 		private Integer calcAction(String mes) {   //optimize action here!===========================================
 			String[] res = mes.split(" ");
-			int action =  Integer.parseInt(res[2], 16) % 16;
+			int action =  (Integer.parseInt(res[2], 16) % 16) + 1;
 			if ((Integer.parseInt(res[1], 16) < 144) || (Integer.parseInt(res[3], 16) <= 50)) {
 				action = 0 - action;
 			}				
