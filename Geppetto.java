@@ -84,8 +84,6 @@ public class Geppetto {
 			{ 51, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 			{ 52, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 	};
-	private Synthesizer synth;
-	private Sequencer sequencer;
 	private Sequence sequence;
 	private Track track;
 	private float BPMinute = 0;

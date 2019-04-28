@@ -44,8 +44,6 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 		byte[] ba = message.getData();
 		if (message.getType() == META_Data) {
 			String s = new String(ba);
-			//tick = message.getTick();
-			//to get timing and maybe save it
 			decode(s);
 		}
 		if (message.getType() == META_EndofTrack) {

@@ -67,7 +67,7 @@ public class MidiEdit {
 					MidiMessage midiMessage = midiEvent.getMessage();
 					int status = midiMessage.getStatus();
 					byte[] message = midiMessage.getMessage();
-					if (status >= 128 && status < 160 ) {
+					if (status == 255) {
 						String mes = "";
 						for (int k = 0; k < message.length; k++) {
 							mes += " " + printHex(message[k]);							
