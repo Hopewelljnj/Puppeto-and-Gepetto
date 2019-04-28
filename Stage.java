@@ -95,15 +95,20 @@ public class Stage {
 			Joint lShoulder = new Joint(50 + puppetOffset,130,torso);
 			Joint rShoulder = new Joint(125 + puppetOffset,140,torso);
 			Limb rUpperArm = new Limb(Math.toRadians(-15), rShoulder, bi.getSubimage(246, 10, 28, 100));
-			//rUpperArm.rotateUpper(-15.0);
 			Limb lUpperArm = new Limb(Math.toRadians(15), lShoulder, bi.getSubimage(246, 10, 28, 100));
-			//head.lUpperArm.rotateUpper(15.0);
 			Joint rElbow = new Joint(155 + puppetOffset, 240, rUpperArm);
 			Joint lElbow = new Joint(25 + puppetOffset, 240, lUpperArm);
 			Limb lLowerArm = new Limb(0 , lElbow, bi.getSubimage(300, 8, 22, 148));
 			Limb rLowerArm = new Limb(0, rElbow, bi.getSubimage(300, 8, 22, 148));
 			lUpperArm.setBottomJoint(lElbow);
-			//hands?
+			rUpperArm.setBottomJoint(rElbow);
+			rElbow.setUpperLimb(rUpperArm);
+			rElbow.setLowerLimb(rLowerArm);
+			lElbow.setUpperLimb(lUpperArm);
+			lElbow.setLowerLimb(lLowerArm);
+			lLowerArm.setTopJoint(lElbow);
+			rLowerArm.setTopJoint(rElbow);
+			//wrists
 			Hip hip = new Hip(70 + puppetOffset, neck.getY() + 190, torso, bi.getSubimage(146, 8, 70, 68));
 			Limb lUpperLeg = new Limb(0, hip.getLeftHip(), bi.getSubimage(344, 10, 36, 142));
 			Limb rUpperLeg = new Limb(0, hip.getRightHip(), lUpperLeg.image);
@@ -113,7 +118,7 @@ public class Stage {
 			Joint rKnee = new Joint(110 + puppetOffset, hip.getY() + 120, rUpperLeg);
 			Limb lLowerLeg = new Limb(0, lKnee, bi.getSubimage(398, 10, 34, 162));
 			Limb rLowerLeg = new Limb(0, rKnee, bi.getSubimage(398, 10, 34, 162));
-			//feet
+			//ankles :S
 			
 			joints.put(Datatypes.Joint.NECK, neck);
 			joints.put(Datatypes.Joint.LEFT_SHOULDER, lShoulder);
@@ -148,9 +153,11 @@ public class Stage {
 		}
 	}
 	public void rotatePuppetLimb(int puppetIndex, Datatypes.Joint joint, double rotation) {
+		for(int pupperIndex = 0; puppetIndex < 5; puppetIndex ++) {
 		Puppet curPup = puppets.get(puppetIndex);
 		Puppet newPup = curPup.doRotate(joint, rotation);
 		puppets.set(puppetIndex, newPup);
-	
+		}
+		//System.out.println(newPup);
 	}
 }

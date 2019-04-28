@@ -81,9 +81,9 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 	}
 	private void decode(String s) {
 		System.out.println(s);
-		
+		System.out.println("were getting here");
 		switch(s) {
-		case "init" :
+		case "init" : System.out.println("initializing");
 			break;
 		case "RTRR":
 			stage.rotatePuppetLimb(0, Datatypes.Joint.RHIP, 10.0);

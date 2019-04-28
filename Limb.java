@@ -100,6 +100,10 @@ public class Limb implements ILimb {
 	}
 	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
+		if(far == null || close == null) {
+			this.rotation = (double)this.rotation + rotation;
+			return far;
+		}
 		double distance = distance(close,far);
 		Array<Integer> oldCoords = reverseRotation(close,far); //old coords are new far
 		double angle = (double)this.rotation + rotation; // total angle from 0 angle
