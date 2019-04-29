@@ -126,7 +126,6 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 			break;
 		case "LSRR":
 			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_KNEE, 10.0);
-			System.out.println("testing 123");
 			break;
 		case "LSRL":
 			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_KNEE, -10.0);

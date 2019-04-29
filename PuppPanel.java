@@ -76,8 +76,6 @@ public class PuppPanel extends JPanel {
 					Joint topJoint = curLimb.getTopJoint();
 					Joint botJoint = curLimb.getBottomJoint();
 					g2d.setColor(Color.WHITE);
-					g2d.fillOval(topJoint.getX(), topJoint.getY(), 10, 10);
-					g2d.fillOval(topJoint.getX() + width/2, topJoint.getY() + height/2, 20, 20);
 					g2d.drawImage(curImage, at, this);
 					//g2d.drawImage(curImage, topJoint.getX() + width/2, topJoint.getY(), topJoint.getX() - width/2, botJoint.getY(), 0, 0, curImage.getWidth(this), curImage.getHeight(this), this);
 				}
