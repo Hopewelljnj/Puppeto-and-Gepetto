@@ -260,7 +260,6 @@ public class Geppetto {
 		private static final long serialVersionUID = 1L;
 		private Action[] al;
 		private Sequence sq;
-//		private int[][] Grid;
 		private int textX = 8;
 		private int gridX = 170;
 		private int topY = 32;
@@ -269,7 +268,6 @@ public class Geppetto {
 		public AddMenu(Action[] al, Sequence sequence, int[][] grid) {
 			this.al = al;
 			this.sq = sequence;
-//			this.Grid = grid;
 			addMouseListener(new MyMouseListener());
 		}
 		public void paintComponent(Graphics g) {
