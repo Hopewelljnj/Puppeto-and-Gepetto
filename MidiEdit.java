@@ -35,11 +35,6 @@ public class MidiEdit {
 
 	public IVector<ISortedList<TickNode>> infoArray =  new Vector<>();  
 	public ISortedList<TickNode> currentNode = new SortedList<>();
-	//public static void main(String... args) {
-//		MidiRead a = new MidiRead(new File("data/wwiwiwo.mid"));
-//		MidiRead a = new MidiRead(new File("data/2testy.mid"));
-//		MidiRead a = new MidiRead(new File("data/2222.mid"));
-		//MidiEdit a = new MidiEdit(new File("data/cos210.mid"));
 		//System.out.println(a.infoArray.getSize());
 		//for (ISortedList<TickNode> b : a.infoArray) {
 			//System.out.println(b.toString());
@@ -75,7 +70,7 @@ public class MidiEdit {
 			if (status == 255) {
 				byte[] message = midiMessage.getMessage();
 				byte[] a = new byte[message.length-2];
-				for(int i = 2; i<message.length; i++) {   //remove ff 7f
+				for(int i = 2; i<message.length; i++) {
 					a[i-2] = message[i];
 				}
 				Vector<Integer> asss = decode(new String(a).trim().split(":"));
@@ -144,10 +139,6 @@ public class MidiEdit {
 						currentNode = new SortedList<>();
 						oneScreen = false;
 					} 
-//					if (j == track[i].size() - 2) {
-//						currentNode.add(current);
-//						infoArray.pushBack(currentNode);
-//					}
 				}
 			}
 		}			
