@@ -116,7 +116,7 @@ public class Stage {
 			rLowerArm.setTopJoint(rElbow);
 			//wrists
 			Hip hip = new Hip(70 + puppetOffset, neck.getY() + 190, torso, bi.getSubimage(146, 8, 70, 68));
-			Joint lHip = new Joint(10 + puppetOffset, neck.getY() + 190, torso);
+			Joint lHip = new Joint(80 + puppetOffset, neck.getY() + 190, torso);
 			Limb lUpperLeg = new Limb(0, hip.getLeftHip(), bi.getSubimage(344, 10, 36, 142));
 			Limb rUpperLeg = new Limb(0, hip.getRightHip(), bi.getSubimage(344, 10, 36, 142));
 			hip.setLeftLowerLimb(lUpperLeg);
@@ -125,6 +125,8 @@ public class Stage {
 			Joint rKnee = new Joint(110 + puppetOffset, hip.getY() + 120, rUpperLeg);
 			Limb lLowerLeg = new Limb(0, lKnee, bi.getSubimage(398, 10, 34, 162));
 			Limb rLowerLeg = new Limb(0, rKnee, bi.getSubimage(398, 10, 34, 162));
+			lUpperLeg.setTopJoint(lHip);
+			rUpperLeg.setTopJoint(hip.getRightHip());
 			hip.setUpperLimb(torso);
 			lHip.setUpperLimb(torso);
 			lHip.setLowerLimb(lUpperLeg);
@@ -144,7 +146,8 @@ public class Stage {
 			joints.put(Datatypes.Joint.RIGHT_SHOULDER, rShoulder);
 			joints.put(Datatypes.Joint.LEFT_ELBOW, lElbow);
 			joints.put(Datatypes.Joint.RIGHT_ELBOW, rElbow);
-			joints.put(Datatypes.Joint.HIP, hip);
+			joints.put(Datatypes.Joint.LHIP, lHip);
+			joints.put(Datatypes.Joint.RHIP, hip);
 			joints.put(Datatypes.Joint.LEFT_KNEE, lKnee);
 			joints.put(Datatypes.Joint.RIGHT_KNEE, rKnee);
 			
@@ -161,9 +164,9 @@ public class Stage {
 			ISet<Datatypes.Joint> jointsSet = joints.keySet();
 			ISet<Datatypes.Part> partsSet = limbs.keySet();
 			if(debug) {
-			for(Datatypes.Part part : limbs.keySet()) {
+			for(Datatypes.Joint part : joints.keySet()) {
 				System.out.print(part + "\n");
-				System.out.println(limbs.get(part));
+				System.out.println(joints.get(part));
 				System.out.println();
 			}}
 			puppets.set(i, new Puppet(("Puppet" + i), limbs, joints));
