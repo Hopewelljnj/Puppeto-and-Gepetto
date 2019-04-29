@@ -16,12 +16,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import javax.sound.midi.MetaMessage;
-import javax.sound.midi.MidiEvent;
-import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
-import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
 import javax.swing.ImageIcon;
@@ -38,8 +34,7 @@ import edu.mccc.cos210.fp.pupp.MidiWriter;
 
 //===================================================================================================
 //check file when load.... if file is not midi type but with extension name of midi .... => error...
-//may delete action when use clear button....   done!!!!!!!!!!!
-//clear one page save then read again === > error....
+//may delete action when use clear button....
 //===================================================================================================
 
 public class Geppetto {
@@ -119,10 +114,9 @@ public class Geppetto {
 		);
 		jp.add(jb);
 		JButton jb2 = new JButton("Clear!");
-		jb2.addActionListener(     
+		jb2.addActionListener(     //change midi action? >_<
 			ae -> {
 				this.resetGrid();
-				this.clearActionInMidi();
 				am.repaint();
 			}		
 		);
@@ -133,6 +127,7 @@ public class Geppetto {
 				try {
 					fd.setVisible(true);
 					if (fd.getFile() != null && reader != null) {
+						
 						@SuppressWarnings("unused")
 						MidiWriter myWriter = new MidiWriter(
 											saction,
@@ -146,7 +141,6 @@ public class Geppetto {
 						JOptionPane.showMessageDialog(null, "Choose a midi file first...", "Error", JOptionPane.ERROR_MESSAGE); 
 					}
 				} catch (Exception ex) {
-					System.err.println("cao2");
 					System.err.println(ex.getMessage());
 					System.exit(-1);
 				}
@@ -215,34 +209,27 @@ public class Geppetto {
 		jf.add(jp, BorderLayout.NORTH);
 		jf.add(am, BorderLayout.CENTER);
 		jf.setSize(new Dimension(800, 600));
+		am.setBackground(new Color(250, 250, 160));
+		jp.setBackground(new Color(250, 250, 160));
 		jf.setIconImage(ico.getImage());
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setVisible(true);
-		
 	}
 	private void calcGrid(ISortedList<TickNode> current, int pointer, int resolution) {
 		this.resetGrid();
-		if (current.getSize() != 0) {
-			for(TickNode a : current) {
-				Vector<Integer> actions = a.getAction();
-				double interval = 4 * resolution;
-				int column = (int)(((a.getTick() - (pointer * 4 * resolution)) / interval) * 32);   //  multi-track WILL BE FAILED HERE.
-				column += 1; 
-				for(int b : actions) {
-					if (b < 0) {
-						Grid[Math.abs(b)][column] = -1;
-					} else {
-						Grid[b][column] = 1;
-					}
+		for(TickNode a : current) {
+			Vector<Integer> actions = a.getAction();
+			double interval = 4 * resolution;
+			int column = (int)(((a.getTick() - (pointer * 4 * resolution)) / interval) * 32);   //  multi-track WILL BE FAILED HERE.
+			column += 1; 
+			for(int b : actions) {
+				if (b < 0) {
+					Grid[Math.abs(b)][column] = -1;
+				} else {
+					Grid[b][column] = 1;
 				}
 			}
-		}
-	}
-	public void clearActionInMidi() {
-		ISortedList<TickNode> current = reader.getCurrentList();
-		for (TickNode tc : current) {
-			tc.setAction(new Vector<Integer>());
 		}
 	}
 	public void resetGrid() {
