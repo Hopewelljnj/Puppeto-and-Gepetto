@@ -123,6 +123,18 @@ public class Stage {
 			Joint rKnee = new Joint(110 + puppetOffset, hip.getY() + 120, rUpperLeg);
 			Limb lLowerLeg = new Limb(0, lKnee, bi.getSubimage(398, 10, 34, 162));
 			Limb rLowerLeg = new Limb(0, rKnee, bi.getSubimage(398, 10, 34, 162));
+			hip.setUpperLimb(torso);
+			lHip.setUpperLimb(torso);
+			lHip.setLowerLimb(lUpperLeg);
+			hip.setLowerLimb(rUpperLeg);
+			lUpperLeg.setBottomJoint(lKnee);
+			rUpperLeg.setBottomJoint(rKnee);
+			rKnee.setUpperLimb(rUpperLeg);
+			rKnee.setLowerLimb(rLowerLeg);
+			lKnee.setUpperLimb(lUpperLeg);
+			lKnee.setLowerLimb(lLowerLeg);
+			lLowerLeg.setTopJoint(lKnee);
+			rLowerLeg.setTopJoint(rKnee);
 			//ankles :S
 			
 			joints.put(Datatypes.Joint.NECK, neck);
