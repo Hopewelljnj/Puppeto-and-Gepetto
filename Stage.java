@@ -1,5 +1,6 @@
 package edu.mccc.cos210.fp.pupp;
 
+import java.awt.Color;
 import java.awt.FileDialog;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -37,6 +38,7 @@ public class Stage {
 		jf.setSize(1200,600);
 		jf.setIconImage(ico.getImage());
 		jf.add(jp);
+		jp.setBackground(new Color(200, 80, 80));
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setVisible(true);
