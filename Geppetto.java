@@ -16,8 +16,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
 import javax.swing.ImageIcon;
@@ -34,7 +38,8 @@ import edu.mccc.cos210.fp.pupp.MidiWriter;
 
 //===================================================================================================
 //check file when load.... if file is not midi type but with extension name of midi .... => error...
-//may delete action when use clear button....
+//may delete action when use clear button....   done!!!!!!!!!!!
+//clear one page save then read again === > error....
 //===================================================================================================
 
 public class Geppetto {
@@ -84,6 +89,8 @@ public class Geppetto {
 			{ 51, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 			{ 52, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 	};
+	private Synthesizer synth;
+	private Sequencer sequencer;
 	private Sequence sequence;
 	private Track track;
 	private float BPMinute = 0;
@@ -112,9 +119,10 @@ public class Geppetto {
 		);
 		jp.add(jb);
 		JButton jb2 = new JButton("Clear!");
-		jb2.addActionListener(     //change midi action? >_<
+		jb2.addActionListener(     
 			ae -> {
 				this.resetGrid();
+				this.clearActionInMidi();
 				am.repaint();
 			}		
 		);
@@ -125,7 +133,6 @@ public class Geppetto {
 				try {
 					fd.setVisible(true);
 					if (fd.getFile() != null && reader != null) {
-						
 						@SuppressWarnings("unused")
 						MidiWriter myWriter = new MidiWriter(
 											saction,
@@ -139,6 +146,7 @@ public class Geppetto {
 						JOptionPane.showMessageDialog(null, "Choose a midi file first...", "Error", JOptionPane.ERROR_MESSAGE); 
 					}
 				} catch (Exception ex) {
+					System.err.println("cao2");
 					System.err.println(ex.getMessage());
 					System.exit(-1);
 				}
@@ -215,18 +223,26 @@ public class Geppetto {
 	}
 	private void calcGrid(ISortedList<TickNode> current, int pointer, int resolution) {
 		this.resetGrid();
-		for(TickNode a : current) {
-			Vector<Integer> actions = a.getAction();
-			double interval = 4 * resolution;
-			int column = (int)(((a.getTick() - (pointer * 4 * resolution)) / interval) * 32);   //  multi-track WILL BE FAILED HERE.
-			column += 1; 
-			for(int b : actions) {
-				if (b < 0) {
-					Grid[Math.abs(b)][column] = -1;
-				} else {
-					Grid[b][column] = 1;
+		if (current.getSize() != 0) {
+			for(TickNode a : current) {
+				Vector<Integer> actions = a.getAction();
+				double interval = 4 * resolution;
+				int column = (int)(((a.getTick() - (pointer * 4 * resolution)) / interval) * 32);   //  multi-track WILL BE FAILED HERE.
+				column += 1; 
+				for(int b : actions) {
+					if (b < 0) {
+						Grid[Math.abs(b)][column] = -1;
+					} else {
+						Grid[b][column] = 1;
+					}
 				}
 			}
+		}
+	}
+	public void clearActionInMidi() {
+		ISortedList<TickNode> current = reader.getCurrentList();
+		for (TickNode tc : current) {
+			tc.setAction(new Vector<Integer>());
 		}
 	}
 	public void resetGrid() {
@@ -260,6 +276,7 @@ public class Geppetto {
 		private static final long serialVersionUID = 1L;
 		private Action[] al;
 		private Sequence sq;
+//		private int[][] Grid;
 		private int textX = 8;
 		private int gridX = 170;
 		private int topY = 32;
@@ -268,6 +285,7 @@ public class Geppetto {
 		public AddMenu(Action[] al, Sequence sequence, int[][] grid) {
 			this.al = al;
 			this.sq = sequence;
+//			this.Grid = grid;
 			addMouseListener(new MyMouseListener());
 		}
 		public void paintComponent(Graphics g) {
