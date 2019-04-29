@@ -100,14 +100,14 @@ public class Limb implements ILimb {
 	}
 	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
-		if(far == null || close == null) {
-			this.rotation = (double)this.rotation + rotation;
-			return far;
-		}
+		//if(far == null || close == null) {
+			this.rotation = Math.toRadians(rotation) +this.rotation;
+			if(true)return far;
+		//}
 		double distance = distance(close,far);
 		Array<Integer> oldCoords = reverseRotation(close,far); //old coords are new far
-		double angle = (double)this.rotation + rotation; // total angle from 0 angle
-		double radAng = Math.toRadians(angle);
+		double angle = (double)this.rotation + Math.toRadians(rotation); // total angle from 0 angle
+		double radAng = angle;
 		int x = (int) ((int) oldCoords.get(0) - (int) distance*Math.sin(radAng));
 		int y = (int) ((int) oldCoords.get(1) + (int) distance*Math.cos(radAng));
 		far.setX(x);
