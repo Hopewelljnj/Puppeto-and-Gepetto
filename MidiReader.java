@@ -44,7 +44,10 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 		byte[] ba = message.getData();
 		if (message.getType() == META_Data) {
 			String s = new String(ba);
-			decode(s);
+			String[] arrs = s.split(":");
+			for(String a:arrs) {
+				decode(a);
+			}
 		}
 		if (message.getType() == META_EndofTrack) {
 			try {
@@ -78,6 +81,7 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 		}
 	}
 	private void decode(String s) {
+		
 		System.out.println(s);
 		switch(s) {
 		case "init" : System.out.println("initializing");
