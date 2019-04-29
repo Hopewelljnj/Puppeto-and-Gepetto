@@ -1,8 +1,10 @@
 package edu.mccc.cos210.fp.pupp;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -21,6 +23,7 @@ public class PuppPanel extends JPanel {
 	int curPuppet = 0;
 	
 	public PuppPanel(Array<Puppet> puppets, int offset) {
+		this.setBackground(Color.BLACK);
 		this.puppets = puppets;
 		this.offset = offset;
 		javax.swing.Timer t = new javax.swing.Timer(
@@ -36,7 +39,7 @@ public class PuppPanel extends JPanel {
 		Graphics2D g2d = (Graphics2D) g.create();
 			for(Puppet puppet : puppets) {
 			for(Datatypes.Part part : puppet.getLimbs().keySet()) {
-				if(part != null) {
+				if(part != null) {// && part == Datatypes.Part.LEFT_LOWER_ARM) {
 				Limb curLimb = (Limb) puppet.getLimbs().get(part);
 				Joint upper = curLimb.getTopJoint();
 				Joint lower = curLimb.getBottomJoint();
@@ -46,7 +49,7 @@ public class PuppPanel extends JPanel {
 					//g2d.drawImage((Image)curLimb.image, 45, 25, lower.getX() + curLimb.image.getWidth(), lower.getY() + 40, 0, 0, curLimb.image.getWidth(), curLimb.image.getHeight(), this);
 				if(upper != null) {
 					AffineTransform at = new AffineTransform();
-					at.translate((double) upper.getX(), (double) upper.getY());
+					at.translate((double) upper.getX() - 7, (double) upper.getY() + 5);
 					at.scale(1.5,1.5);
 					at.rotate(curLimb.getRotation());
 					switch(part) {
@@ -72,6 +75,9 @@ public class PuppPanel extends JPanel {
 					int height = (int) (curImage.getHeight(this));
 					Joint topJoint = curLimb.getTopJoint();
 					Joint botJoint = curLimb.getBottomJoint();
+					g2d.setColor(Color.WHITE);
+					g2d.fillOval(topJoint.getX(), topJoint.getY(), 10, 10);
+					g2d.fillOval(topJoint.getX() + width/2, topJoint.getY() + height/2, 20, 20);
 					g2d.drawImage(curImage, at, this);
 					//g2d.drawImage(curImage, topJoint.getX() + width/2, topJoint.getY(), topJoint.getX() - width/2, botJoint.getY(), 0, 0, curImage.getWidth(this), curImage.getHeight(this), this);
 				}
