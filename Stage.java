@@ -40,12 +40,12 @@ public class Stage {
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setVisible(true);
-		try {
+		/*try {
 			bi = ImageIO.read(new File("./images/dinos/Dinos.png"));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.exit(-1);
-		}
+		}*/
 		
 		
 		

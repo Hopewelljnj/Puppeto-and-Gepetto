@@ -44,7 +44,7 @@ public class PuppPanel extends JPanel {
 				Joint upper = curLimb.getTopJoint();
 				Joint lower = curLimb.getBottomJoint();
 				if(upper == null) 
-					upper = new Joint(offset * curPuppet,0, curLimb);
+					upper = new Joint(offset * curPuppet,0, curLimb); //<- offset is always zero?
 					//g2d.drawImage((Image) curLimb.image, curLimb.getAT(), this);
 					//g2d.drawImage((Image)curLimb.image, 45, 25, lower.getX() + curLimb.image.getWidth(), lower.getY() + 40, 0, 0, curLimb.image.getWidth(), curLimb.image.getHeight(), this);
 				if(upper != null) {
@@ -55,16 +55,20 @@ public class PuppPanel extends JPanel {
 					switch(part) {
 						case TORSO : at.scale(1.0, 1.5);
 							break;
-						case LEFT_UPPER_ARM :
+						case LEFT_UPPER_ARM : at.scale(0.8,0.75);
+							break;
 						case RIGHT_UPPER_ARM : at.scale(0.8,0.75);
 							break;
-						case LEFT_LOWER_ARM :
+						case LEFT_LOWER_ARM : at.scale(0.8,0.5);
+							break;
 						case RIGHT_LOWER_ARM : at.scale(0.8,0.5);
 							break;
-						case LEFT_UPPER_LEG :
+						case LEFT_UPPER_LEG : at.scale(0.5, 0.6);
+							break;
 						case RIGHT_UPPER_LEG : at.scale(0.5, 0.6);
 							break;
-						case LEFT_LOWER_LEG :
+						case LEFT_LOWER_LEG : at.scale(0.5,0.6);
+							break;
 						case RIGHT_LOWER_LEG : at.scale(0.5,0.6);
 							break;
 						default : at = curLimb.getAT();
