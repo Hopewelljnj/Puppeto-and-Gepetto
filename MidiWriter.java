@@ -18,6 +18,7 @@ import edu.mccc.cos210.fp.pupp.MidiEditor;
 import edu.mccc.cos210.fp.pupp.TickNode;
 
 
+
 //==========================================================================================
 //
 //
@@ -41,9 +42,9 @@ public class MidiWriter {
 			sequencer = MidiSystem.getSequencer(true);
 			sequence = new Sequence(Sequence.PPQ, b.getResolution());	
 			sequencer.setSequence(sequence);
-//			sequencer.setTempoInBPM();
 			sequencer.open();
 		}catch (Exception ex) {
+			System.err.println("cao1");
 			System.err.println(ex.getMessage());
 			System.exit(-1);
 		}
@@ -56,24 +57,27 @@ public class MidiWriter {
 				newtrack.add(oldtrack.get(i));
 			}
 		}
-		newtrack = sequence.createTrack();
+		newtrack = sequence.createTrack();		
 		addTrack(b.getAllInfo(),newtrack);
 		MidiSystem.write(
 				sequence,
 				1,
 				output
-			);
+		);
 		sequencer.close();
 		synth.close();
 	}
 	private void addTrack(IVector<ISortedList<TickNode>> infoArray, Track track) throws Exception {
 		for(ISortedList<TickNode> one : infoArray) {
 			for(TickNode tn : one) {
-				puppIt(getActionMessage(tn.getAction()),(int)tn.getTick(),track);
+				Vector<Integer> actionList = tn.getAction();
+				if(actionList.getSize() != 0) {
+					puppIt(getActionMessage(actionList),(int)tn.getTick(),track);
+				}
 			}
 		}
 	}
-	private byte[] getActionMessage(Vector<Integer> actionList) {
+	private byte[] getActionMessage(Vector<Integer> actionList) {  //change here. =======================================
 		StringBuilder sb = new StringBuilder();
 		for (int acts : actionList) {
 			sb.append(encodeIt(acts));
@@ -82,7 +86,7 @@ public class MidiWriter {
 		return sb.substring(0,sb.length()-1).getBytes();
 	}
 	private String encodeIt(int action) {
-		action = Math.abs(action);       // <===================================================== abs
+		action = Math.abs(action);       
 		return this.actionlist[action];
 	}	
 	private void puppIt(byte[] msg, int tick, Track track) throws Exception {
