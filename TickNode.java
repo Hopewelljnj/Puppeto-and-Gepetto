@@ -2,6 +2,7 @@ package edu.mccc.cos210.fp.pupp;
 
 import edu.mccc.cos210.ds.Vector;
 
+
 @SuppressWarnings("rawtypes")
 public class TickNode implements java.lang.Comparable {
 	private long tick;
