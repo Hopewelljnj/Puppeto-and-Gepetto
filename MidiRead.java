@@ -21,7 +21,7 @@ public class MidiRead {
 	private Track[] track; 
 	private IVector<ISortedList<TickNode>> infoArray =  new Vector<>();  
 	private ISortedList<TickNode> currentNode = new SortedList<>();
-	
+
 	public MidiRead(File song) {
 		try {
 			sequence = MidiSystem.getSequence(song);
