@@ -14,8 +14,8 @@ import javax.sound.midi.Track;
 import edu.mccc.cos210.ds.ISortedList;
 import edu.mccc.cos210.ds.IVector;
 import edu.mccc.cos210.ds.Vector;
-import edu.mccc.cos210.fp.pupp.MidiEdit;
-import edu.mccc.cos210.fp.pupp.MidiEdit.TickNode;
+import edu.mccc.cos210.fp.pupp.MidiEditor;
+import edu.mccc.cos210.fp.pupp.TickNode;
 
 
 //==========================================================================================
@@ -29,7 +29,7 @@ public class MidiWriter {
 	private Sequence sequence;
 	private String[] actionlist;
 	
-	public MidiWriter(String[] saction, MidiEdit b, File output) throws Exception {
+	public MidiWriter(String[] saction, MidiEditor b, File output) throws Exception {
 		this.actionlist  = saction;
 		try {
 			synth = MidiSystem.getSynthesizer();
