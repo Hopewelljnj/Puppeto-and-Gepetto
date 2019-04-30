@@ -28,7 +28,8 @@ import javax.swing.JPanel;
 
 import edu.mccc.cos210.ds.ISortedList;
 import edu.mccc.cos210.ds.Vector;
-import edu.mccc.cos210.fp.pupp.MidiEdit.TickNode;
+import edu.mccc.cos210.fp.pupp.MidiEditor;
+import edu.mccc.cos210.fp.pupp.TickNode;
 import edu.mccc.cos210.fp.pupp.MidiWriter;
 
 
