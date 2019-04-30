@@ -47,13 +47,14 @@ public class MidiWriter {
 			System.err.println(ex.getMessage());
 			System.exit(-1);
 		}
-		for(int j = 0; j <= b.getTrack().length; j++) {
-			
-		}
-		Track newtrack = sequence.createTrack();
-		Track oldtrack = b.getTrack()[0];
-		for(int i = 0; i < oldtrack.size(); i++) {
-			newtrack.add(oldtrack.get(i));
+		Track newtrack;
+		Track oldtrack;
+		for(int j = 0; j < b.getTrack().length; j++) {    //================================================
+			newtrack = sequence.createTrack();
+			oldtrack = b.getTrack()[j];
+			for(int i = 0; i < oldtrack.size(); i++) {
+				newtrack.add(oldtrack.get(i));
+			}
 		}
 		newtrack = sequence.createTrack();
 		addTrack(b.getAllInfo(),newtrack);
@@ -62,25 +63,9 @@ public class MidiWriter {
 				1,
 				output
 			);
-//		for(int i = 0; i < sequence.getTracks()[1].size(); i++) {    for checking only
-//			MidiEvent midiEvent = sequence.getTracks()[1].get(i);
-//			MidiMessage midiMessage = midiEvent.getMessage();
-//			byte[] message = midiMessage.getMessage();
-//			for (int k = 0; k < message.length; k++) {
-//				System.out.print(" ");
-//				if (message[k] > 0) {
-//					System.out.print((char)message[k]);
-//				}
-//				System.out.println(message[k] + " : " + printHex(message[k]));
-//			}
-//		}
 		sequencer.close();
 		synth.close();
 	}
-//	private String printHex(byte b) {
-//		String s = Integer.toHexString(b & 0x000000ff);
-//		return s.length() == 1 ? "0" + s : s;
-//	}
 	private void addTrack(IVector<ISortedList<TickNode>> infoArray, Track track) throws Exception {
 		for(ISortedList<TickNode> one : infoArray) {
 			for(TickNode tn : one) {
