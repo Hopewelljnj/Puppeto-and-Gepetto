@@ -1,8 +1,9 @@
 package edu.mccc.cos210.fp.pupp;
 
+import java.awt.EventQueue;
+
 public class Puppetto {
-	private static Stage stage;
 	public static void main(String...args) {
-		stage = new Stage();
+		EventQueue.invokeLater(Stage::new);
 	}
 }
