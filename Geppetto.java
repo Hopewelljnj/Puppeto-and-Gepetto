@@ -16,8 +16,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Track;
 import javax.swing.ImageIcon;
@@ -28,14 +32,13 @@ import javax.swing.JPanel;
 
 import edu.mccc.cos210.ds.ISortedList;
 import edu.mccc.cos210.ds.Vector;
-import edu.mccc.cos210.fp.pupp.MidiEditor;
-import edu.mccc.cos210.fp.pupp.TickNode;
 import edu.mccc.cos210.fp.pupp.MidiWriter;
 
 
 //===================================================================================================
 //check file when load.... if file is not midi type but with extension name of midi .... => error...
-//may delete action when use clear button....
+//may delete action when use clear button....   done!!!!!!!!!!!
+//clear one page save then read again === > error....
 //===================================================================================================
 
 public class Geppetto {
@@ -96,7 +99,7 @@ public class Geppetto {
 	private ImageIcon ico = new ImageIcon("images/icon.png");
 	private FileDialog fd = new FileDialog(jf, "Save As", FileDialog.SAVE);
 	private FileDialog load = new FileDialog(jf, "Load File", FileDialog.LOAD);
-	private MidiEditor reader; 
+	private MidiEditor edit; 
 
 	private void initSwing() {
 		jf = new JFrame("Geppetto");
@@ -109,15 +112,16 @@ public class Geppetto {
 		jb.addActionListener(
 			ae -> {
 				this.resetGrid();
-				this.reader = null;
+				this.edit = null;
 				am.repaint();
 			}		
 		);
 		jp.add(jb);
 		JButton jb2 = new JButton("Clear!");
-		jb2.addActionListener(     //change midi action? >_<
+		jb2.addActionListener(     
 			ae -> {
 				this.resetGrid();
+				this.clearActionInMidi();
 				am.repaint();
 			}		
 		);
@@ -127,12 +131,11 @@ public class Geppetto {
 			ae -> {
 				try {
 					fd.setVisible(true);
-					if (fd.getFile() != null && reader != null) {
-						
+					if (fd.getFile() != null && edit != null) {
 						@SuppressWarnings("unused")
 						MidiWriter myWriter = new MidiWriter(
 											saction,
-											reader,
+											edit,
 											new File(
 													fd.getDirectory(),
 													fd.getFile()
@@ -142,6 +145,7 @@ public class Geppetto {
 						JOptionPane.showMessageDialog(null, "Choose a midi file first...", "Error", JOptionPane.ERROR_MESSAGE); 
 					}
 				} catch (Exception ex) {
+					System.err.println("cao2");
 					System.err.println(ex.getMessage());
 					System.exit(-1);
 				}
@@ -152,14 +156,15 @@ public class Geppetto {
 		jb.addActionListener(
 				ae -> {
 					try {
+						this.edit = null;
 						load.setVisible(true);
 						if(load.getFile() != null) {
 							String file = load.getFile();
 							if(file.contains(".mid") || file.contains(".midi")) {
 //								System.out.println("Locked and Loaded Boss!");
 								song = new File(load.getDirectory(), load.getFile());
-								reader = new MidiEdit(song);
-								calcGrid(reader.getCurrentList(),reader.getPointer(),reader.getResolution());
+								edit = new MidiEditor(song);
+								calcGrid(edit.getCurrentList(),edit.getPointer(),edit.getResolution());
 								jf.repaint();								
 								// do !!!!!!!!!!!!!            <==================================================							
 							}
@@ -176,10 +181,10 @@ public class Geppetto {
 		JButton npb = new JButton("Previous");
 		npb.addActionListener(
 				ae -> {
-					if (reader != null) {
-						int pre = reader.getPointer();
-						calcGrid(reader.getPreList(),reader.getPointer(),reader.getResolution());
-						if (pre == reader.getPointer()) {
+					if (edit != null) {
+						int pre = edit.getPointer();
+						calcGrid(edit.getPreList(),edit.getPointer(),edit.getResolution());
+						if (pre == edit.getPointer()) {
 							JOptionPane.showMessageDialog(null, "NO PREVIOUS.....", "Error", JOptionPane.ERROR_MESSAGE); 
 						}
 						jf.repaint();
@@ -193,10 +198,10 @@ public class Geppetto {
 		npb = new JButton("Next");
 		npb.addActionListener(
 				ae -> {
-					if (reader != null) {
-						int pre = reader.getPointer();
-						calcGrid(reader.getnextList(),reader.getPointer(),reader.getResolution());
-						if (pre == reader.getPointer()) {
+					if (edit != null) {
+						int pre = edit.getPointer();
+						calcGrid(edit.getnextList(),edit.getPointer(),edit.getResolution());
+						if (pre == edit.getPointer()) {
 							JOptionPane.showMessageDialog(null, "NO NEXT....", "Error", JOptionPane.ERROR_MESSAGE); 
 						}
 						jf.repaint();     
@@ -210,17 +215,16 @@ public class Geppetto {
 		jf.add(jp, BorderLayout.NORTH);
 		jf.add(am, BorderLayout.CENTER);
 		jf.setSize(new Dimension(800, 600));
-		am.setBackground(new Color(250, 250, 160));
-		jp.setBackground(new Color(250, 250, 160));
 		jf.setIconImage(ico.getImage());
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setVisible(true);
+		
 	}
 	private void calcGrid(ISortedList<TickNode> current, int pointer, int resolution) {
 		this.resetGrid();
 		if ((current.getSize() != 0) && (((long)(pointer * 4 * resolution) <= (current.getFirst().getTick())) 
-					&& ((long)((pointer + 1) * 4 * resolution) > (current.getFirst().getTick())))) {
+										&& ((long)((pointer + 1) * 4 * resolution) > (current.getFirst().getTick())))) {
 			for(TickNode a : current) {
 				Vector<Integer> actions = a.getAction();
 				double interval = 4 * resolution;
@@ -234,6 +238,12 @@ public class Geppetto {
 					}
 				}
 			}
+		}
+	}
+	public void clearActionInMidi() {
+		ISortedList<TickNode> current = edit.getCurrentList();
+		for (TickNode tc : current) {
+			tc.setAction(new Vector<Integer>());
 		}
 	}
 	public void resetGrid() {
@@ -329,15 +339,15 @@ public class Geppetto {
 				}
 				if (c > 0 && c <= 32 && r > 0 && r < 19) {
 					Grid[r][c] = Grid[r][c] == 1 ? 0 : 1;
-					if(reader != null) {
-						reader.updateAction(Grid[r][c],r,calcTick(c));   //bug 1 fixed
+					if(edit != null) {
+						edit.updateAction(Grid[r][c],r,calcTick(c));   //bug 1 fixed
 					}										// <======================================== do here
 				}
 				repaint();
 			}
 			public long calcTick(int c) {
-				if(reader != null) {
-					return (long)((c / 32.0) * 4 * reader.getResolution() + (4 * reader.getPointer() * reader.getResolution()) - reader.getResolution() / 8);
+				if(edit != null) {
+					return (long)((c / 32.0) * 4 * edit.getResolution() + (4 * edit.getPointer() * edit.getResolution()) - edit.getResolution() / 8);
 				} else {
 					return -1;
 				}
