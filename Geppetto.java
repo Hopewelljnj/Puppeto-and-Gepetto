@@ -158,7 +158,7 @@ public class Geppetto {
 							if(file.contains(".mid") || file.contains(".midi")) {
 //								System.out.println("Locked and Loaded Boss!");
 								song = new File(load.getDirectory(), load.getFile());
-								reader = new MidiEdit(song);
+								reader = new MidiEditor(song);
 								calcGrid(reader.getCurrentList(),reader.getPointer(),reader.getResolution());
 								jf.repaint();								
 								// do !!!!!!!!!!!!!            <==================================================							
