@@ -37,6 +37,29 @@ public class Puppet {
 	public Puppet doRotate(Datatypes.Joint joint, double rotate) {
 		Joint curJoint = getJointByName(joint);
 		Joint tempJoint = rotateJoint(curJoint, rotate);
+		ILimb lower = curJoint.getLowerLimb();
+		ILimb limb = null;
+		switch(lower.getCurr()) {
+		case LEFT_UPPER_LEG : limb = limbs.get(Datatypes.Part.LEFT_LOWER_LEG);
+			limb.setTopJoint(tempJoint);
+			limbs.put(Datatypes.Part.LEFT_LOWER_LEG, limb);
+			break;
+		case RIGHT_UPPER_LEG : limb = limbs.get(Datatypes.Part.RIGHT_LOWER_LEG);
+			limb.setTopJoint(tempJoint);
+			limbs.put(Datatypes.Part.RIGHT_LOWER_LEG, limb); 
+			break;
+		case LEFT_UPPER_ARM : limb = limbs.get(Datatypes.Part.LEFT_LOWER_ARM);
+			limb.setTopJoint(tempJoint);
+			limbs.put(Datatypes.Part.LEFT_LOWER_ARM, limb);
+			break;
+		case RIGHT_UPPER_ARM : limb = limbs.get(Datatypes.Part.RIGHT_LOWER_ARM);
+			limb.setTopJoint(tempJoint);
+			limbs.put(Datatypes.Part.RIGHT_LOWER_ARM, limb);
+			break;
+		default :
+			break;
+		}
+		System.out.println(limb);
 		this.joints.put(joint, tempJoint);
 		return this;
 	}
@@ -44,8 +67,8 @@ public class Puppet {
 		ILimb upper = joint.getUpperLimb();
 		ILimb lower = joint.getLowerLimb();
 		Joint lowerJ = lower.rotateUpper(rotation);
-	//	lower.setTopJoint(lowerJ);
-	//	upper.setBottomJoint(lowerJ);
+	//  lower.setTopJoint(lowerJ);
+	//  upper.setBottomJoint(lowerJ);
 		return lowerJ;
 	}
 

@@ -5,6 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import edu.mccc.cos210.ds.Array;
+import edu.mccc.cos210.fp.pupp.Datatypes.Part;
 
 public class Limb implements ILimb {
 	
@@ -14,13 +15,21 @@ public class Limb implements ILimb {
 	int centralX = 0;
 	int centralY = 0;
 	BufferedImage image;
-	
+	public Datatypes.Part curr = null;
+	public Limb(double rotation, Joint topJoint, Joint bottomJoint, BufferedImage image, Datatypes.Part curr) {
+		this.curr = curr;
+		this.topJoint = topJoint;
+		this.bottomJoint = bottomJoint;
+		this.image = image;
+		this.rotation = rotation;
+	}
 	public Limb(double rotation, Joint topJoint, Joint bottomJoint, BufferedImage image) {
 		this.topJoint = topJoint;
 		this.bottomJoint = bottomJoint;
 		this.image = image;
 		this.rotation = rotation;
 	}
+
 	public Limb(double d, Joint topJoint, BufferedImage image) {
 		this(d,topJoint,null,image);
 	}
@@ -140,5 +149,9 @@ public class Limb implements ILimb {
 		at.rotate(rotation);
 		at.scale(2.0,1.5);
 		return at;
+	}
+	@Override
+	public Part getCurr() {
+		return curr;
 	}
 }

@@ -2,7 +2,10 @@ package edu.mccc.cos210.fp.pupp;
 
 import java.awt.geom.AffineTransform;
 
+import edu.mccc.cos210.fp.pupp.Datatypes.Part;
+
 public interface ILimb {
+	public Part getCurr();
 	public Joint getTopJoint();
 	public Joint getBottomJoint();
 	
