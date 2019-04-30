@@ -14,12 +14,13 @@ import javax.sound.midi.Track;
 import edu.mccc.cos210.ds.ISortedList;
 import edu.mccc.cos210.ds.IVector;
 import edu.mccc.cos210.ds.Vector;
-import edu.mccc.cos210.fp.pupp.MidiEdit;
-import edu.mccc.cos210.fp.pupp.MidiEdit.TickNode;
+import edu.mccc.cos210.fp.pupp.MidiEditor;
+import edu.mccc.cos210.fp.pupp.TickNode;
+
 
 
 //==========================================================================================
-//track is created by function, not sure where it is.(not the last track)
+//
 //
 //==========================================================================================
 
@@ -29,7 +30,7 @@ public class MidiWriter {
 	private Sequence sequence;
 	private String[] actionlist;
 	
-	public MidiWriter(String[] saction, MidiEdit b, File output) throws Exception {
+	public MidiWriter(String[] saction, MidiEditor b, File output) throws Exception {
 		this.actionlist  = saction;
 		try {
 			synth = MidiSystem.getSynthesizer();
@@ -41,54 +42,42 @@ public class MidiWriter {
 			sequencer = MidiSystem.getSequencer(true);
 			sequence = new Sequence(Sequence.PPQ, b.getResolution());	
 			sequencer.setSequence(sequence);
-//			sequencer.setTempoInBPM();
 			sequencer.open();
 		}catch (Exception ex) {
+			System.err.println("cao1");
 			System.err.println(ex.getMessage());
 			System.exit(-1);
 		}
-		for(int j = 0; j <= b.getTrack().length; j++) {
-			
+		Track newtrack;
+		Track oldtrack;
+		for(int j = 0; j < b.getTrack().length; j++) {    //================================================
+			newtrack = sequence.createTrack();
+			oldtrack = b.getTrack()[j];
+			for(int i = 0; i < oldtrack.size(); i++) {
+				newtrack.add(oldtrack.get(i));
+			}
 		}
-		Track newtrack = sequence.createTrack();
-		Track oldtrack = b.getTrack()[0];
-		for(int i = 0; i < oldtrack.size(); i++) {
-			newtrack.add(oldtrack.get(i));
-		}
-		newtrack = sequence.createTrack();
+		newtrack = sequence.createTrack();		
 		addTrack(b.getAllInfo(),newtrack);
 		MidiSystem.write(
 				sequence,
 				1,
 				output
-			);
-//		for(int i = 0; i < sequence.getTracks()[1].size(); i++) {    for checking only
-//			MidiEvent midiEvent = sequence.getTracks()[1].get(i);
-//			MidiMessage midiMessage = midiEvent.getMessage();
-//			byte[] message = midiMessage.getMessage();
-//			for (int k = 0; k < message.length; k++) {
-//				System.out.print(" ");
-//				if (message[k] > 0) {
-//					System.out.print((char)message[k]);
-//				}
-//				System.out.println(message[k] + " : " + printHex(message[k]));
-//			}
-//		}
+		);
 		sequencer.close();
 		synth.close();
 	}
-//	private String printHex(byte b) {
-//		String s = Integer.toHexString(b & 0x000000ff);
-//		return s.length() == 1 ? "0" + s : s;
-//	}
 	private void addTrack(IVector<ISortedList<TickNode>> infoArray, Track track) throws Exception {
 		for(ISortedList<TickNode> one : infoArray) {
 			for(TickNode tn : one) {
-				puppIt(getActionMessage(tn.getAction()),(int)tn.getTick(),track);
+				Vector<Integer> actionList = tn.getAction();
+				if(actionList.getSize() != 0) {
+					puppIt(getActionMessage(actionList),(int)tn.getTick(),track);
+				}
 			}
 		}
 	}
-	private byte[] getActionMessage(Vector<Integer> actionList) {
+	private byte[] getActionMessage(Vector<Integer> actionList) {  //change here. =======================================
 		StringBuilder sb = new StringBuilder();
 		for (int acts : actionList) {
 			sb.append(encodeIt(acts));
@@ -97,7 +86,7 @@ public class MidiWriter {
 		return sb.substring(0,sb.length()-1).getBytes();
 	}
 	private String encodeIt(int action) {
-		action = Math.abs(action);       // <===================================================== abs
+		action = Math.abs(action);       
 		return this.actionlist[action];
 	}	
 	private void puppIt(byte[] msg, int tick, Track track) throws Exception {
