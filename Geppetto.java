@@ -95,7 +95,7 @@ public class Geppetto {
 	private ImageIcon ico = new ImageIcon("images/icon.png");
 	private FileDialog fd = new FileDialog(jf, "Save As", FileDialog.SAVE);
 	private FileDialog load = new FileDialog(jf, "Load File", FileDialog.LOAD);
-	private MidiEdit reader; 
+	private MidiEditor reader; 
 
 	private void initSwing() {
 		jf = new JFrame("Geppetto");
