@@ -219,16 +219,19 @@ public class Geppetto {
 	}
 	private void calcGrid(ISortedList<TickNode> current, int pointer, int resolution) {
 		this.resetGrid();
-		for(TickNode a : current) {
-			Vector<Integer> actions = a.getAction();
-			double interval = 4 * resolution;
-			int column = (int)(((a.getTick() - (pointer * 4 * resolution)) / interval) * 32);   //  multi-track WILL BE FAILED HERE.
-			column += 1; 
-			for(int b : actions) {
-				if (b < 0) {
-					Grid[Math.abs(b)][column] = -1;
-				} else {
-					Grid[b][column] = 1;
+		if ((current.getSize() != 0) && (((long)(pointer * 4 * resolution) <= (current.getFirst().getTick())) 
+					&& ((long)((pointer + 1) * 4 * resolution) > (current.getFirst().getTick())))) {
+			for(TickNode a : current) {
+				Vector<Integer> actions = a.getAction();
+				double interval = 4 * resolution;
+				int column = (int)(((a.getTick() - (pointer * 4 * resolution)) / interval) * 32);   //  multi-track WILL BE FAILED HERE.
+				column += 1; 
+				for(int b : actions) {
+					if (b < 0) {
+						Grid[Math.abs(b)][column] = -1;
+					} else {
+						Grid[b][column] = 1;
+					}
 				}
 			}
 		}
