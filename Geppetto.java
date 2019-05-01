@@ -64,8 +64,6 @@ public class Geppetto {
 		new Action("Right-Shin Rotate Left"),
 		new Action("Left-Shin Rotate Right"),
 		new Action("Left-Shin Rotate Left"),
-		new Action("Head Rotate Right"),
-		new Action("Head Rotate Left"),
 	};
 	private static int[][] Grid = {
 			{ 00, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
@@ -85,8 +83,6 @@ public class Geppetto {
 			{ 48, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 			{ 49, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 			{ 50, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
-			{ 51, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
-			{ 52, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 	};
 	private Synthesizer synth;
 	private Sequencer sequencer;

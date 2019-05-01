@@ -72,19 +72,23 @@ public class MidiWriter {
 			for(TickNode tn : one) {
 				Vector<Integer> actionList = tn.getAction();
 				if(actionList.getSize() != 0) {
-					puppIt(getActionMessage(actionList),(int)tn.getTick(),track);
+					for (int acts : actionList) {
+						String a = encodeIt(acts);
+						byte[] ba = a.getBytes();
+						puppIt(ba,(int)tn.getTick(),track);
+					}	
 				}
 			}
 		}
 	}
-	private byte[] getActionMessage(Vector<Integer> actionList) {  //change here. =======================================
+	/*private byte[] getActionMessage(Vector<Integer> actionList) {  //change here. =======================================
 		StringBuilder sb = new StringBuilder();
 		for (int acts : actionList) {
 			sb.append(encodeIt(acts));
 			sb.append(":");
 		}
 		return sb.substring(0,sb.length()-1).getBytes();
-	}
+	}*/
 	private String encodeIt(int action) {
 		action = Math.abs(action);       
 		return this.actionlist[action];
