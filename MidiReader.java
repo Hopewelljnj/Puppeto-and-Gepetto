@@ -131,12 +131,6 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 		case "LSRL":
 			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_KNEE, -10.0);
 			break;
-		case "HERR":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.NECK, 10.0);
-			break;
-		case "HERL":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.NECK, -10.0);
-			break;
 		}
 		
 	}

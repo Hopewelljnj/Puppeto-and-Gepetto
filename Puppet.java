@@ -50,6 +50,8 @@ public class Puppet {
 		default:
 			break;
 		}
+		//System.out.println(limb);
+		this.joints.put(joint, tempJoint);
 		return this;
 	}
 	public Joint rotateJoint(Joint joint, double rotation) {
