@@ -9,7 +9,7 @@ public interface ILimb {
 	public Joint getTopJoint();
 	public Joint getBottomJoint();
 	
-	public void setTopJoint(Joint joint);
+	public Limb setTopJoint(Joint joint);
 	public void setBottomJoint(Joint joint);
 	
 	public double getRotation();

@@ -4,15 +4,15 @@ import edu.mccc.cos210.ds.IMap;
 
 public class Puppet {
 	String puppetName = "";
-	IMap<Datatypes.Joint, Joint> joints = new edu.mccc.cos210.ds.Map<>();
-	IMap<Datatypes.Part, ILimb> limbs = new edu.mccc.cos210.ds.Map<>();
+	PuppMap<Datatypes.Joint, Joint> joints = new PuppMap<>();
+	PuppMap<Datatypes.Part, ILimb> limbs = new PuppMap<>();
 
-	public Puppet(String puppetName, IMap<Datatypes.Part, ILimb> limbs, IMap<Datatypes.Joint, Joint> joints) {
+	public Puppet(String puppetName, PuppMap<Datatypes.Part, ILimb> limbs, PuppMap<Datatypes.Joint, Joint> joints) {
 		this.puppetName = puppetName;
 		this.joints = joints;
 		this.limbs = limbs;
 	}
-	public Puppet(String puppetName, IMap<Datatypes.Part, ILimb> limbs) {
+	public Puppet(String puppetName, PuppMap<Datatypes.Part, ILimb> limbs) {
 		this.puppetName = puppetName;
 		this.limbs = limbs;
 		//code to find the joints maybe?//
@@ -37,38 +37,25 @@ public class Puppet {
 	public Puppet doRotate(Datatypes.Joint joint, double rotate) {
 		Joint curJoint = getJointByName(joint);
 		Joint tempJoint = rotateJoint(curJoint, rotate);
-		ILimb lower = curJoint.getLowerLimb();
-		ILimb limb = null;
-		switch(lower.getCurr()) {
-		case LEFT_UPPER_LEG : limb = limbs.get(Datatypes.Part.LEFT_LOWER_LEG);
-			limb.setTopJoint(tempJoint);
-			limbs.put(Datatypes.Part.LEFT_LOWER_LEG, limb);
-			break;
-		case RIGHT_UPPER_LEG : limb = limbs.get(Datatypes.Part.RIGHT_LOWER_LEG);
-			limb.setTopJoint(tempJoint);
-			limbs.put(Datatypes.Part.RIGHT_LOWER_LEG, limb); 
-			break;
-		case LEFT_UPPER_ARM : limb = limbs.get(Datatypes.Part.LEFT_LOWER_ARM);
-			limb.setTopJoint(tempJoint);
-			limbs.put(Datatypes.Part.LEFT_LOWER_ARM, limb);
-			break;
-		case RIGHT_UPPER_ARM : limb = limbs.get(Datatypes.Part.RIGHT_LOWER_ARM);
-			limb.setTopJoint(tempJoint);
-			limbs.put(Datatypes.Part.RIGHT_LOWER_ARM, limb);
-			break;
-		default :
+			//limbs.put(lowerr.getCurr(), lowerr);
+		switch(joint) {
+		//case LHIP : this.joints.put(Datatypes.Joint.LEFT_KNEE, tempJoint); limbs.put(Datatypes.Part.LEFT_LOWER_LEG, (limbs.get(Datatypes.Part.LEFT_LOWER_LEG).setTopJoint(tempJoint)));
+		//	break;
+		case RHIP : System.out.println("RIGHT_KNEE" + this.joints.get(Datatypes.Joint.RIGHT_KNEE)); this.joints.get(Datatypes.Joint.RIGHT_KNEE).setX(tempJoint.getX()); this.joints.get(Datatypes.Joint.RIGHT_KNEE).setY(tempJoint.getY()); System.out.println("RIGHT_KNEE" + this.joints.get(Datatypes.Joint.RIGHT_KNEE));
+		break;
+		case LEFT_SHOULDER : this.joints.get(Datatypes.Joint.LEFT_ELBOW).setX(tempJoint.getX()); this.joints.get(Datatypes.Joint.LEFT_ELBOW).setY(tempJoint.getY());
+		break;
+		case RIGHT_SHOULDER : this.joints.get(Datatypes.Joint.RIGHT_ELBOW).setX(tempJoint.getX()); this.joints.get(Datatypes.Joint.RIGHT_ELBOW).setY(tempJoint.getY());
+		break;
+		default:
 			break;
 		}
-		System.out.println(limb);
-		this.joints.put(joint, tempJoint);
 		return this;
 	}
 	public Joint rotateJoint(Joint joint, double rotation) {
 		ILimb upper = joint.getUpperLimb();
 		ILimb lower = joint.getLowerLimb();
 		Joint lowerJ = lower.rotateUpper(rotation);
-	//  lower.setTopJoint(lowerJ);
-	//  upper.setBottomJoint(lowerJ);
 		return lowerJ;
 	}
 

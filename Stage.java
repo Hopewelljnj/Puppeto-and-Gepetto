@@ -75,8 +75,8 @@ public class Stage {
 		}
 	}
 	private void createPuppets() {
-		IMap<Datatypes.Joint, Joint> joints = new edu.mccc.cos210.ds.Map<>();
-		IMap<Datatypes.Part, ILimb> limbs = new edu.mccc.cos210.ds.Map<>();
+		PuppMap<Datatypes.Joint, Joint> joints = new PuppMap<>();
+		PuppMap<Datatypes.Part, ILimb> limbs = new PuppMap<>();
 		
 		try {
 			bi = ImageIO.read(new File("./data/cut2.png"));
@@ -87,8 +87,8 @@ public class Stage {
 		for(int i = 0;i < 4; i ++) {
 			limbs = null;
 			joints = null;
-			joints = new edu.mccc.cos210.ds.Map<>();
-			limbs = new edu.mccc.cos210.ds.Map<>();
+			joints = new PuppMap<>();
+			limbs = new PuppMap<>();
 			int puppetOffset = 280*i + 50;
 			Joint topHead = new Joint(60 + puppetOffset, 0, null);
 			Limb head = new Limb(0, topHead, bi.getSubimage(4, 8, 44, 74));

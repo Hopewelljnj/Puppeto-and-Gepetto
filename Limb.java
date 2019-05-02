@@ -51,8 +51,9 @@ public class Limb implements ILimb {
 	}
 
 	@Override
-	public void setTopJoint(Joint joint) {
+	public Limb setTopJoint(Joint joint) {
 		topJoint = joint;
+		return this;
 	}
 
 	@Override
