@@ -40,8 +40,8 @@ public class Puppet {
 			//limbs.put(lowerr.getCurr(), lowerr);
 		switch(joint) {
 		//case LHIP : this.joints.put(Datatypes.Joint.LEFT_KNEE, tempJoint); limbs.put(Datatypes.Part.LEFT_LOWER_LEG, (limbs.get(Datatypes.Part.LEFT_LOWER_LEG).setTopJoint(tempJoint)));
-		//	break;
-		case RHIP : System.out.println("RIGHT_KNEE" + this.joints.get(Datatypes.Joint.RIGHT_KNEE)); this.joints.get(Datatypes.Joint.RIGHT_KNEE).setX(tempJoint.getX()); this.joints.get(Datatypes.Joint.RIGHT_KNEE).setY(tempJoint.getY()); System.out.println("RIGHT_KNEE" + this.joints.get(Datatypes.Joint.RIGHT_KNEE));
+		//break;
+		case RHIP : this.joints.get(Datatypes.Joint.RIGHT_KNEE).setX(tempJoint.getX()); this.joints.get(Datatypes.Joint.RIGHT_KNEE).setY(tempJoint.getY());
 		break;
 		case LEFT_SHOULDER : this.joints.get(Datatypes.Joint.LEFT_ELBOW).setX(tempJoint.getX()); this.joints.get(Datatypes.Joint.LEFT_ELBOW).setY(tempJoint.getY());
 		break;

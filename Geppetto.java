@@ -16,14 +16,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import javax.sound.midi.MetaMessage;
-import javax.sound.midi.MidiEvent;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
-import javax.sound.midi.Soundbank;
-import javax.sound.midi.Synthesizer;
-import javax.sound.midi.Track;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -84,12 +76,6 @@ public class Geppetto {
 			{ 49, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 			{ 50, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 	};
-	private Synthesizer synth;
-	private Sequencer sequencer;
-	private Sequence sequence;
-	private Track track;
-	private float BPMinute = 0;
-	private static final int META_EndofTrack = 47;
 	private static File song;
 	private JFrame jf;
 	private ImageIcon ico = new ImageIcon("images/icon.png");
@@ -102,7 +88,7 @@ public class Geppetto {
 		jf.addWindowListener(new MyWindowListener());
 		fd.setVisible(false);
 		JPanel jp = new JPanel();
-		AddMenu am = new AddMenu(ActionList, sequence, Grid);
+		AddMenu am = new AddMenu(ActionList, Grid);
 		jp.setLayout(new GridLayout(1, 4));
 		JButton jb = new JButton("ClearMidi");
 		jb.addActionListener(
@@ -157,12 +143,10 @@ public class Geppetto {
 						if(load.getFile() != null) {
 							String file = load.getFile();
 							if(file.contains(".mid") || file.contains(".midi")) {
-//								System.out.println("Locked and Loaded Boss!");
 								song = new File(load.getDirectory(), load.getFile());
 								edit = new MidiEditor(song);
 								calcGrid(edit.getCurrentList(),edit.getPointer(),edit.getResolution());
-								jf.repaint();								
-								// do !!!!!!!!!!!!!            <==================================================							
+								jf.repaint();														
 							}
 						}
 					} catch (Exception ex) {
@@ -187,7 +171,6 @@ public class Geppetto {
 					} else {
 						JOptionPane.showMessageDialog(null, "LOAD MIDI!!!!!", "Error", JOptionPane.ERROR_MESSAGE); 
 					}
-														//<==================================================
 				}
 			);
 		np.add(npb);
@@ -203,7 +186,7 @@ public class Geppetto {
 						jf.repaint();     
 					} else {
 						JOptionPane.showMessageDialog(null, "LOAD MIDI!!!!!", "Error", JOptionPane.ERROR_MESSAGE); 				
-					}                                     //<==================================================
+					}
 				}
 			);
 		np.add(npb);
@@ -272,23 +255,19 @@ public class Geppetto {
 	public class AddMenu extends JPanel {
 		private static final long serialVersionUID = 1L;
 		private Action[] al;
-		private Sequence sq;
-//		private int[][] Grid;
 		private int textX = 8;
 		private int gridX = 170;
 		private int topY = 32;
 		private int xSize = 16;
 		private int ySize = 22;
-		public AddMenu(Action[] al, Sequence sequence, int[][] grid) {
+		public AddMenu(Action[] al, int[][] grid) {
 			this.al = al;
-			this.sq = sequence;
-//			this.Grid = grid;
 			addMouseListener(new MyMouseListener());
 		}
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g.create();
-			Font font = new Font("Verdana", Font.BOLD, 12);
+			Font font = new Font("Comic Sans", Font.BOLD, 12);
 			g2d.setFont(font);
 			for (int i = 0; i < al.length; i++) {
 				g2d.drawString(al[i].getName(), textX, topY + i * ySize);
@@ -298,7 +277,7 @@ public class Geppetto {
 					Rectangle r = new Rectangle(xSize, ySize);
 					r.translate(gridX + j *xSize, topY + (i - 2) * ySize);
 					g2d.draw(r);
-					 								//<==============================================================
+					 								
 					if (Grid[i][j] == -1) {
 						g2d.setColor(Color.red);
 						g2d.fill(r);
@@ -307,7 +286,7 @@ public class Geppetto {
 						if (Grid[i][j] != 0) {
 							g2d.fill(r);
 						}
-					} 								//<==================================================================
+					} 								
 				}
 			}
 			g2d.setStroke(new BasicStroke(2.0f));
@@ -336,8 +315,8 @@ public class Geppetto {
 				if (c > 0 && c <= 32 && r > 0 && r < 19) {
 					Grid[r][c] = Grid[r][c] == 1 ? 0 : 1;
 					if(edit != null) {
-						edit.updateAction(Grid[r][c],r,calcTick(c));   //bug 1 fixed
-					}										// <======================================== do here
+						edit.updateAction(Grid[r][c],r,calcTick(c));
+					}
 				}
 				repaint();
 			}

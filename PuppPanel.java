@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -44,9 +43,7 @@ public class PuppPanel extends JPanel {
 				Joint upper = curLimb.getTopJoint();
 				Joint lower = curLimb.getBottomJoint();
 				if(upper == null) 
-					upper = new Joint(offset * curPuppet,0, curLimb); //<- offset is always zero?
-					//g2d.drawImage((Image) curLimb.image, curLimb.getAT(), this);
-					//g2d.drawImage((Image)curLimb.image, 45, 25, lower.getX() + curLimb.image.getWidth(), lower.getY() + 40, 0, 0, curLimb.image.getWidth(), curLimb.image.getHeight(), this);
+					upper = new Joint(offset * curPuppet,0, curLimb);
 				if(upper != null) {
 					AffineTransform at = new AffineTransform();
 					at.translate((double) upper.getX() - 7, (double) upper.getY() + 5);
@@ -81,13 +78,11 @@ public class PuppPanel extends JPanel {
 					Joint botJoint = curLimb.getBottomJoint();
 					g2d.setColor(Color.WHITE);
 					g2d.drawImage(curImage, at, this);
-					//g2d.drawImage(curImage, topJoint.getX() + width/2, topJoint.getY(), topJoint.getX() - width/2, botJoint.getY(), 0, 0, curImage.getWidth(this), curImage.getHeight(this), this);
+					
 				}
-					//g2d.drawImage((Image)curLimb.image, upper.getX() - upper.getX()/2, upper.getY() - upper.getY()/2, lower.getX() + lower.getX()/2, lower.getY( + lower.getY()/2), 0, 0, curLimb.image.getWidth(), curLimb.image.getHeight(), this);
 			}}
 			curPuppet++;
 			}
-			//g2d.drawLine(100, 100, 100, 235);
 			g2d.dispose();
 		}
 	}

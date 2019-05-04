@@ -4,18 +4,13 @@ import java.awt.Color;
 import java.awt.FileDialog;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import edu.mccc.cos210.ds.Array;
-import edu.mccc.cos210.ds.IMap;
-import edu.mccc.cos210.ds.ISet;
 
 public class Stage {
 	private JFrame jf;
@@ -29,7 +24,7 @@ public class Stage {
 		createPuppets();
 		initswing();
 	}
-	//Insert real numbers in here once we have an idea of sizes
+
 	private void initswing() {
 		jf = new JFrame("Puppetto");
 		jf.addWindowListener(new MyWindowListener());
@@ -42,17 +37,6 @@ public class Stage {
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setVisible(true);
-		/*try {
-			bi = ImageIO.read(new File("./images/dinos/Dinos.png"));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			System.exit(-1);
-		}*/
-		
-		
-		
-		
-		
 		fd.setVisible(true);
 		if (fd.getFile() != null) {
 			String file = fd.getFile();
@@ -100,6 +84,8 @@ public class Stage {
 			Limb lUpperArm = new Limb(Math.toRadians(15), lShoulder, bi.getSubimage(246, 10, 28, 100));
 			lShoulder.setUpperLimb(torso);
 			rShoulder.setUpperLimb(torso);
+			lShoulder.setLowerLimb(lUpperArm);
+			rShoulder.setLowerLimb(rUpperArm);
 			lUpperArm.setTopJoint(lShoulder);
 			rUpperArm.setTopJoint(rShoulder);
 			Joint rElbow = new Joint(155 + puppetOffset, 240, rUpperArm);
@@ -109,12 +95,11 @@ public class Stage {
 			lUpperArm.setBottomJoint(lElbow);
 			rUpperArm.setBottomJoint(rElbow);
 			rElbow.setUpperLimb(rUpperArm);
-			rElbow.setLowerLimb(rLowerArm);
 			lElbow.setUpperLimb(lUpperArm);
+			rElbow.setLowerLimb(rLowerArm);
 			lElbow.setLowerLimb(lLowerArm);
 			lLowerArm.setTopJoint(lElbow);
 			rLowerArm.setTopJoint(rElbow);
-			//wrists
 			Hip hip = new Hip(70 + puppetOffset, neck.getY() + 190, torso, bi.getSubimage(146, 8, 70, 68));
 			Joint lHip = new Joint(80 + puppetOffset, neck.getY() + 190, torso);
 			Limb lUpperLeg = new Limb(0, hip.getLeftHip(), null, bi.getSubimage(344, 10, 36, 142), Datatypes.Part.LEFT_UPPER_LEG);
@@ -134,12 +119,11 @@ public class Stage {
 			lUpperLeg.setBottomJoint(lKnee);
 			rUpperLeg.setBottomJoint(rKnee);
 			rKnee.setUpperLimb(rUpperLeg);
-			rKnee.setLowerLimb(rLowerLeg);
 			lKnee.setUpperLimb(lUpperLeg);
+			rKnee.setLowerLimb(rLowerLeg);
 			lKnee.setLowerLimb(lLowerLeg);
 			lLowerLeg.setTopJoint(lKnee);
 			rLowerLeg.setTopJoint(rKnee);
-			//ankles :S
 			
 			joints.put(Datatypes.Joint.NECK, neck);
 			joints.put(Datatypes.Joint.LEFT_SHOULDER, lShoulder);
@@ -161,8 +145,7 @@ public class Stage {
 			limbs.put(Datatypes.Part.RIGHT_UPPER_LEG, rUpperLeg);
 			limbs.put(Datatypes.Part.LEFT_LOWER_LEG, lLowerLeg);
 			limbs.put(Datatypes.Part.RIGHT_LOWER_LEG, rLowerLeg);
-			ISet<Datatypes.Joint> jointsSet = joints.keySet();
-			ISet<Datatypes.Part> partsSet = limbs.keySet();
+			
 			if(debug) {
 			for(Datatypes.Joint part : joints.keySet()) {
 				System.out.print(part + "\n");
@@ -170,16 +153,13 @@ public class Stage {
 				System.out.println();
 			}}
 			puppets.set(i, new Puppet(("Puppet" + i), limbs, joints));
-			
-			
-		}
+			}
 	}
 	public void rotatePuppetLimb(int puppetIndex, Datatypes.Joint joint, double rotation) {
-		for(int pupperIndex = 0; puppetIndex < 5; puppetIndex ++) {
+		for(puppetIndex = 0; puppetIndex < 5; puppetIndex ++) {
 		Puppet curPup = puppets.get(puppetIndex);
 		Puppet newPup = curPup.doRotate(joint, rotation);
 		puppets.set(puppetIndex, newPup);
 		}
-		//System.out.println(newPup);
 	}
 }
