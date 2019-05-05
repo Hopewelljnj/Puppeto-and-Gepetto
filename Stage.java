@@ -1,20 +1,29 @@
 package edu.mccc.cos210.fp.pupp;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FileDialog;
+import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+
 import edu.mccc.cos210.ds.Array;
 
 public class Stage {
 	private JFrame jf;
 	private ImageIcon ico = new ImageIcon("images/icon.png");
+	private JToggleButton jtb = new JToggleButton("Play");
 	private FileDialog fd = new FileDialog(jf, "Load File", FileDialog.LOAD);
 	private BufferedImage bi;
 	private boolean debug = true;
@@ -30,34 +39,59 @@ public class Stage {
 		jf.addWindowListener(new MyWindowListener());
 		JPanel jp = new PuppPanel(puppets, offset);
 		jp.setSize(1200,600);
-		jf.setSize(1200,600);
-		jf.setIconImage(ico.getImage());
-		jf.add(jp);
 		jp.setBackground(new Color(200, 80, 80));
+		JPanel np = new JPanel();
+		np.setLayout(new GridLayout(1, 2));
+		jf.setSize(1200,700);
+		jf.setIconImage(ico.getImage());
+		JButton jb = new JButton("Load!");
+		jb.addActionListener(
+				ae -> {
+					try {	
+						fd.setVisible(true);
+						if(fd.getFile() != null) {
+							String file = fd.getFile();
+							if(file.contains(".mid") || file.contains(".midi")) {
+								new MidiReader(this, new File(fd.getDirectory(),fd.getFile()));
+							}
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						System.exit(-1);
+					}
+				}	
+				);
+		np.add(jb);
+		jtb.addActionListener(
+				ae -> {
+					if (ae.getSource() instanceof JToggleButton) {
+						try {
+							if (!jtb.isSelected()) {
+								if (MidiReader.sequencer.isRunning()) {
+									jtb.setText("Play");
+									MidiReader.sequencer.stop();
+								}
+							} else {
+								if (!MidiReader.sequencer.isRunning()) {
+									jtb.setText("Stop");
+								MidiReader.sequencer.start();
+								}
+							}
+						} catch (Exception ex) {
+						System.err.println(ex.getMessage());
+						System.exit(-1);
+					}
+				}
+			}
+		);
+		np.add(jtb);
+		jf.add(np, BorderLayout.SOUTH);
+		jf.add(jp, BorderLayout.CENTER);
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setVisible(true);
-		fd.setVisible(true);
-		if (fd.getFile() != null) {
-			String file = fd.getFile();
-			
-			if(file.contains(".mid") || file.contains(".midi")) {
-				System.out.println("yerp!");
-				new MidiReader(this, new File(fd.getDirectory(),fd.getFile()));
-			}
-		}
-
 	}
-	private class MyWindowListener extends WindowAdapter {
-		@Override
-		public void windowClosing(WindowEvent we) {
-			if(MidiReader.sequencer != null)
-			MidiReader.sequencer.close();
-			if(MidiReader.synth != null)
-			MidiReader.synth.close();
-			System.exit(-1);
-		}
-	}
+	
 	private void createPuppets() {
 		PuppMap<Datatypes.Joint, Joint> joints = new PuppMap<>();
 		PuppMap<Datatypes.Part, ILimb> limbs = new PuppMap<>();
@@ -155,6 +189,19 @@ public class Stage {
 			puppets.set(i, new Puppet(("Puppet" + i), limbs, joints));
 			}
 	}
+	private class MyWindowListener extends WindowAdapter{
+		public void windowClosing(WindowEvent e) {
+			if(MidiReader.sequencer != null) {
+				MidiReader.sequencer.close();
+			}
+			if(MidiReader.synth != null) {
+				MidiReader.synth.close();
+			}
+			System.exit(-1);
+		}
+	}
+		
+
 	public void rotatePuppetLimb(int puppetIndex, Datatypes.Joint joint, double rotation) {
 		for(puppetIndex = 0; puppetIndex < 5; puppetIndex ++) {
 		Puppet curPup = puppets.get(puppetIndex);

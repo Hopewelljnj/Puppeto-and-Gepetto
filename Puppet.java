@@ -55,6 +55,7 @@ public class Puppet {
 		return this;
 	}
 	public Joint rotateJoint(Joint joint, double rotation) {
+		@SuppressWarnings("unused")
 		ILimb upper = joint.getUpperLimb();
 		ILimb lower = joint.getLowerLimb();
 		Joint lowerJ = lower.rotateUpper(rotation);

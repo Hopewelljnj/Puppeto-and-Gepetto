@@ -78,7 +78,6 @@ public class Limb implements ILimb {
 		return forwardRotation(close, far, rotation);
 
 	}
-	//rotation in degrees
 	@Override
 	public void rotateLower(double rotation) {
 		Joint far = this.getBottomJoint();
@@ -110,13 +109,12 @@ public class Limb implements ILimb {
 	}
 	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
-		//if(far == null || close == null) {
-			this.rotation = Math.toRadians(rotation) +this.rotation;
-			if(true)return far;
-		//}
+		this.rotation = Math.toRadians(rotation) +this.rotation;
+		if(true)return far;
+		@SuppressWarnings("unused")
 		double distance = distance(close,far);
-		Array<Integer> oldCoords = reverseRotation(close,far); //old coords are new far
-		double angle = (double)this.rotation + Math.toRadians(rotation); // total angle from 0 angle
+		Array<Integer> oldCoords = reverseRotation(close,far);
+		double angle = (double)this.rotation + Math.toRadians(rotation);
 		double radAng = angle;
 		int x = (int) ((int) oldCoords.get(0) - (int) distance*Math.sin(radAng));
 		int y = (int) ((int) oldCoords.get(1) + (int) distance*Math.cos(radAng));
@@ -126,13 +124,6 @@ public class Limb implements ILimb {
 		this.rotation = angle;
 		return far;
 	}
-	/*
-	double rotation;
-	Joint topJoint = null;
-	Joint bottomJoint = null;
-	int centralX = 0;
-	int centralY = 0;
-	BufferedImage image;	 */
 	@Override
 	public String toString() {
 		String string = "topJoint : " + (topJoint != null ? topJoint.toString() : "null") + "\n" +
