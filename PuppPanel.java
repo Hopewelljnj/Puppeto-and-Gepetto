@@ -12,11 +12,9 @@ import javax.swing.JPanel;
 import edu.mccc.cos210.ds.Array;
 
 public class PuppPanel extends JPanel {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	public Array<Puppet> puppets = new Array<>(4);
+	public Array<Puppet> puppets = null;
+	private static final int FPS = 30;
 	BufferedImage bi;
 	int offset = 0;
 	int curPuppet = 0;
@@ -26,8 +24,10 @@ public class PuppPanel extends JPanel {
 		this.puppets = puppets;
 		this.offset = offset;
 		javax.swing.Timer t = new javax.swing.Timer(
-				100,
-				ae -> repaint()
+				1000 / FPS,
+				ae ->{
+					repaint();
+				}
 			);
 			t.start();
 	}

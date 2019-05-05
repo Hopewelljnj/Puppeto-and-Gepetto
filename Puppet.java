@@ -15,7 +15,6 @@ public class Puppet {
 	public Puppet(String puppetName, PuppMap<Datatypes.Part, ILimb> limbs) {
 		this.puppetName = puppetName;
 		this.limbs = limbs;
-		//code to find the joints maybe?//
 	}
 	public Puppet(String puppetName) {
 		this.puppetName = puppetName;
