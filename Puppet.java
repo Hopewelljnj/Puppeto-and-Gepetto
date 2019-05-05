@@ -1,18 +1,19 @@
 package edu.mccc.cos210.fp.pupp;
 
 import edu.mccc.cos210.ds.IMap;
+import edu.mccc.cos210.ds.Map;
 
 public class Puppet {
 	String puppetName = "";
-	PuppMap<Datatypes.Joint, Joint> joints = new PuppMap<>();
-	PuppMap<Datatypes.Part, ILimb> limbs = new PuppMap<>();
+	IMap<Datatypes.Joint, Joint> joints = new Map<>();
+	IMap<Datatypes.Part, ILimb> limbs = new Map<>();
 
-	public Puppet(String puppetName, PuppMap<Datatypes.Part, ILimb> limbs, PuppMap<Datatypes.Joint, Joint> joints) {
+	public Puppet(String puppetName, IMap<Datatypes.Part, ILimb> limbs, IMap<Datatypes.Joint, Joint> joints) {
 		this.puppetName = puppetName;
 		this.joints = joints;
 		this.limbs = limbs;
 	}
-	public Puppet(String puppetName, PuppMap<Datatypes.Part, ILimb> limbs) {
+	public Puppet(String puppetName, IMap<Datatypes.Part, ILimb> limbs) {
 		this.puppetName = puppetName;
 		this.limbs = limbs;
 	}

@@ -6,12 +6,10 @@ import java.awt.FileDialog;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
 import javax.imageio.ImageIO;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import edu.mccc.cos210.ds.Array;
+import edu.mccc.cos210.ds.IMap;
+import edu.mccc.cos210.ds.Map;
 
 public class Stage {
 	private JFrame jf;
@@ -94,8 +94,8 @@ public class Stage {
 	}
 	
 	private void createPuppets() {
-		PuppMap<Datatypes.Joint, Joint> joints = new PuppMap<>();
-		PuppMap<Datatypes.Part, ILimb> limbs = new PuppMap<>();
+		IMap<Datatypes.Joint, Joint> joints = new Map<>();
+		IMap<Datatypes.Part, ILimb> limbs = new Map<>();
 		
 		try {
 			bi = ImageIO.read(new File("./data/cut2.png"));
@@ -107,8 +107,8 @@ public class Stage {
 		for(int i = 0;i < 4; i ++) {
 			limbs = null;
 			joints = null;
-			joints = new PuppMap<>();
-			limbs = new PuppMap<>();
+			joints = new Map<>();
+			limbs = new Map<>();
 			int puppetOffset = 280*i + 50;
 			Joint topHead = new Joint(60 + puppetOffset, 0, null);
 			Limb head;
