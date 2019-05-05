@@ -68,6 +68,9 @@ public class PuppPanel extends JPanel {
 							break;
 						case RIGHT_LOWER_LEG : at.scale(0.5,0.6);
 							break;
+						case HEAD : at.translate(5.0,0.0);
+							at.scale(0.15,0.15);
+							break;
 						default : at = curLimb.getAT();
 							break;
 					}

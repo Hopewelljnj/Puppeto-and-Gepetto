@@ -26,6 +26,7 @@ public class Stage {
 	private JToggleButton jtb = new JToggleButton("Play");
 	private FileDialog fd = new FileDialog(jf, "Load File", FileDialog.LOAD);
 	private BufferedImage bi;
+	private BufferedImage bi2;
 	private boolean debug = true;
 	private int offset = 0;
 	public Array<Puppet> puppets = new Array<>(4);
@@ -98,6 +99,7 @@ public class Stage {
 		
 		try {
 			bi = ImageIO.read(new File("./data/cut2.png"));
+			bi2 = ImageIO.read(new File("./data/cut1.png"));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.exit(-1);
@@ -109,7 +111,18 @@ public class Stage {
 			limbs = new PuppMap<>();
 			int puppetOffset = 280*i + 50;
 			Joint topHead = new Joint(60 + puppetOffset, 0, null);
-			Limb head = new Limb(0, topHead, bi.getSubimage(4, 8, 44, 74));
+			Limb head;
+			switch(i) {
+			case 0 : head = new Limb(0, topHead, bi2.getSubimage(20, 40, 350, 520));
+				break;
+			case 1 : head = new Limb(0, topHead, bi2.getSubimage(400, 40, 350, 520));
+				break;
+			case 2 : head = new Limb(0, topHead, bi2.getSubimage(20, 630, 350, 520));
+				break;
+			case 3 : head = new Limb(0, topHead, bi2.getSubimage(400, 630, 350, 520));
+				break;
+			default : head = new Limb(0, topHead, bi2.getSubimage(4, 8, 44, 74));
+			}
 			Joint neck = new Joint(50 + puppetOffset, 100, head);
 			Limb torso = new Limb(0, neck, bi.getSubimage(66, 8, 70, 94));
 			Joint lShoulder = new Joint(50 + puppetOffset,130,torso);
