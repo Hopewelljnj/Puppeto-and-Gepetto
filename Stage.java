@@ -55,6 +55,11 @@ public class Stage {
 							String file = fd.getFile();
 							if(file.contains(".mid") || file.contains(".midi")) {
 								createPuppets();
+								if(MidiReader.sequencer != null) {
+								if (MidiReader.sequencer.isRunning()) {
+									jtb.setText("Play");
+									MidiReader.sequencer.stop();
+								}}
 								new MidiReader(this, new File(fd.getDirectory(),fd.getFile()));
 							}
 						}
@@ -201,9 +206,10 @@ public class Stage {
 			limbs.put(Datatypes.Part.RIGHT_LOWER_LEG, rLowerLeg);
 			
 			if(debug) {
-			for(Datatypes.Joint part : joints.keySet()) {
+			for(Datatypes.Part part : limbs.keySet()) {
 				System.out.print(part + "\n");
-				System.out.println(joints.get(part));
+				limbs.get(part).calcDistance();
+				System.out.println(limbs.get(part));
 				System.out.println();
 			}}
 			puppets.set(i, new Puppet(("Puppet" + i), limbs, joints));

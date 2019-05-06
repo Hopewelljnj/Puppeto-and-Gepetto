@@ -16,6 +16,7 @@ public class Limb implements ILimb {
 	int centralY = 0;
 	BufferedImage image;
 	public Datatypes.Part curr = null;
+	private double distance = 0.0;
 	protected ILimb lowerLimb = null;
 	public Limb(double rotation, Joint topJoint, Joint bottomJoint, BufferedImage image, Datatypes.Part curr, ILimb lowerLimb) {
 		this(rotation, topJoint, bottomJoint, image, curr);
@@ -98,38 +99,41 @@ public class Limb implements ILimb {
 	}
 	
 	public double distance(int x1, int y1, int x2, int y2) {
-		return Math.sqrt((x2-x1)^2 + (y2-y1)^2);
+		double total = ((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1));
+		System.out.println("total" + total);
+		double distance = Math.sqrt(total);
+		System.out.println("Distance is : " + x1 + "," + x2 + " : " + y1 + "," + y2 + " : " + distance);
+		return distance;
 	}
 	public double distance(Joint close, Joint far) {
-		return distance(close.x,close.y,far.x,far.y);
-	}
+		if(close != null && far != null)
+			return distance(close.x,close.y,far.x,far.y);
+		return 0.0;
+	}	
 	public Array<Integer> reverseRotation(Joint close, Joint far) {
-		double distance = distance(close,far);
 		Array<Integer> coords = new Array<>(2);
-		int x = (int) ((int) far.x + (int) distance*Math.sin(Math.toRadians((double) rotation)));
-		int y = (int) ((int) far.y - (int) distance*Math.acos(Math.toRadians((double) rotation)));
+		int x = (int) ((int) far.x + (int) distance*Math.sin(rotation));
+		int y = (int) ((int) far.y - (int) distance*Math.cos(rotation));
 		coords.set(0, x);
 		coords.set(1, y);
 		return coords;
 	}
 	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
-		this.rotation = Math.toRadians(rotation) +this.rotation;
+		this.rotation = Math.toRadians(rotation) + this.rotation;
 		//if(true)return far;
 		@SuppressWarnings("unused")
-		double distance = distance(close,far);
 		Array<Integer> oldCoords = reverseRotation(close,far);
-		double angle = (double)this.rotation + Math.toRadians(rotation);
+		double angle = rotation;
 		double radAng = angle;
-		int x = (int) ((int) oldCoords.get(0) - (int) distance*Math.sin(radAng));
-		int y = (int) ((int) oldCoords.get(1) + (int) distance*Math.cos(radAng));
+		int x = (int) ((int) oldCoords.get(0) - (int) distance*Math.sin(radAng)/2);
+		int y = (int) ((int) oldCoords.get(1) - (int) distance*Math.cos(radAng)/2);
 		far.setX(x);
 		far.setY(y);
 		far.getLowerLimb().setTopJoint(far);
 		this.setBottomJoint(far);
 		System.out.println(this.bottomJoint);
 		System.out.println(far);
-		this.rotation = angle;
 		return far;
 	}
 	@Override
@@ -161,5 +165,8 @@ public class Limb implements ILimb {
 	@Override
 	public void setLowerLimb(ILimb lowerLimb) {
 		this.lowerLimb = lowerLimb;
+	}
+	public void calcDistance() {
+		this.distance = distance(topJoint,bottomJoint);
 	}
 }

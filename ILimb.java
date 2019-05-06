@@ -22,4 +22,5 @@ public interface ILimb {
 	public void move(int x, int y , Joint joint);
 	public void setLowerLimb(ILimb lowerLimb);
 	public ILimb getLowerLimb();
+	public void calcDistance();
 }

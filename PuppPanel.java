@@ -37,24 +37,11 @@ public class PuppPanel extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g.create();
 			for(Puppet puppet : puppets) {
+				//System.out.println(puppet);
 			for(Datatypes.Part part : puppet.getLimbs().keySet()) {
 				if(part != null) {// && part == Datatypes.Part.LEFT_LOWER_ARM) {
 				Limb curLimb = (Limb) puppet.getLimbs().get(part);
-				Joint upper = null;
-				switch(part) {
-				case RIGHT_LOWER_ARM : upper = puppet.getLimbs().get(Datatypes.Part.RIGHT_UPPER_ARM).getBottomJoint();
-					break;
-				case LEFT_LOWER_ARM : upper = puppet.getLimbs().get(Datatypes.Part.LEFT_UPPER_ARM).getBottomJoint();
-					break;
-				case RIGHT_LOWER_LEG : upper = puppet.getLimbs().get(Datatypes.Part.RIGHT_UPPER_LEG).getBottomJoint();
-					break;
-				case LEFT_LOWER_LEG : upper = puppet.getLimbs().get(Datatypes.Part.LEFT_UPPER_LEG).getBottomJoint();
-					break;
-				default : upper = curLimb.getTopJoint();
-					break;
-				}
-				if(upper == null) 
-					  upper = new Joint(offset * curPuppet,0, curLimb);
+				Joint upper = curLimb.getTopJoint();
 				if(upper != null) {
 					AffineTransform at = new AffineTransform();
 					at.translate((double) upper.getX() - 7, (double) upper.getY() + 5);
@@ -65,7 +52,7 @@ public class PuppPanel extends JPanel {
 							break;
 						case LEFT_UPPER_ARM : at.scale(0.8,0.75);
 							break;
-						case RIGHT_UPPER_ARM : at.scale(0.8,0.75);
+						case RIGHT_UPPER_ARM : at.scale(0.8,0.75); at.translate(0.0,-10.0);
 							break;
 						case LEFT_LOWER_ARM : at.scale(0.8,0.5);
 							break;

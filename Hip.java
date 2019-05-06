@@ -10,7 +10,7 @@ public class Hip extends Joint{
 	public BufferedImage image;
 	public Hip(int x, int y, ILimb upperLimb, BufferedImage image) {
 		super(x, y, upperLimb);
-		this.setLeftHip(new Joint(x+10,y,null));
+		this.setLeftHip(new Joint(x+10,y-10,null));
 		this.setRightHip(new Joint(x+40,y,null));
 		this.image = image;
 	}

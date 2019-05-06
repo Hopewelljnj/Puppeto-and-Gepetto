@@ -65,5 +65,14 @@ public class Puppet {
 		}
 		return lowerJ;
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(Datatypes.Part part : limbs.keySet()) {
+			sb.append(part + " : " + limbs.get(part) + "\n");
+		}
+		String returnString = sb.toString();
+		return returnString;
+	}
 
 }
