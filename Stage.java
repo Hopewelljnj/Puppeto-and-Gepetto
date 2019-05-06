@@ -79,9 +79,12 @@ public class Stage {
 								MidiReader.sequencer.start();
 								}
 							}
-						} catch (Exception ex) {
-						System.err.println(ex.getMessage());
-						System.exit(-1);
+						} catch(NullPointerException exp) {
+							System.out.println("Load a file first!!!");
+						}
+						catch (Exception ex) {
+							System.err.println(ex.getMessage());
+							System.exit(-1);
 					}
 				}
 			}
@@ -142,6 +145,8 @@ public class Stage {
 			Limb rLowerArm = new Limb(0, rElbow, bi.getSubimage(300, 8, 22, 148));
 			lUpperArm.setBottomJoint(lElbow);
 			rUpperArm.setBottomJoint(rElbow);
+			lUpperArm.setLowerLimb(lLowerArm);
+			rUpperArm.setLowerLimb(rLowerArm);
 			rElbow.setUpperLimb(rUpperArm);
 			lElbow.setUpperLimb(lUpperArm);
 			rElbow.setLowerLimb(rLowerArm);

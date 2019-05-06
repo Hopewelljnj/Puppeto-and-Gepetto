@@ -40,10 +40,21 @@ public class PuppPanel extends JPanel {
 			for(Datatypes.Part part : puppet.getLimbs().keySet()) {
 				if(part != null) {// && part == Datatypes.Part.LEFT_LOWER_ARM) {
 				Limb curLimb = (Limb) puppet.getLimbs().get(part);
-				Joint upper = curLimb.getTopJoint();
-				Joint lower = curLimb.getBottomJoint();
+				Joint upper = null;
+				switch(part) {
+				case RIGHT_LOWER_ARM : upper = puppet.getLimbs().get(Datatypes.Part.RIGHT_UPPER_ARM).getBottomJoint();
+					break;
+				case LEFT_LOWER_ARM : upper = puppet.getLimbs().get(Datatypes.Part.LEFT_UPPER_ARM).getBottomJoint();
+					break;
+				case RIGHT_LOWER_LEG : upper = puppet.getLimbs().get(Datatypes.Part.RIGHT_UPPER_LEG).getBottomJoint();
+					break;
+				case LEFT_LOWER_LEG : upper = puppet.getLimbs().get(Datatypes.Part.LEFT_UPPER_LEG).getBottomJoint();
+					break;
+				default : upper = curLimb.getTopJoint();
+					break;
+				}
 				if(upper == null) 
-					upper = new Joint(offset * curPuppet,0, curLimb);
+					  upper = new Joint(offset * curPuppet,0, curLimb);
 				if(upper != null) {
 					AffineTransform at = new AffineTransform();
 					at.translate((double) upper.getX() - 7, (double) upper.getY() + 5);

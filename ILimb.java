@@ -19,5 +19,7 @@ public interface ILimb {
 	
 	public Joint rotateUpper(double rotation);
 	public void rotateLower(double rotation);
-	public void move(int x, int y , Joint joint);	
+	public void move(int x, int y , Joint joint);
+	public void setLowerLimb(ILimb lowerLimb);
+	public ILimb getLowerLimb();
 }

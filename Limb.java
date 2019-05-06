@@ -16,6 +16,11 @@ public class Limb implements ILimb {
 	int centralY = 0;
 	BufferedImage image;
 	public Datatypes.Part curr = null;
+	protected ILimb lowerLimb = null;
+	public Limb(double rotation, Joint topJoint, Joint bottomJoint, BufferedImage image, Datatypes.Part curr, ILimb lowerLimb) {
+		this(rotation, topJoint, bottomJoint, image, curr);
+		this.lowerLimb = lowerLimb;
+	}
 	public Limb(double rotation, Joint topJoint, Joint bottomJoint, BufferedImage image, Datatypes.Part curr) {
 		this.curr = curr;
 		this.topJoint = topJoint;
@@ -110,7 +115,7 @@ public class Limb implements ILimb {
 	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
 		this.rotation = Math.toRadians(rotation) +this.rotation;
-		if(true)return far;
+		//if(true)return far;
 		@SuppressWarnings("unused")
 		double distance = distance(close,far);
 		Array<Integer> oldCoords = reverseRotation(close,far);
@@ -121,6 +126,9 @@ public class Limb implements ILimb {
 		far.setX(x);
 		far.setY(y);
 		far.getLowerLimb().setTopJoint(far);
+		this.setBottomJoint(far);
+		System.out.println(this.bottomJoint);
+		System.out.println(far);
 		this.rotation = angle;
 		return far;
 	}
@@ -145,5 +153,13 @@ public class Limb implements ILimb {
 	@Override
 	public Part getCurr() {
 		return curr;
+	}
+	@Override
+	public ILimb getLowerLimb() {
+		return lowerLimb;
+	}
+	@Override
+	public void setLowerLimb(ILimb lowerLimb) {
+		this.lowerLimb = lowerLimb;
 	}
 }

@@ -59,6 +59,10 @@ public class Puppet {
 		ILimb upper = joint.getUpperLimb();
 		ILimb lower = joint.getLowerLimb();
 		Joint lowerJ = lower.rotateUpper(rotation);
+		ILimb bottom = lower.getLowerLimb();
+		if(bottom != null) {
+			bottom.setTopJoint(lowerJ);
+		}
 		return lowerJ;
 	}
 
