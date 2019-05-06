@@ -53,6 +53,7 @@ public class Stage {
 						if(fd.getFile() != null) {
 							String file = fd.getFile();
 							if(file.contains(".mid") || file.contains(".midi")) {
+								createPuppets();
 								new MidiReader(this, new File(fd.getDirectory(),fd.getFile()));
 							}
 						}
