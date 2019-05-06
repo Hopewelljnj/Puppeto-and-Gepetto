@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
@@ -80,7 +81,7 @@ public class Stage {
 								}
 							}
 						} catch(NullPointerException exp) {
-							System.out.println("Load a file first!!!");
+							JOptionPane.showMessageDialog(null, "Choose a midi file first!", "Error", JOptionPane.ERROR_MESSAGE);
 						}
 						catch (Exception ex) {
 							System.err.println(ex.getMessage());
