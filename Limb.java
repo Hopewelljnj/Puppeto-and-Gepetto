@@ -82,8 +82,8 @@ public class Limb implements ILimb {
 		Joint close = this.getTopJoint();
 		Joint far = this.getBottomJoint();
 		return forwardRotation(close, far, rotation);
-
 	}
+	
 	@Override
 	public void rotateLower(double rotation) {
 		Joint far = this.getBottomJoint();
@@ -113,7 +113,7 @@ public class Limb implements ILimb {
 	public Array<Integer> reverseRotation(Joint close, Joint far) {
 		Array<Integer> coords = new Array<>(2);
 		int x = (int) ((int) far.x + (int) distance*Math.sin(rotation));
-		int y = (int) ((int) far.y - (int) distance*Math.cos(rotation));
+		int y = (int) ((int) far.y + (int) distance*Math.cos(rotation));
 		coords.set(0, x);
 		coords.set(1, y);
 		return coords;
@@ -121,7 +121,6 @@ public class Limb implements ILimb {
 	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
 		this.rotation = Math.toRadians(rotation) + this.rotation;
-		//if(true)return far;
 		@SuppressWarnings("unused")
 		Array<Integer> oldCoords = reverseRotation(close,far);
 		double angle = rotation;
@@ -132,8 +131,6 @@ public class Limb implements ILimb {
 		far.setY(y);
 		far.getLowerLimb().setTopJoint(far);
 		this.setBottomJoint(far);
-		System.out.println(this.bottomJoint);
-		System.out.println(far);
 		return far;
 	}
 	@Override
