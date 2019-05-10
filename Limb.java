@@ -120,7 +120,7 @@ public class Limb implements ILimb {
 	}
 	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
-		this.rotation = Math.toRadians(rotation);
+		this.rotation = this.rotation + Math.toRadians(rotation);
 		//idk whats happening here but i got rid of all this and it now works like it did before
 		//i suggest we keep it like this and come at this problem from a different angle
 		return far;
