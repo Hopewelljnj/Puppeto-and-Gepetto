@@ -52,7 +52,7 @@ public class PuppPanel extends JPanel {
 							break;
 						case LEFT_UPPER_ARM : at.scale(0.8,0.75);
 							break;
-						case RIGHT_UPPER_ARM : at.scale(0.8,0.75); at.translate(0.0,-10.0);
+						case RIGHT_UPPER_ARM : at.scale(0.8,0.75);
 							break;
 						case LEFT_LOWER_ARM : at.scale(0.8,0.5);
 							break;
