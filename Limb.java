@@ -112,25 +112,17 @@ public class Limb implements ILimb {
 	}	
 	public Array<Integer> reverseRotation(Joint close, Joint far) {
 		Array<Integer> coords = new Array<>(2);
-		int x = (int) ((int) far.x + (int) distance*Math.sin(rotation));
-		int y = (int) ((int) far.y + (int) distance*Math.cos(rotation));
+		int x = ((int) far.x + (int) Math.sin(rotation));
+		int y = ((int) far.y + (int) Math.cos(rotation));
 		coords.set(0, x);
 		coords.set(1, y);
 		return coords;
 	}
 	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
-		this.rotation = Math.toRadians(rotation) + this.rotation;
-		@SuppressWarnings("unused")
-		Array<Integer> oldCoords = reverseRotation(close,far);
-		double angle = rotation;
-		double radAng = angle;
-		int x = (int) ((int) oldCoords.get(0) - (int) distance*Math.sin(radAng)/2);
-		int y = (int) ((int) oldCoords.get(1) - (int) distance*Math.cos(radAng)/2);
-		far.setX(x);
-		far.setY(y);
-		far.getLowerLimb().setTopJoint(far);
-		this.setBottomJoint(far);
+		this.rotation = Math.toRadians(rotation);
+		//idk whats happening here but i got rid of all this and it now works like it did before
+		//i suggest we keep it like this and come at this problem from a different angle
 		return far;
 	}
 	@Override
