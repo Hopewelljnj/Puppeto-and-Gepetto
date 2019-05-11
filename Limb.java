@@ -119,6 +119,7 @@ public class Limb implements ILimb {
 	}	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
 		double ang = Math.toRadians(rotation);
+		this.rotation += ang;
 		double x = far.x;
 		double y = far.y;
 		double x1 = ((x * Math.cos(ang)) - (y * Math.sin(ang)));
