@@ -14,8 +14,8 @@ public class Limb implements ILimb {
 	Joint bottomJoint = null;
 	int centralX = 0;
 	int centralY = 0;
-	int initBotX = 0;
-	int initBotY = 0;
+	double initBotX = 0;
+	double initBotY = 0;
 	BufferedImage image;
 	public Datatypes.Part curr = null;
 	private double distance = 0.0;
@@ -105,7 +105,7 @@ public class Limb implements ILimb {
 		joint.moveRelativeTo(x, y);
 	}
 	
-	public double distance(int x1, int y1, int x2, int y2) {
+	public double distance(double x1, double y1, double x2, double y2) {
 		double total = ((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1));
 		System.out.println("total" + total);
 		double distance = Math.sqrt(total);
@@ -117,19 +117,14 @@ public class Limb implements ILimb {
 			return distance(close.x,close.y,far.x,far.y);
 		return 0.0;
 	}	
-	/*public Array<Integer> reverseRotation(Joint close, Joint far) {
-	*	Array<Integer> coords = new Array<>(2);
-	*	int x = ((int) far.x + (int) Math.sin(rotation));
-	*	int y = ((int) far.y + (int) Math.cos(rotation));
-	*	coords.set(0, x);
-	*	coords.set(1, y);
-	*	return coords;
-	}*/
-	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
-		this.rotation = this.rotation + Math.toRadians(rotation);
-		//idk whats happening here but i got rid of all this and it now works like it did before
-		//i suggest we keep it like this and come at this problem from a different angle
+		double ang = Math.toRadians(rotation);
+		double x = far.x;
+		double y = far.y;
+		double x1 = ((x * Math.cos(ang)) - (y * Math.sin(ang)));
+		double y1 = ((y * Math.cos(ang)) + (x * Math.sin(ang)));
+		far.setX(x1);
+		far.setY(y1);
 		return far;
 	}
 	@Override

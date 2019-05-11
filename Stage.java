@@ -159,14 +159,14 @@ public class Stage {
 			lElbow.setLowerLimb(lLowerArm);
 			lLowerArm.setTopJoint(lElbow);
 			rLowerArm.setTopJoint(rElbow);
-			Hip hip = new Hip(70 + puppetOffset, neck.getY() + 190, torso, bi.getSubimage(146, 8, 70, 68));
-			Joint lHip = new Joint(80 + puppetOffset, neck.getY() + 190, torso);
+			Hip hip = new Hip(70 + puppetOffset, (int) (neck.getY() + 190), torso, bi.getSubimage(146, 8, 70, 68));
+			Joint lHip = new Joint(80 + puppetOffset, (int) (neck.getY() + 190), torso);
 			Limb lUpperLeg = new Limb(0, hip.getLeftHip(), null, bi.getSubimage(344, 10, 36, 142), Datatypes.Part.LEFT_UPPER_LEG);
 			Limb rUpperLeg = new Limb(0, hip.getRightHip(), null, bi.getSubimage(344, 10, 36, 142), Datatypes.Part.RIGHT_UPPER_LEG);
 			hip.setLeftLowerLimb(lUpperLeg);
 			hip.setrLowerLimb(rUpperLeg);
-			Joint lKnee = new Joint(80 + puppetOffset, hip.getY() + 120, lUpperLeg);
-			Joint rKnee = new Joint(110 + puppetOffset, hip.getY() + 120, rUpperLeg);
+			Joint lKnee = new Joint(80 + puppetOffset, (int) (hip.getY() + 120), lUpperLeg);
+			Joint rKnee = new Joint(110 + puppetOffset, (int) (hip.getY() + 120), rUpperLeg);
 			Limb lLowerLeg = new Limb(0, lKnee, null, bi.getSubimage(398, 10, 34, 162), Datatypes.Part.LEFT_LOWER_LEG);
 			Limb rLowerLeg = new Limb(0, rKnee, null, bi.getSubimage(398, 10, 34, 162), Datatypes.Part.RIGHT_LOWER_LEG);
 			lUpperLeg.setTopJoint(lHip);
