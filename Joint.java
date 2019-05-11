@@ -6,17 +6,17 @@ public class Joint {
 	protected ILimb upperLimb;
 	protected ILimb lowerLimb;
 	
-	public Joint(int x, int y, ILimb upperLimb, ILimb lowerLimb) {
+	public Joint(int x, double d, ILimb upperLimb, ILimb lowerLimb) {
 		this.x = x;
-		this.y = y;
+		this.y = d;
 		this.upperLimb = upperLimb;
 		if(upperLimb != null) upperLimb.setBottomJoint(this);
 		this.lowerLimb = lowerLimb;
 		if(lowerLimb != null) lowerLimb.setTopJoint(this);
 	}
 	
-	public Joint(int x, int y, ILimb upperLimb) {
-		this(x,y,upperLimb,null);
+	public Joint(int x, double d, ILimb upperLimb) {
+		this(x,d,upperLimb,null);
 	}
 	
 	public double getX() {

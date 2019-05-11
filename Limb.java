@@ -95,8 +95,6 @@ public class Limb implements ILimb {
 	public void rotateLower(double rotation) {
 		Joint far = this.getBottomJoint();
 		Joint close = this.getTopJoint();
-		System.out.println(far);
-		System.out.println(close);
 		forwardRotation(close, far, rotation);		
 	}
 
@@ -118,15 +116,21 @@ public class Limb implements ILimb {
 		return 0.0;
 	}	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
-		double ang = Math.toRadians(rotation);
-		this.rotation += ang;
-		double x = far.x;
-		double y = far.y;
-		double x1 = ((x * Math.cos(ang)) - (y * Math.sin(ang)));
-		double y1 = ((y * Math.cos(ang)) + (x * Math.sin(ang)));
-		far.setX(x1);
-		far.setY(y1);
-		return far;
+		  	double ang = Math.toRadians(rotation);
+		    this.rotation += ang;
+		    double sin = Math.sin(ang);
+		    double cos = Math.cos(ang);
+		    double x0 = 0;//rotation point rn its the origin
+		    double y0 = 0;
+		    double x = far.x;
+		    double y = far.y;
+		    double a = x - x0;
+		    double b = y - y0;
+		    double x1 = (a * cos - b * sin);
+		    double y1 = (b * cos + a * sin);
+		    far.setX(x1);
+		    far.setY(y1);
+		    return far;
 	}
 	@Override
 	public String toString() {

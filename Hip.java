@@ -8,10 +8,10 @@ public class Hip extends Joint{
 	private Joint leftHip = null;
 	private Joint rightHip = null;
 	public BufferedImage image;
-	public Hip(int x, int y, ILimb upperLimb, BufferedImage image) {
-		super(x, y, upperLimb);
-		this.setLeftHip(new Joint(x+10,y-10,null));
-		this.setRightHip(new Joint(x+40,y,null));
+	public Hip(int x, double d, ILimb upperLimb, BufferedImage image) {
+		super(x, d, upperLimb);
+		this.setLeftHip(new Joint(x+10,d-10,null));
+		this.setRightHip(new Joint(x+40,d,null));
 		this.image = image;
 	}
 	public Limb getLeftLowerLimb() {
