@@ -14,6 +14,8 @@ public class Limb implements ILimb {
 	Joint bottomJoint = null;
 	int centralX = 0;
 	int centralY = 0;
+	int initBotX = 0;
+	int initBotY = 0;
 	BufferedImage image;
 	public Datatypes.Part curr = null;
 	private double distance = 0.0;
@@ -28,12 +30,13 @@ public class Limb implements ILimb {
 		this.bottomJoint = bottomJoint;
 		this.image = image;
 		this.rotation = rotation;
+		if(bottomJoint != null) {
+			initBotX = bottomJoint.getX();
+			initBotY = bottomJoint.getY();
+		}
 	}
 	public Limb(double rotation, Joint topJoint, Joint bottomJoint, BufferedImage image) {
-		this.topJoint = topJoint;
-		this.bottomJoint = bottomJoint;
-		this.image = image;
-		this.rotation = rotation;
+		this(rotation, topJoint, bottomJoint, image, null);
 	}
 
 	public Limb(double d, Joint topJoint, BufferedImage image) {
@@ -65,6 +68,10 @@ public class Limb implements ILimb {
 	@Override
 	public void setBottomJoint(Joint joint) {
 		bottomJoint = joint;
+		if(bottomJoint != null) {
+			initBotX = bottomJoint.getX();
+			initBotY = bottomJoint.getY();
+		}
 	}
 
 	@Override
@@ -110,14 +117,14 @@ public class Limb implements ILimb {
 			return distance(close.x,close.y,far.x,far.y);
 		return 0.0;
 	}	
-	public Array<Integer> reverseRotation(Joint close, Joint far) {
-		Array<Integer> coords = new Array<>(2);
-		int x = ((int) far.x + (int) Math.sin(rotation));
-		int y = ((int) far.y + (int) Math.cos(rotation));
-		coords.set(0, x);
-		coords.set(1, y);
-		return coords;
-	}
+	/*public Array<Integer> reverseRotation(Joint close, Joint far) {
+	*	Array<Integer> coords = new Array<>(2);
+	*	int x = ((int) far.x + (int) Math.sin(rotation));
+	*	int y = ((int) far.y + (int) Math.cos(rotation));
+	*	coords.set(0, x);
+	*	coords.set(1, y);
+	*	return coords;
+	}*/
 	
 	public Joint forwardRotation(Joint close, Joint far, double rotation) {
 		this.rotation = this.rotation + Math.toRadians(rotation);
