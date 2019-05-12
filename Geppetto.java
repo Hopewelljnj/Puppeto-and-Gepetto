@@ -78,6 +78,7 @@ public class Geppetto {
 			{ 50, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 	};
 	private static File song;
+	private int beatNumber = 1;
 	private int measureNumber = 1;
 	private JFrame jf;
 	private ImageIcon ico = new ImageIcon("images/icon.png");
@@ -172,8 +173,11 @@ public class Geppetto {
 						calcGrid(edit.getPreList(),edit.getPointer(),edit.getResolution());
 						if (pre == edit.getPointer()) {
 							JOptionPane.showMessageDialog(null, "NO PREVIOUS.....", "Error", JOptionPane.ERROR_MESSAGE); 
+							beatNumber = beatNumber + 4;
+							measureNumber++;
 						}
-						measureNumber = measureNumber - 4;
+						beatNumber = beatNumber - 4;
+						measureNumber--;
 						am.repaint();
 						jf.repaint();
 					} else {
@@ -189,9 +193,12 @@ public class Geppetto {
 						int pre = edit.getPointer();
 						calcGrid(edit.getnextList(),edit.getPointer(),edit.getResolution());
 						if (pre == edit.getPointer()) {
-							JOptionPane.showMessageDialog(null, "NO NEXT....", "Error", JOptionPane.ERROR_MESSAGE); 
+							JOptionPane.showMessageDialog(null, "NO NEXT....", "Error", JOptionPane.ERROR_MESSAGE);
+							beatNumber = beatNumber - 4;
+							measureNumber--;
 						}
-						measureNumber = measureNumber + 4;
+						beatNumber = beatNumber + 4;
+						measureNumber++;
 						am.repaint();
 						jf.repaint();    
 					} else {
@@ -287,9 +294,12 @@ public class Geppetto {
 			Font numberfont = new Font("Comic Sans", Font.BOLD, 64);
 			g2d.setFont(numberfont);
 			for(int i = 0; i < 4; i++) {
-				int number = measureNumber + i;
+				int number = beatNumber + i;
 				g2d.drawString(Integer.toString(number), 180 + 260 * i, 740);
 			}
+			g2d.setPaint(Color.RED);
+			g2d.drawString(Integer.toString(measureNumber), 1250 , 80);
+			g2d.setPaint(Color.BLACK);
 			for (int i = 1; i < Grid.length; i++) {
 				for (int j = 1; j < Grid[0].length; j++) {
 					Rectangle r = new Rectangle(xSize, ySize);
