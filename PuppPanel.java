@@ -21,7 +21,7 @@ public class PuppPanel extends JPanel {
 	public PuppPanel(Array<Puppet> puppets) {
 		this.puppets = puppets;
 		this.setSize(1200,600);
-		this.setBackground(Color.WHITE);
+		this.setBackground(Color.GRAY);
 		this.setAlignmentX(JPanel.CENTER_ALIGNMENT);
 		javax.swing.Timer t = new javax.swing.Timer(
 				1000 / FPS,

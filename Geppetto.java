@@ -78,6 +78,7 @@ public class Geppetto {
 			{ 50, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,},
 	};
 	private static File song;
+	private int measureNumber = 1;
 	private JFrame jf;
 	private ImageIcon ico = new ImageIcon("images/icon.png");
 	private FileDialog fd = new FileDialog(jf, "Save As", FileDialog.SAVE);
@@ -172,6 +173,8 @@ public class Geppetto {
 						if (pre == edit.getPointer()) {
 							JOptionPane.showMessageDialog(null, "NO PREVIOUS.....", "Error", JOptionPane.ERROR_MESSAGE); 
 						}
+						measureNumber = measureNumber - 4;
+						am.repaint();
 						jf.repaint();
 					} else {
 						JOptionPane.showMessageDialog(null, "LOAD MIDI!!!!!", "Error", JOptionPane.ERROR_MESSAGE); 
@@ -188,7 +191,9 @@ public class Geppetto {
 						if (pre == edit.getPointer()) {
 							JOptionPane.showMessageDialog(null, "NO NEXT....", "Error", JOptionPane.ERROR_MESSAGE); 
 						}
-						jf.repaint();     
+						measureNumber = measureNumber + 4;
+						am.repaint();
+						jf.repaint();    
 					} else {
 						JOptionPane.showMessageDialog(null, "LOAD MIDI!!!!!", "Error", JOptionPane.ERROR_MESSAGE); 				
 					}
@@ -282,7 +287,7 @@ public class Geppetto {
 			Font numberfont = new Font("Comic Sans", Font.BOLD, 64);
 			g2d.setFont(numberfont);
 			for(int i = 0; i < 4; i++) {
-				int number = i + 1;
+				int number = measureNumber + i;
 				g2d.drawString(Integer.toString(number), 180 + 260 * i, 740);
 			}
 			for (int i = 1; i < Grid.length; i++) {
