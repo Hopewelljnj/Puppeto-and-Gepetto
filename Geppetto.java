@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import edu.mccc.cos210.ds.ISortedList;
 import edu.mccc.cos210.ds.Vector;
 import edu.mccc.cos210.fp.pupp.MidiWriter;
+import edu.mccc.cos210.fp.pupp.Stage.MyJPanel;
 
 
 //===================================================================================================
@@ -88,6 +89,10 @@ public class Geppetto {
 		jf.addWindowListener(new MyWindowListener());
 		fd.setVisible(false);
 		JPanel jp = new JPanel();
+		JPanel jpx = new JPanel();
+		jpx.setLayout(new BorderLayout());
+		jpx.add(new MyJPanel (Color.BLUE), BorderLayout.WEST);
+		jpx.add(new MyJPanel (Color.BLUE), BorderLayout.EAST);
 		AddMenu am = new AddMenu(ActionList, Grid);
 		jp.setLayout(new GridLayout(1, 4));
 		JButton jb = new JButton("ClearMidi");
@@ -190,10 +195,12 @@ public class Geppetto {
 				}
 			);
 		np.add(npb);
-		jf.add(np, BorderLayout.SOUTH);
-		jf.add(jp, BorderLayout.NORTH);
-		jf.add(am, BorderLayout.CENTER);
-		jf.setSize(new Dimension(800, 600));
+		jpx.add(np, BorderLayout.SOUTH);
+		jpx.add(jp, BorderLayout.NORTH);
+		jpx.add(am, BorderLayout.CENTER);
+		jf.add(jpx);
+		jf.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		jf.setUndecorated(false);
 		jf.setIconImage(ico.getImage());
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
@@ -256,10 +263,10 @@ public class Geppetto {
 		private static final long serialVersionUID = 1L;
 		private Action[] al;
 		private int textX = 8;
-		private int gridX = 170;
-		private int topY = 32;
-		private int xSize = 16;
-		private int ySize = 22;
+		private int gridX = 160;
+		private int topY = 64;
+		private int xSize = 32;
+		private int ySize = 40;
 		public AddMenu(Action[] al, int[][] grid) {
 			this.al = al;
 			addMouseListener(new MyMouseListener());
@@ -270,7 +277,13 @@ public class Geppetto {
 			Font font = new Font("Comic Sans", Font.BOLD, 12);
 			g2d.setFont(font);
 			for (int i = 0; i < al.length; i++) {
-				g2d.drawString(al[i].getName(), textX, topY + i * ySize);
+				g2d.drawString(al[i].getName(), textX, topY + i * ySize - 15);
+			}
+			Font numberfont = new Font("Comic Sans", Font.BOLD, 64);
+			g2d.setFont(numberfont);
+			for(int i = 0; i < 4; i++) {
+				int number = i + 1;
+				g2d.drawString(Integer.toString(number), 180 + 260 * i, 740);
 			}
 			for (int i = 1; i < Grid.length; i++) {
 				for (int j = 1; j < Grid[0].length; j++) {
@@ -296,7 +309,7 @@ public class Geppetto {
 					gridX + xSize + i * xSize * 8,
 					topY - ySize + 1,
 					gridX + xSize + i * xSize * 8,
-					11 + al.length * ySize
+					22 + al.length * ySize
 				);
 			}
 			g2d.dispose();
@@ -328,5 +341,15 @@ public class Geppetto {
 				}
 			}
 		}
+	}
+	class MyJPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
+		
+		public MyJPanel(Color c) {
+			this.setBackground(c);
+			this.setPreferredSize(new Dimension (100, 100));
+		}
+		
+		
 	}
 }
