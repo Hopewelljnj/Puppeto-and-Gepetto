@@ -11,6 +11,7 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
+import javax.swing.JPanel;
 
 public class MidiReader implements MetaEventListener, ControllerEventListener {
 	private static final int META_EndofTrack = 47;
@@ -18,9 +19,9 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 	public static Synthesizer synth;
 	public static Sequencer sequencer;
 	public static Sequence sequence;
-	private Stage stage;
-	public MidiReader(Stage stage, File midiFile) {
-		this.stage = stage;
+	private PuppPanel panel;
+	public MidiReader(PuppPanel panel, File midiFile) {
+		this.panel = panel;
 		try {
 			synth = MidiSystem.getSynthesizer();
 			synth.open();
@@ -83,52 +84,52 @@ public class MidiReader implements MetaEventListener, ControllerEventListener {
 		case "init" : System.out.println("initializing");
 			break;
 		case "RTRR":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.RHIP, 10.0);
+			panel.updateRotations("RThighRight");
 			break;
 		case "RTRL":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.RHIP, -10.0);
+			panel.updateRotations("RThighLeft");
 			break;
 		case "LTRR":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.LHIP, 10.0);
+			panel.updateRotations("LThighRight");
 			break;
 		case "LTRL":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.LHIP, -10.0);
+			panel.updateRotations("LThighLeft");
 			break;
 		case "RARR":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_ELBOW, 10.0);
+			panel.updateRotations("RForeArmRight");
 			break;
 		case "RARL":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_ELBOW, -10.0);
+			panel.updateRotations("RForeArmLeft");
 			break;
 		case "LARR":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_ELBOW, 10.0);
+			panel.updateRotations("LForeArmRight");
 			break;
 		case "LARL":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_ELBOW, -10.0);
+			panel.updateRotations("LForeArmLeft");
 			break;
 		case "RBRR":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_SHOULDER, 10.0);
+			panel.updateRotations("RBicepRight");
 			break;
 		case "RBRL":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_SHOULDER, -10.0);
+			panel.updateRotations("RBicepLeft");
 			break;
 		case "LBRR":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_SHOULDER, 10.0);
+			panel.updateRotations("LBicepRight");
 			break;
 		case "LBRL":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_SHOULDER, -10.0);
+			panel.updateRotations("LBicepLeft");
 			break;
 		case "RSRR":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_KNEE, 10.0);
+			panel.updateRotations("RShinRight");
 			break;
 		case "RSRL":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.RIGHT_KNEE, -10.0);
+			panel.updateRotations("RShinLeft");
 			break;
 		case "LSRR":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_KNEE, 10.0);
+			panel.updateRotations("LShinRight");
 			break;
 		case "LSRL":
-			stage.rotatePuppetLimb(0, Datatypes.Joint.LEFT_KNEE, -10.0);
+			panel.updateRotations("LShinLeft");
 			break;
 		}
 		
