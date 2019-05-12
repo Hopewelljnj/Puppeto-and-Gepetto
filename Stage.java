@@ -2,6 +2,7 @@ package edu.mccc.cos210.fp.pupp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
@@ -10,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,23 +31,26 @@ public class Stage {
 	private BufferedImage bi;
 	private BufferedImage bi2;
 	private boolean debug = true;
-	private int offset = 0;
 	public Array<Puppet> puppets = new Array<>(4);
 	public Stage() {
-		createPuppets();
 		initswing();
+		createPuppets();
 	}
 
 	private void initswing() {
 		jf = new JFrame("Puppetto");
 		jf.addWindowListener(new MyWindowListener());
-		JPanel jp = new PuppPanel(puppets, offset);
-		jp.setSize(1200,600);
-		jp.setBackground(new Color(200, 80, 80));
+		jf.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		jf.setUndecorated(false);
+		jf.setIconImage(ico.getImage());
+		JPanel jpx = new JPanel();
+		jpx.setLayout(new BorderLayout());
+		jpx.add(new MyJPanel (new Color(200, 80, 80)), BorderLayout.WEST);
+		jpx.add(new MyJPanel (new Color(200, 80, 80)), BorderLayout.EAST);
+		jpx.add(new MyJPanel (Color.GRAY), BorderLayout.SOUTH);
+		jpx.add(new PuppPanel(puppets), BorderLayout.CENTER);
 		JPanel np = new JPanel();
 		np.setLayout(new GridLayout(1, 2));
-		jf.setSize(1200,700);
-		jf.setIconImage(ico.getImage());
 		JButton jb = new JButton("Load!");
 		jb.addActionListener(
 				ae -> {
@@ -96,8 +101,8 @@ public class Stage {
 			}
 		);
 		np.add(jtb);
-		jf.add(np, BorderLayout.SOUTH);
-		jf.add(jp, BorderLayout.CENTER);
+		jpx.add(np, BorderLayout.SOUTH);
+		jf.add(jpx, BorderLayout.CENTER);
 		jf.setLocationRelativeTo(null);
 		jf.setResizable(false);
 		jf.setVisible(true);
@@ -119,8 +124,8 @@ public class Stage {
 			joints = null;
 			joints = new Map<>();
 			limbs = new Map<>();
-			int puppetOffset = 280*i + 50;
-			Joint topHead = new Joint(60 + puppetOffset, 0, null);
+			int puppetOffset = 280*i + 145;
+			Joint topHead = new Joint(60 + puppetOffset, 32, null);
 			Limb head;
 			switch(i) {
 			case 0 : head = new Limb(0, topHead, bi2.getSubimage(20, 40, 350, 520));
@@ -133,22 +138,30 @@ public class Stage {
 				break;
 			default : head = new Limb(0, topHead, bi2.getSubimage(4, 8, 44, 74));
 			}
-			Joint neck = new Joint(50 + puppetOffset, 100, head);
+			Joint neck = new Joint(50 + puppetOffset, 172, head);
 			Limb torso = new Limb(0, neck, bi.getSubimage(66, 8, 70, 94));
-			Joint lShoulder = new Joint(50 + puppetOffset,130,torso);
-			Joint rShoulder = new Joint(125 + puppetOffset,140,torso);
+			Joint lShoulder = new Joint(40 + puppetOffset, 210, torso);
+			Joint rShoulder = new Joint(160 + puppetOffset, 220, torso);
 			Limb rUpperArm = new Limb(Math.toRadians(-15), rShoulder, bi.getSubimage(246, 10, 28, 100));
 			Limb lUpperArm = new Limb(Math.toRadians(15), lShoulder, bi.getSubimage(246, 10, 28, 100));
+			Joint rElbow = new Joint(200 + puppetOffset, 355, rUpperArm);
+			Joint lElbow = new Joint(8 + puppetOffset, 355, lUpperArm);
+			Limb lLowerArm = new Limb(0 , lElbow, null, bi.getSubimage(300, 8, 22, 148));
+			Limb rLowerArm = new Limb(0, rElbow, null, bi.getSubimage(300, 8, 22, 148));
+			Hip hip = new Hip(85 + puppetOffset, neck.getY() + 260, torso, bi.getSubimage(146, 8, 70, 68));
+			Joint lHip = new Joint(85 + puppetOffset, neck.getY() + 260, torso);
+			Limb lUpperLeg = new Limb(0, hip.getLeftHip(), null, bi.getSubimage(344, 10, 36, 142), Datatypes.Part.LEFT_UPPER_LEG);
+			Limb rUpperLeg = new Limb(0, hip.getRightHip(), null, bi.getSubimage(344, 10, 36, 142), Datatypes.Part.RIGHT_UPPER_LEG);
+			Joint lKnee = new Joint(85 + puppetOffset, hip.getY() + 160, lUpperLeg);
+			Joint rKnee = new Joint(127 + puppetOffset, hip.getY() + 160, rUpperLeg);
+			Limb lLowerLeg = new Limb(0, lKnee, null, bi.getSubimage(398, 10, 34, 162), Datatypes.Part.LEFT_LOWER_LEG);
+			Limb rLowerLeg = new Limb(0, rKnee, null, bi.getSubimage(398, 10, 34, 162), Datatypes.Part.RIGHT_LOWER_LEG);
 			lShoulder.setUpperLimb(torso);
 			rShoulder.setUpperLimb(torso);
 			lShoulder.setLowerLimb(lUpperArm);
 			rShoulder.setLowerLimb(rUpperArm);
 			lUpperArm.setTopJoint(lShoulder);
 			rUpperArm.setTopJoint(rShoulder);
-			Joint rElbow = new Joint(155 + puppetOffset, 240, rUpperArm);
-			Joint lElbow = new Joint(25 + puppetOffset, 240, lUpperArm);
-			Limb lLowerArm = new Limb(0 , lElbow, bi.getSubimage(300, 8, 22, 148));
-			Limb rLowerArm = new Limb(0, rElbow, bi.getSubimage(300, 8, 22, 148));
 			lUpperArm.setBottomJoint(lElbow);
 			rUpperArm.setBottomJoint(rElbow);
 			lUpperArm.setLowerLimb(lLowerArm);
@@ -159,18 +172,10 @@ public class Stage {
 			lElbow.setLowerLimb(lLowerArm);
 			lLowerArm.setTopJoint(lElbow);
 			rLowerArm.setTopJoint(rElbow);
-			Hip hip = new Hip(70 + puppetOffset, neck.getY() + 190, torso, bi.getSubimage(146, 8, 70, 68));
-			Joint lHip = new Joint(80 + puppetOffset, neck.getY() + 190, torso);
-			Limb lUpperLeg = new Limb(0, hip.getLeftHip(), null, bi.getSubimage(344, 10, 36, 142), Datatypes.Part.LEFT_UPPER_LEG);
-			Limb rUpperLeg = new Limb(0, hip.getRightHip(), null, bi.getSubimage(344, 10, 36, 142), Datatypes.Part.RIGHT_UPPER_LEG);
-			hip.setLeftLowerLimb(lUpperLeg);
-			hip.setrLowerLimb(rUpperLeg);
-			Joint lKnee = new Joint(80 + puppetOffset, hip.getY() + 120, lUpperLeg);
-			Joint rKnee = new Joint(110 + puppetOffset, hip.getY() + 120, rUpperLeg);
-			Limb lLowerLeg = new Limb(0, lKnee, null, bi.getSubimage(398, 10, 34, 162), Datatypes.Part.LEFT_LOWER_LEG);
-			Limb rLowerLeg = new Limb(0, rKnee, null, bi.getSubimage(398, 10, 34, 162), Datatypes.Part.RIGHT_LOWER_LEG);
 			lUpperLeg.setTopJoint(lHip);
 			rUpperLeg.setTopJoint(hip.getRightHip());
+			hip.setLeftLowerLimb(lUpperLeg);
+			hip.setRightLowerLimb(rUpperLeg);
 			hip.setUpperLimb(torso);
 			lHip.setUpperLimb(torso);
 			lHip.setLowerLimb(lUpperLeg);
@@ -205,6 +210,7 @@ public class Stage {
 			limbs.put(Datatypes.Part.LEFT_LOWER_LEG, lLowerLeg);
 			limbs.put(Datatypes.Part.RIGHT_LOWER_LEG, rLowerLeg);
 			
+			
 			if(debug) {
 			for(Datatypes.Part part : limbs.keySet()) {
 				System.out.print(part + "\n");
@@ -214,6 +220,13 @@ public class Stage {
 			}}
 			puppets.set(i, new Puppet(("Puppet" + i), limbs, joints));
 			}
+	}
+	public void rotatePuppetLimb(int puppetIndex, Datatypes.Joint joint, double rotation) {
+		for(puppetIndex = 0; puppetIndex < 5; puppetIndex ++) {
+		Puppet curPup = puppets.get(puppetIndex);
+		Puppet newPup = curPup.doRotate(joint, rotation);
+		puppets.set(puppetIndex, newPup);
+		}
 	}
 	private class MyWindowListener extends WindowAdapter{
 		public void windowClosing(WindowEvent e) {
@@ -226,13 +239,12 @@ public class Stage {
 			System.exit(-1);
 		}
 	}
+	class MyJPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
 		
-
-	public void rotatePuppetLimb(int puppetIndex, Datatypes.Joint joint, double rotation) {
-		for(puppetIndex = 0; puppetIndex < 5; puppetIndex ++) {
-		Puppet curPup = puppets.get(puppetIndex);
-		Puppet newPup = curPup.doRotate(joint, rotation);
-		puppets.set(puppetIndex, newPup);
-		}
-	}
+		public MyJPanel(Color c) {
+			this.setBackground(c);
+			this.setPreferredSize(new Dimension (100, 100));
+		}	
+	}	
 }

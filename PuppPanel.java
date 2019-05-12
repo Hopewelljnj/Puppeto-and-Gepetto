@@ -16,13 +16,13 @@ public class PuppPanel extends JPanel {
 	public Array<Puppet> puppets = null;
 	private static final int FPS = 30;
 	BufferedImage bi;
-	int offset = 0;
 	int curPuppet = 0;
 	
-	public PuppPanel(Array<Puppet> puppets, int offset) {
-		this.setBackground(Color.BLACK);
+	public PuppPanel(Array<Puppet> puppets) {
 		this.puppets = puppets;
-		this.offset = offset;
+		this.setSize(1200,600);
+		this.setBackground(Color.WHITE);
+		this.setAlignmentX(JPanel.CENTER_ALIGNMENT);
 		javax.swing.Timer t = new javax.swing.Timer(
 				1000 / FPS,
 				ae ->{
@@ -37,15 +37,14 @@ public class PuppPanel extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g.create();
 			for(Puppet puppet : puppets) {
-				//System.out.println(puppet);
 			for(Datatypes.Part part : puppet.getLimbs().keySet()) {
-				if(part != null) {// && part == Datatypes.Part.LEFT_LOWER_ARM) {
+				if(part != null) {
 				Limb curLimb = (Limb) puppet.getLimbs().get(part);
 				Joint upper = curLimb.getTopJoint();
 				if(upper != null) {
 					AffineTransform at = new AffineTransform();
 					at.translate((double) upper.getX() - 7, (double) upper.getY() + 5);
-					at.scale(1.5,1.5);
+					at.scale(2.0, 2.0);
 					at.rotate(curLimb.getRotation());
 					switch(part) {
 						case TORSO : at.scale(1.0, 1.5);
@@ -73,11 +72,6 @@ public class PuppPanel extends JPanel {
 							break;
 					}
 					Image curImage = (Image)curLimb.image;
-					int width = (int) (curImage.getWidth(this) * 2);
-					int height = (int) (curImage.getHeight(this));
-					Joint topJoint = curLimb.getTopJoint();
-					Joint botJoint = curLimb.getBottomJoint();
-					g2d.setColor(Color.WHITE);
 					g2d.drawImage(curImage, at, this);
 					
 				}

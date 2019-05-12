@@ -20,10 +20,10 @@ public class Hip extends Joint{
 	public void setLeftLowerLimb(Limb leftLowerLimb) {
 		this.leftLowerLimb = leftLowerLimb;
 	}
-	public Limb getrLowerLimb() {
+	public Limb getRightLowerLimb() {
 		return rLowerLimb;
 	}
-	public void setrLowerLimb(Limb rLowerLimb) {
+	public void setRightLowerLimb(Limb rLowerLimb) {
 		this.rLowerLimb = rLowerLimb;
 	}
 	public Joint getLeftHip() {
