@@ -4,12 +4,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +13,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import edu.mccc.cos210.fp.puppTest.Limb;
 
 public class PuppPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -37,9 +32,9 @@ public class PuppPanel extends JPanel {
 	private BufferedImage biRightThigh;
 	private BufferedImage biLeftShin;
 	private BufferedImage biRightShin;
-	private double absRot = 0.0;
-	private double torsoRot = 0.0;
-	private double headRot = 0.0;
+	//private double absRot = 0.0;
+	//private double torsoRot = 0.0;
+	//private double headRot = 0.0;
 	private double LBicepRot = 0.0;
 	private double RBicepRot = 0.0;
 	private double LArmRot = 0.0;
@@ -49,8 +44,6 @@ public class PuppPanel extends JPanel {
 	private double LShinRot = 0.0;
 	private double RShinRot = 0.0;
 	
-	private Line2D xaxis = new Line2D.Double(-1200,0, 1200, 0);
-	private Line2D yaxis = new Line2D.Double(0,-600, 0, 600);
 	public PuppPanel() {
 		try {
 			initParts();
@@ -221,12 +214,11 @@ public class PuppPanel extends JPanel {
 		g2d.transform(gat);
 		g2d.setStroke(new BasicStroke(3.0f));
 		g2d.setPaint(Color.BLACK);
-		for(int i = 0; i < 4; i++) {
 		
 		
-		//g2d.fill(bowTie2);
+        for(int i = 0; i < 4; i++) {
 		
-		AffineTransform atAbs = new AffineTransform();
+        AffineTransform atAbs = new AffineTransform();
 		//atAbs.rotate(absRot);
 		atAbs.translate(34.0 + (-400 + 250.0*i), 33.0);
 		atAbs.rotate(Math.toRadians(180.0));
@@ -256,8 +248,6 @@ public class PuppPanel extends JPanel {
 			break;
 		default : g2d.drawRenderedImage(biHead, atHead);
 		}
-		
-		
 		
 		
 		AffineTransform atLeftThigh = new AffineTransform();
@@ -317,12 +307,4 @@ public class PuppPanel extends JPanel {
 		g2d.dispose();
 		Toolkit.getDefaultToolkit().sync();
 	}
-	class TriangleShape extends Path2D.Double {
-		  public TriangleShape(Point2D... points) {
-		    moveTo(points[0].getX(), points[0].getY());
-		    lineTo(points[1].getX(), points[1].getY());
-		    lineTo(points[2].getX(), points[2].getY());
-		    closePath();
-		  }
-		}
 }	

@@ -11,7 +11,6 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Soundbank;
 import javax.sound.midi.Synthesizer;
-import javax.swing.JPanel;
 
 public class MidiReader implements MetaEventListener, ControllerEventListener {
 	private static final int META_EndofTrack = 47;
