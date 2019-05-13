@@ -25,7 +25,6 @@ import javax.swing.JPanel;
 import edu.mccc.cos210.ds.ISortedList;
 import edu.mccc.cos210.ds.Vector;
 import edu.mccc.cos210.fp.pupp.MidiWriter;
-import edu.mccc.cos210.fp.pupp.Stage.MyJPanel;
 
 
 //===================================================================================================
