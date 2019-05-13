@@ -10,7 +10,7 @@ public class Head {
 	BufferedImage head;
 	double rot;
 
-	public Head(String headnumber) {
+	public Head(int headnumber) {
 		try {
 			bi = ImageIO.read(new File("./data/cut1.png"));
 		} catch (Exception ex) {
@@ -18,16 +18,16 @@ public class Head {
 			System.exit(-1);
 		}
 		switch(headnumber) {
-		case "1" :
+		case 0 :
 			head = bi.getSubimage(20, 40, 350, 520);
 			break;
-		case "2" :
+		case 1 :
 			head = bi.getSubimage(400, 40, 350, 520);
 			break;
-		case "3" :
+		case 2 :
 			head = bi.getSubimage(20, 630, 350, 520);
 			break;
-		case "4" :
+		case 3 :
 			head = bi.getSubimage(400, 630, 350, 520);
 		}
 	}
