@@ -5,31 +5,54 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class PuppPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static final int FPS = 30;
+	private double puppetOffset = 300;
 	private Head Jacob = new Head("1");
-	private Limb JaNeck = new Limb(new RoundRectangle2D.Double(-455, 200, 20, 32, 15, 15));
-	private Limb JaTorso = new Limb(new RoundRectangle2D.Double(-493, 140, 100, 200, 15, 15));
-	private Limb JaLeftBicep = new Limb(new Ellipse2D.Double(-525, 200, 32, 128));
-	private Limb JaRightBicep = new Limb(new Ellipse2D.Double(-395, 200, 32, 128));
-	private Limb JaLeftForeArm = new Limb(new Ellipse2D.Double(-525, 5, 30, 100));
-	private Limb JaRightForeArm = new Limb(new Ellipse2D.Double(-392, 5, 30, 100));
-	private Limb JaLeftThigh = new Limb(new RoundRectangle2D.Double(-492, 10, 32, 128, 10, 10));
-	private Limb JaRightThigh = new Limb(new RoundRectangle2D.Double(-425, 10, 32, 128, 10, 10));
-	private Limb JaLeftShin = new Limb(new RoundRectangle2D.Double(-492, -200, 32, 128, 10, 10));
-	private Limb JaRightShin = new Limb(new RoundRectangle2D.Double(-425, -200, 32, 128, 10, 10));
+	private Head Nick = new Head("2");
+	private Head Dan = new Head("3");
+	private Head Junfeng = new Head("4");
+	private BufferedImage biAbs;
+	private BufferedImage biTorso;
+	private BufferedImage biLeftBicep;
+	private BufferedImage biRightBicep;
+	private BufferedImage biLeftArm;
+	private BufferedImage biRightArm;
+	private BufferedImage biLeftThigh;
+	private BufferedImage biRightThigh;
+	private BufferedImage biLeftShin;
+	private BufferedImage biRightShin;
+	private double LBicepRot = 0.0;
+	private double RBicepRot = 0.0;
+	private double LArmRot = 0.0;
+	private double RArmRot = 0.0;
+	private double LThighRot = 0.0;
+	private double RThighRot = 0.0;
+	private double LShinRot = 0.0;
+	private double RShinRot = 0.0;
 	public PuppPanel() {
+		try {
+			initParts();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 		this.setSize(1200,600);
 		this.setBackground(Color.GRAY);
 		this.setAlignmentX(JPanel.CENTER_ALIGNMENT);
@@ -41,58 +64,127 @@ public class PuppPanel extends JPanel {
 			);
 			t.start();
 	}
+	private void initParts() throws IOException {
+		BufferedImage bi = ImageIO.read(new File("./data/cut2.png"));
+		
+		for(int i = 0; i < 4; i++) {
+			
+			this.biAbs = new BufferedImage(68, 66, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = biAbs.createGraphics();
+			AffineTransform at = new AffineTransform();
+			at.translate(-147.0 + (puppetOffset * i), -9.0);
+			g2d.drawRenderedImage(bi, at);
+			
+			this.biTorso = new BufferedImage(65, 85, BufferedImage.TYPE_INT_ARGB);
+			g2d = biTorso.createGraphics();
+			at = new AffineTransform();
+			at.translate(-71.0 + (puppetOffset * i), -10.0);
+			g2d.drawRenderedImage(bi, at);
+
+			/*this.biHead = new BufferedImage(64, 72, BufferedImage.TYPE_INT_ARGB);
+			g2d = biHead.createGraphics();
+			at = new AffineTransform();
+			at.translate(7.0, -10.0);
+			g2d.drawRenderedImage(bi, at);*/
+			
+			this.biLeftBicep = new BufferedImage(70, 90, BufferedImage.TYPE_INT_ARGB);
+			g2d = biLeftBicep.createGraphics();
+			at = new AffineTransform();
+			at.translate(-80.0  + (puppetOffset * i), -10.0);
+			g2d.drawRenderedImage(bi, at);
+			
+			this.biRightBicep = new BufferedImage(70, 90, BufferedImage.TYPE_INT_ARGB);
+			g2d = biRightBicep.createGraphics();
+			at = new AffineTransform();
+			at.translate(-60.0  + (puppetOffset * i), -10.0);
+			g2d.drawRenderedImage(bi, at);
+			
+			this.biLeftArm = new BufferedImage(72, 105, BufferedImage.TYPE_INT_ARGB);
+			g2d = biLeftArm.createGraphics();
+			at = new AffineTransform();
+			at.translate(-80.0  + (puppetOffset * i), -40.0);
+			g2d.drawRenderedImage(bi, at);
+			
+			this.biRightArm = new BufferedImage(72, 105, BufferedImage.TYPE_INT_ARGB);
+			g2d = biRightArm.createGraphics();
+			at = new AffineTransform();
+			at.translate(-60.0  + (puppetOffset * i), -40.0);
+			g2d.drawRenderedImage(bi, at);
+			
+			this.biLeftThigh = new BufferedImage(74, 100, BufferedImage.TYPE_INT_ARGB);
+			g2d = biLeftThigh.createGraphics();
+			at = new AffineTransform();
+			at.translate(-70.0  + (puppetOffset * i), -60.0);
+			g2d.drawRenderedImage(bi, at);
+			
+			this.biRightThigh = new BufferedImage(74, 100, BufferedImage.TYPE_INT_ARGB);
+			g2d = biRightThigh.createGraphics();
+			at = new AffineTransform();
+			at.translate(-65.0  + (puppetOffset * i), -60.0);
+			g2d.drawRenderedImage(bi, at);
+			
+			this.biLeftShin = new BufferedImage(77, 130, BufferedImage.TYPE_INT_ARGB);
+			g2d = biLeftShin.createGraphics();
+			at = new AffineTransform();
+			at.translate(-70.0  + (puppetOffset * i), -100.0);
+			g2d.drawRenderedImage(bi, at);
+			
+			this.biRightShin = new BufferedImage(77, 130, BufferedImage.TYPE_INT_ARGB);
+			g2d = biRightShin.createGraphics();
+			at = new AffineTransform();
+			at.translate(-65.0  + (puppetOffset * i), -100.0);
+			g2d.drawRenderedImage(bi, at);
+		}		
+}
 	void updateRotations(String part) {
-		double rot = Math.toRadians(10.0);
 		switch(part) {
 		case "LBicepRight" :
-			JaLeftBicep.rot = JaLeftBicep.rot + rot;
-			//rest of other puppets left biceps
+			LBicepRot += Math.toRadians(10.0);
 			break;
 		case "LBicepLeft" :
-			JaLeftBicep.rot = JaLeftBicep.rot - rot;
-			//rest of other puppets left biceps
+			LBicepRot -= Math.toRadians(10.0);
 			break;
 		case "RBicepRight" : 
-			JaRightBicep.rot = JaRightBicep.rot + rot;
+			RBicepRot += Math.toRadians(10.0);
 			break;
 		case "RBicepLeft" : 
-			JaRightBicep.rot = JaRightBicep.rot - rot;
+			RBicepRot -= Math.toRadians(10.0);
 			break;
 		case "LForeArmRight" :
-			JaLeftForeArm.rot = JaLeftForeArm.rot + rot;
+			LArmRot += Math.toRadians(10.0);
 			break;
 		case "LForeArmLeft" :
-			JaLeftForeArm.rot = JaLeftForeArm.rot - rot;
+			LArmRot -= Math.toRadians(10.0);
 			break;
 		case "RForeArmRight" :
-			JaRightForeArm.rot = JaRightForeArm.rot + rot;
+			RArmRot += Math.toRadians(10.0);
 			break;
 		case "RForeArmLeft" :
-			JaRightForeArm.rot = JaRightForeArm.rot - rot;
+			RArmRot -= Math.toRadians(10.0);
 			break;
 		case "LThighRight" :
-			JaLeftThigh.rot = JaLeftThigh.rot + rot;
+			LThighRot += Math.toRadians(10.0);
 			break;
 		case "LThighLeft" :
-			JaLeftThigh.rot = JaLeftThigh.rot - rot;
+			LThighRot -= Math.toRadians(10.0);
 			break;
 		case "RThighRight" :
-			JaRightThigh.rot = JaRightThigh.rot + rot;
+			RThighRot += Math.toRadians(10.0);
 			break;
 		case "RThighLeft" :
-			JaRightThigh.rot = JaRightThigh.rot - rot;
+			RThighRot -= Math.toRadians(10.0);
 			break;
 		case "LShinRight" :
-			JaLeftShin.rot = JaLeftShin.rot + rot;
+			LShinRot += Math.toRadians(10.0);
 			break;
 		case "LShinLeft" :
-			JaLeftShin.rot = JaLeftShin.rot - rot;
+			LShinRot -= Math.toRadians(10.0);
 			break;
 		case "RShinRight" :
-			JaRightShin.rot = JaRightShin.rot + rot;
+			RShinRot += Math.toRadians(10.0);
 			break;
 		case "RShinLeft" :
-			JaRightShin.rot = JaRightShin.rot - rot;
+			RShinRot -= Math.toRadians(10.0);
 			break;
 		}
 		
@@ -101,6 +193,7 @@ public class PuppPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
 		Graphics2D g2d = (Graphics2D) g.create();
 		AffineTransform gat = new AffineTransform();
 		gat.translate(getWidth() / 2.0, getHeight() / 2.0);
@@ -108,56 +201,9 @@ public class PuppPanel extends JPanel {
 		g2d.transform(gat);
 		g2d.setStroke(new BasicStroke(3.0f));
 		g2d.setPaint(Color.BLACK);
-		
-		AffineTransform hat = new AffineTransform();
-		hat.translate(-400, 350);
-		hat.scale(0.25, 0.25);
-		hat.rotate(Math.PI);
-		g2d.draw(JaNeck.shape);
-		g2d.fill(JaNeck.shape);
-		g2d.drawImage(Jacob.head, hat, this);
-		
-		Path2D innerLimbs = new Path2D.Double();
-		innerLimbs.append(JaNeck.shape, false);
-		innerLimbs.append(JaTorso.shape, false);
-		innerLimbs.append(JaLeftThigh.shape, false);
-		innerLimbs.append(JaRightThigh.shape, false);
-		innerLimbs.append(JaLeftBicep.shape, false);
-		innerLimbs.append(JaRightBicep.shape, false);
-		
-		AffineTransform iat = new AffineTransform();
-		iat.translate(0.0, -128.0);
-		iat.rotate(JaLeftThigh.rot);
-		iat.rotate(JaRightThigh.rot);
-		iat.rotate(JaLeftBicep.rot);
-		iat.rotate(JaRightBicep.rot);
-		Shape base = iat.createTransformedShape(innerLimbs);
-		
-		Path2D outerLimbs = new Path2D.Double();
-		outerLimbs.append(base, false);
-		outerLimbs.append(JaLeftShin.shape, false);
-		outerLimbs.append(JaRightShin.shape, false);
-		outerLimbs.append(JaLeftForeArm.shape, false);
-		outerLimbs.append(JaRightForeArm.shape, false);
-		
-		AffineTransform oat = new AffineTransform();
-		oat.rotate(JaLeftShin.rot);
-		oat.rotate(JaRightShin.rot);
-		oat.rotate(JaLeftForeArm.rot);
-		oat.rotate(JaRightForeArm.rot);
-		Shape puppet = oat.createTransformedShape(outerLimbs);
-		
-		g2d.draw(puppet);
-		g2d.fill(puppet);
-		
+
 		g2d.dispose();
+		
 		Toolkit.getDefaultToolkit().sync();
 	}
-	protected BufferedImage applyTransform(BufferedImage bi, AffineTransform atx, int interpolationType){
-		Dimension d = getSize();
-		BufferedImage displayImage = new BufferedImage(d.width, d.height, interpolationType);
-		Graphics2D dispGc = displayImage.createGraphics();
-		dispGc.drawImage(bi, atx, this);
-		return displayImage;
-}
 }	

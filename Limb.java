@@ -1,11 +1,11 @@
 package edu.mccc.cos210.fp.pupp;
 
-import java.awt.Shape;
+import java.awt.image.BufferedImage;
 
 public class Limb{
-	Shape shape;
+	BufferedImage bi;
 	double rot;
-	public Limb(Shape shape) {
-		this.shape = shape;
+	public Limb(BufferedImage bi) {
+		this.bi = bi;
 	}
 }	
