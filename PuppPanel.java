@@ -64,9 +64,6 @@ public class PuppPanel extends JPanel {
 			t.start();
 	}
 	public void initParts() throws IOException {
-		absRot = 0.0;
-		torsoRot = 0.0;
-		headRot = 0.0;
 		LBicepRot = 0.0;
 		RBicepRot = 0.0;
 		LArmRot = 0.0;
@@ -152,52 +149,52 @@ public class PuppPanel extends JPanel {
 	public void updateRotations(String part) {
 		switch(part) {
 		case "LBicepRight" :
-			LBicepRot += Math.toRadians(10.0);
+			LBicepRot += Math.toRadians(11.25);
 			break;
 		case "LBicepLeft" :
-			LBicepRot -= Math.toRadians(10.0);
+			LBicepRot -= Math.toRadians(11.25);
 			break;
 		case "RBicepRight" : 
-			RBicepRot += Math.toRadians(10.0);
+			RBicepRot += Math.toRadians(11.25);
 			break;
 		case "RBicepLeft" : 
-			RBicepRot -= Math.toRadians(10.0);
+			RBicepRot -= Math.toRadians(11.25);
 			break;
 		case "LForeArmRight" :
-			LArmRot += Math.toRadians(10.0);
+			LArmRot += Math.toRadians(11.25);
 			break;
 		case "LForeArmLeft" :
-			LArmRot -= Math.toRadians(10.0);
+			LArmRot -= Math.toRadians(11.25);
 			break;
 		case "RForeArmRight" :
-			RArmRot += Math.toRadians(10.0);
+			RArmRot += Math.toRadians(11.25);
 			break;
 		case "RForeArmLeft" :
-			RArmRot -= Math.toRadians(10.0);
+			RArmRot -= Math.toRadians(11.25);
 			break;
 		case "LThighRight" :
-			LThighRot += Math.toRadians(10.0);
+			LThighRot += Math.toRadians(11.25);
 			break;
 		case "LThighLeft" :
-			LThighRot -= Math.toRadians(10.0);
+			LThighRot -= Math.toRadians(11.25);
 			break;
 		case "RThighRight" :
-			RThighRot += Math.toRadians(10.0);
+			RThighRot += Math.toRadians(11.25);
 			break;
 		case "RThighLeft" :
-			RThighRot -= Math.toRadians(10.0);
+			RThighRot -= Math.toRadians(11.25);
 			break;
 		case "LShinRight" :
-			LShinRot += Math.toRadians(10.0);
+			LShinRot += Math.toRadians(11.25);
 			break;
 		case "LShinLeft" :
-			LShinRot -= Math.toRadians(10.0);
+			LShinRot -= Math.toRadians(11.25);
 			break;
 		case "RShinRight" :
-			RShinRot += Math.toRadians(10.0);
+			RShinRot += Math.toRadians(11.25);
 			break;
 		case "RShinLeft" :
-			RShinRot -= Math.toRadians(10.0);
+			RShinRot -= Math.toRadians(11.25);
 			break;
 		}
 		
