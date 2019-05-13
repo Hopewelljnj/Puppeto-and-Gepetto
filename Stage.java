@@ -54,6 +54,7 @@ public class Stage {
 									MidiReader.sequencer.stop();
 								}}
 								new MidiReader(pup, new File(fd.getDirectory(),fd.getFile()));
+								pup.initParts();
 								//pup.reset();
 							}
 						}

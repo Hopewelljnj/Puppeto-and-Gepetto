@@ -71,6 +71,17 @@ public class PuppPanel extends JPanel {
 			t.start();
 	}
 	public void initParts() throws IOException {
+		absRot = 0.0;
+		torsoRot = 0.0;
+		headRot = 0.0;
+		LBicepRot = 0.0;
+		RBicepRot = 0.0;
+		LArmRot = 0.0;
+		RArmRot = 0.0;
+		LThighRot = 0.0;
+		RThighRot = 0.0;
+		LShinRot = 0.0;
+		RShinRot = 0.0;
 		BufferedImage bi = ImageIO.read(new File("./data/cut2.png"));
 			for(int i = 0 ; i < 4; i ++) {
 			
