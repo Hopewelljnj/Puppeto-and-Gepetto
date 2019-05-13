@@ -18,6 +18,10 @@ public class PuppPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static final int FPS = 30;
 	private BufferedImage biAbs;
+	private BufferedImage biHead1;
+	private BufferedImage biHead2;
+	private BufferedImage biHead3;
+	private BufferedImage biHead4;
 	private BufferedImage biTorso;
 	private BufferedImage biHead;
 	private BufferedImage biLeftBicep;
@@ -61,7 +65,6 @@ public class PuppPanel extends JPanel {
 	}
 	public void initParts() throws IOException {
 		BufferedImage bi = ImageIO.read(new File("./data/cut2.png"));
-		BufferedImage bi2 = ImageIO.read(new File("./data/cut1.png"));
 			for(int i = 0 ; i < 4; i ++) {
 			
 			this.biAbs = new BufferedImage(68, 66, BufferedImage.TYPE_INT_ARGB);
@@ -80,6 +83,11 @@ public class PuppPanel extends JPanel {
 			g2d = biHead.createGraphics();
 			at = new AffineTransform();
 			at.translate(7.0, -10.0);
+			this.biHead1 = new Head(0).head;
+			this.biHead2 = new Head(1).head;
+			this.biHead3 = new Head(2).head;
+			this.biHead4 = new Head(3).head;
+			
 			g2d.drawRenderedImage(bi, at);
 			
 			this.biLeftThigh = new BufferedImage(30, 250, BufferedImage.TYPE_INT_ARGB);
@@ -212,11 +220,24 @@ public class PuppPanel extends JPanel {
 		g2d.drawRenderedImage(biTorso, atTorso);
 		
 		AffineTransform atHead = new AffineTransform();
-		atHead.translate(32.0, 0.0);
+		atHead.translate(5.0,0.0);
+		atHead.scale(0.15,0.15);
+		atHead.translate(165.0, 0.0);
 		//atHead.rotate(headRot);
-		atHead.translate(-32.0, -72.0);
+		atHead.translate(-165.0, -480.0);
 		atHead.preConcatenate(atTorso);
-		g2d.drawRenderedImage(biHead, atHead);
+		switch(i) {
+		case 0 : g2d.drawRenderedImage(biHead1, atHead);
+			break;
+		case 1 : g2d.drawRenderedImage(biHead2, atHead);
+			break;
+		case 2 : g2d.drawRenderedImage(biHead3, atHead);
+			break; 
+		case 3 : g2d.drawRenderedImage(biHead4, atHead);
+			break;
+		default : g2d.drawRenderedImage(biHead, atHead);
+		}
+		
 		
 		AffineTransform atLeftThigh = new AffineTransform();
 		atLeftThigh.translate(-25 + (-400 + 250.0*i),-32);
