@@ -34,9 +34,8 @@ public class Stage {
 		jf.setIconImage(ico.getImage());
 		JPanel jpx = new JPanel();
 		jpx.setLayout(new BorderLayout());
-		jpx.add(new MyJPanel (new Color(200, 80, 80)), BorderLayout.WEST);
-		jpx.add(new MyJPanel (new Color(200, 80, 80)), BorderLayout.EAST);
-		jpx.add(new MyJPanel (Color.GRAY), BorderLayout.SOUTH);
+		jpx.add(new MyJPanel (new Color(198, 25, 0)), BorderLayout.WEST);
+		jpx.add(new MyJPanel (new Color(198, 25, 0)), BorderLayout.EAST);
 		PuppPanel pup = new PuppPanel();
 		jpx.add(pup);
 		JPanel np = new JPanel();
@@ -55,6 +54,7 @@ public class Stage {
 									MidiReader.sequencer.stop();
 								}}
 								new MidiReader(pup, new File(fd.getDirectory(),fd.getFile()));
+								//pup.reset();
 							}
 						}
 					} catch (Exception ex) {
