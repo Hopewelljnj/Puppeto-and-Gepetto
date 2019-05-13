@@ -4,9 +4,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +44,7 @@ public class PuppPanel extends JPanel {
 	private double RThighRot = 0.0;
 	private double LShinRot = 0.0;
 	private double RShinRot = 0.0;
+	
 	private Line2D xaxis = new Line2D.Double(-1200,0, 1200, 0);
 	private Line2D yaxis = new Line2D.Double(0,-600, 0, 600);
 	public PuppPanel() {
@@ -50,6 +54,7 @@ public class PuppPanel extends JPanel {
 			e.printStackTrace();
 			System.exit(0);
 		}
+		
 		this.setSize(1200,600);
 		this.setBackground(new Color(34, 0, 0));
 		this.setAlignmentX(JPanel.CENTER_ALIGNMENT);
@@ -201,15 +206,22 @@ public class PuppPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
+	
 		Graphics2D g2d = (Graphics2D) g.create();
 		AffineTransform gat = new AffineTransform();
 		gat.translate(getWidth() / 2.0, getHeight() / 2.0);
 		gat.scale(1.5, -1.5);
 		g2d.transform(gat);
 		g2d.setStroke(new BasicStroke(3.0f));
+<<<<<<< HEAD
 		g2d.setPaint(Color.BLACK);
 		for(int i = 0; i < 4; i++) {
+=======
+		
+		
+		//g2d.fill(bowTie2);
+		
+>>>>>>> e27bd640ecb9718fb5ad7e99a40373565fc7bdd4
 		AffineTransform atAbs = new AffineTransform();
 		//atAbs.rotate(absRot);
 		atAbs.translate(34.0 + (-400 + 250.0*i), 33.0);
@@ -228,6 +240,8 @@ public class PuppPanel extends JPanel {
 		atHead.translate(-32.0, -72.0);
 		atHead.preConcatenate(atTorso);
 		g2d.drawRenderedImage(biHead, atHead);
+		
+		
 		
 		AffineTransform atLeftThigh = new AffineTransform();
 		atLeftThigh.translate(-25 + (-400 + 250.0*i),-32);
@@ -286,4 +300,12 @@ public class PuppPanel extends JPanel {
 		g2d.dispose();
 		Toolkit.getDefaultToolkit().sync();
 	}
+	class TriangleShape extends Path2D.Double {
+		  public TriangleShape(Point2D... points) {
+		    moveTo(points[0].getX(), points[0].getY());
+		    lineTo(points[1].getX(), points[1].getY());
+		    lineTo(points[2].getX(), points[2].getY());
+		    closePath();
+		  }
+		}
 }	
