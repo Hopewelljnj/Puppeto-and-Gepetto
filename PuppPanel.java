@@ -65,7 +65,7 @@ public class PuppPanel extends JPanel {
 		javax.swing.Timer t = new javax.swing.Timer(
 				1000 / FPS,
 				ae ->{
-					//updateRotations("boner");
+					updateRotations("boner");
 					repaint();
 				}
 			);
@@ -116,16 +116,16 @@ public class PuppPanel extends JPanel {
 			at.translate(-65.0, -100.0);
 			g2d.drawRenderedImage(bi, at);
 			
-			this.biLeftBicep = new BufferedImage(70, 90, BufferedImage.TYPE_INT_ARGB);
+			this.biLeftBicep = new BufferedImage(30, 100, BufferedImage.TYPE_INT_ARGB);
 			g2d = biLeftBicep.createGraphics();
 			at = new AffineTransform();
-			at.translate(-80.0, -10.0);
+			at.translate(-250.0, -10.0);
 			g2d.drawRenderedImage(bi, at);
 			
-			this.biRightBicep = new BufferedImage(70, 90, BufferedImage.TYPE_INT_ARGB);
+			this.biRightBicep = new BufferedImage(30, 100, BufferedImage.TYPE_INT_ARGB);
 			g2d = biRightBicep.createGraphics();
 			at = new AffineTransform();
-			at.translate(-60.0, -10.0);
+			at.translate(-250.0, -10.0);
 			g2d.drawRenderedImage(bi, at);
 			
 			this.biLeftArm = new BufferedImage(72, 105, BufferedImage.TYPE_INT_ARGB);
@@ -140,7 +140,7 @@ public class PuppPanel extends JPanel {
 			at.translate(-60.0, -40.0);
 			g2d.drawRenderedImage(bi, at);
 		}		
-	void updateRotations(String part) {
+	public void updateRotations(String part) {
 		switch(part) {
 		case "LBicepRight" :
 			LBicepRot += Math.toRadians(10.0);
@@ -191,6 +191,7 @@ public class PuppPanel extends JPanel {
 			RShinRot -= Math.toRadians(10.0);
 			break;
 		case "boner" :
+			LBicepRot += Math.toRadians(10.0);
 			absRot += Math.toRadians(5.0);
 			torsoRot += Math.toRadians(7.5);
 			headRot += Math.toRadians(10.0);
@@ -214,14 +215,14 @@ public class PuppPanel extends JPanel {
 		g2d.draw(yaxis);
 		AffineTransform atAbs = new AffineTransform();
 		//atAbs.rotate(absRot);
-		atAbs.translate(34.0, 33.0);
+		atAbs.translate(34.0, 33.0);//goes to middle of abs and spins 180 and draws it
 		atAbs.rotate(Math.toRadians(180.0));
 		g2d.drawRenderedImage(biAbs, atAbs);
 		
 		AffineTransform atTorso = new AffineTransform();
 		atTorso.translate(32.5, 0.0);
 		//atTorso.rotate(torsoRot);
-		atTorso.translate(-32.5, -85.0);
+		atTorso.translate(-32.5, -85.0);//<- y is how big torso is x is .5 of 65
 		atTorso.preConcatenate(atAbs);
 		g2d.drawRenderedImage(biTorso, atTorso);
 		
@@ -233,7 +234,11 @@ public class PuppPanel extends JPanel {
 		g2d.drawRenderedImage(biHead, atHead);
 		
 		AffineTransform atLeftBicep = new AffineTransform();
-		
+		atLeftBicep.translate(-30, 100);
+		atLeftBicep.rotate(LBicepRot);
+		atLeftBicep.translate(15, 0);
+		atLeftBicep.rotate(Math.toRadians(180.0));
+		g2d.drawRenderedImage(biLeftBicep, atLeftBicep);
 		g2d.dispose();
 		
 		Toolkit.getDefaultToolkit().sync();
