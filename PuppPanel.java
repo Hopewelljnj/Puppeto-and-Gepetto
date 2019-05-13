@@ -213,15 +213,12 @@ public class PuppPanel extends JPanel {
 		gat.scale(1.5, -1.5);
 		g2d.transform(gat);
 		g2d.setStroke(new BasicStroke(3.0f));
-<<<<<<< HEAD
 		g2d.setPaint(Color.BLACK);
 		for(int i = 0; i < 4; i++) {
-=======
 		
 		
 		//g2d.fill(bowTie2);
 		
->>>>>>> e27bd640ecb9718fb5ad7e99a40373565fc7bdd4
 		AffineTransform atAbs = new AffineTransform();
 		//atAbs.rotate(absRot);
 		atAbs.translate(34.0 + (-400 + 250.0*i), 33.0);
